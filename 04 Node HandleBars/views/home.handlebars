@@ -1,0 +1,17 @@
+{{#if this.ok}}
+  <h1 class="pepito">Tienda</h1>
+  <div>
+    {{#each this.products}}
+      <h2>{{this.titulo}}</h2>
+      <p>{{this.precio}}</p>
+      <p>{{this.descripcion}}</p>
+      <p>{{this.id}}</p>
+      <button><a href="./products/{{this.id}}">Ver uwu</a></button>
+      <hr>
+    {{/each}}
+  </div>
+
+
+{{else}}
+  <h1>Not OK</h1>
+{{/if}}
