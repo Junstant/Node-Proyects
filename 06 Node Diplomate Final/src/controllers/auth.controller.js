@@ -170,7 +170,7 @@ const verifyMailController = async (req, res) => {
         })
         .build();
         console.warn("User not found in request User registration");
-        return res.status(400).json(response);
+        return res.status(404).json(response);
       }
 
       // ! --------> Si el email ya esta verificado
@@ -260,7 +260,7 @@ const loginUserController = async (req, res) => {
 
         //? -------> Enviamos respuesta
         console.warn("Email not verified in request User login");
-        return res.status(400).json(response);
+        return res.status(403).json(response);
       }
 
       // * --------> Si el usuario existe, comparamos las contraseñas
@@ -279,7 +279,7 @@ const loginUserController = async (req, res) => {
 
         //? -------> Enviamos respuesta
         console.warn("Incorrect password in request User login");
-        return res.status(400).json(response);
+        return res.status(401).json(response);
       }
 
 

@@ -2,7 +2,7 @@ import express from "express";
 import statusRouter from "./router/status.router.js";
 import ENVIROMENT from "./config/enviroment.config.js";
 import authRouter from "./router/auth.router.js";
-
+import cors from "cors";
 //Las responsabilidades se deben separar en las siguientes capas:
 // ? Capa de controladores: Se encarga de manejar las peticiones HTTP, procesar la información (validandolos) y enviar una respuesta al cliente.
 // ? Capa de rutas: Se encarga de redirigir las peticiones a los controladores.
@@ -16,6 +16,9 @@ import DBconnection from "./dataBase/config.js";
 // * -----------------------------------------> Server configuration ---------------------------->
 const app = express();
 const PORT = ENVIROMENT.PORT || 3000;
+
+// * ------> MiddleWare CORS Config disable
+app.use(cors());
 
 // * ------> MiddleWare JSON Config
 app.use(express.json({extended: true}));
