@@ -139,7 +139,7 @@ const verifyMailController = async (req, res) => {
      }
 
       // * --------> Si hay token, verificamos la firma
-     const decoded = jwt.verify(token, ENVIROMENT.JWT_SECRET);
+     const decoded = await jwt.verify(token, ENVIROMENT.JWT_SECRET);
 
       // ! --------> Si la firma no es valida
      if(!decoded){
@@ -163,7 +163,7 @@ const verifyMailController = async (req, res) => {
       if(!user){
         const response = new ResponseBuilder()
         .setOk(false)
-        .setStatus(400)
+        .setStatus(404)
         .setMessage("Bad Request")
         .setPayload({
           detail: "User not found",
@@ -205,7 +205,7 @@ const verifyMailController = async (req, res) => {
       console.warn(`Email ${user.email} verified`);
       return res.status(200).json(response);
   }
-
+  // ! --------> Si hay un error
   catch(error){
     //Creamos respuesta
     const response = new ResponseBuilder()
@@ -225,7 +225,101 @@ const verifyMailController = async (req, res) => {
 
 //TODO ---------------------------------------> Inicio de sesion <---------------------------------------
 const loginUserController = async (req, res) => {
+  try{
+    //Extraemos los datos del body
+    const {email, password} = req.body;
 
+    const user = await User.findOne({email}); 
+
+      // ! --------> Si el usuario no existe
+      if(!user){
+        const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(404)
+        .setMessage("Bad Request")
+        .setPayload({
+          detail: "User not found",
+        })
+        .build();
+
+        //? -------> Enviamos respuesta
+        console.warn("User not found in request User login");
+        return res.status(404).json(response);
+      }
+
+      // ! --------> Si el email no esta verificado
+      if(user.emailVerified == false){
+        const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(403)
+        .setMessage("Forbidden")
+        .setPayload({
+          detail: "Please verify your email to login",
+        })
+        .build();
+
+        //? -------> Enviamos respuesta
+        console.warn("Email not verified in request User login");
+        return res.status(400).json(response);
+      }
+
+      // * --------> Si el usuario existe, comparamos las contraseñas
+      const passwordMatch = await bcrypt.compare(password, user.password);
+      
+      console.log(passwordMatch);
+      if(!passwordMatch){
+        const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(401)
+        .setMessage("Unauthorized")
+        .setPayload({
+          detail: "Incorrect password",
+        })
+        .build();
+
+        //? -------> Enviamos respuesta
+        console.warn("Incorrect password in request User login");
+        return res.status(400).json(response);
+      }
+
+
+      // * --------> Si el usuario existe, creamos el token
+      const token = jwt.sign({email: user.email, id:user._id}, ENVIROMENT.JWT_SECRET, {expiresIn: "1h"});
+      const response = new ResponseBuilder()
+        .setOk(true)
+        .setStatus(200)
+        .setMessage("OK")
+        .setPayload({
+          message: `User ${user.name} logged in`,
+          token: token,
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+          }
+        })
+        .build();
+
+      //? -------> Enviamos respuesta
+      console.warn(`User ${user.name} logged in`);
+      return res.status(200).json(response);
+  }
+  // ! --------> Si hay un error
+  catch(error){
+    //Creamos respuesta
+    const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(500)
+      .setMessage("Internal Server Error")
+      .setPayload({
+        detail: error.message,
+      })
+      .build();
+
+    //? -------> Enviamos respuesta
+    console.error(error.message);
+    return res.status(500).json(response);
+  }
 }
 
 

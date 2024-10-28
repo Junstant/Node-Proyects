@@ -11,7 +11,7 @@ authRouter.post('/register', registerUserController);
 authRouter.get('/verify/:token', verifyMailController);
 
 // * ------------------ Ruta de login ------------------>
-// authRouter.post('/login', ;)
+authRouter.post('/login', loginUserController);
 
 // * ------------------ Ruta de forgot password ------------------>
 // authRouter.post('/forgot-password', ;)
