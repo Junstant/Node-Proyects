@@ -4,10 +4,10 @@ import ResponseBuilder from "../utils/builders/responseBuilder.utils.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import sendEmail from "../email.utils.js";
+import UserRepository from "../repositories/user.repository.js";
 
 
-
-// TODO  ---------------------------------------> Registro de usuario <---------------------------------------
+// ~ ---------------------------------------> Registro de usuario <---------------------------------------
 const registerUserController = async (req, res) => {
 //* ---> Intento de ejecutar el codigo    
   try {
@@ -32,7 +32,7 @@ const registerUserController = async (req, res) => {
     }
 
     // --------> Validamos que el email no este registrado
-    const userFindedEmail = await User.findOne({email: email});
+    const userFindedEmail = await UserRepository.getUserByEmail(email);
 
     //! --------> Si el email ya esta registrado
     if(userFindedEmail){
@@ -72,17 +72,8 @@ const registerUserController = async (req, res) => {
         <a href="${url_verification}">Verify</a>`
     });
 
-    //Creamos el usuario
-    const user = new User({
-        name,
-        email,
-        password: hashedPassword,
-        verifyToken: verificationToken,
-        // emailVerified: false -----> Por defecto es false
-    });
-
-    //* --> Guardamos el usuario
-    await user.save();
+    // # Creamos el usuario y guardamos el usuario en la base de datos
+    const user = await UserRepository.createUser(name, email, hashedPassword, verificationToken);
 
     //Creamos respuesta
     const response = new ResponseBuilder()
@@ -156,7 +147,7 @@ const verifyMailController = async (req, res) => {
      }
 
       // * --------> Si la firma es valida
-      const user = await User.findOne({email: decoded.email});
+      const user = await UserRepository.getUserByEmail(decoded.email);
 
 
       // ! --------> Si el usuario no existe
@@ -187,9 +178,8 @@ const verifyMailController = async (req, res) => {
         return res.status(400).json(response);
       }
 
-      // * --------> Si el usuario existe, verificamos el email
-      user.emailVerified = true;
-      await user.save();
+      // * --------> Si el usuario existe, verificamos el email y volvemos a guardarlo
+      UserRepository.setEmailVerified(true, user._id);
 
       const response = new ResponseBuilder()
         .setOk(true)
@@ -223,13 +213,12 @@ const verifyMailController = async (req, res) => {
   }
 }
 
-//TODO ---------------------------------------> Inicio de sesion <---------------------------------------
+//~ ---------------------------------------> Inicio de sesion <---------------------------------------
 const loginUserController = async (req, res) => {
   try{
     //Extraemos los datos del body
     const {email, password} = req.body;
-
-    const user = await User.findOne({email}); 
+    const user = await UserRepository.getUserByEmail(email);
 
       // ! --------> Si el usuario no existe
       if(!user){
@@ -266,7 +255,6 @@ const loginUserController = async (req, res) => {
       // * --------> Si el usuario existe, comparamos las contraseñas
       const passwordMatch = await bcrypt.compare(password, user.password);
       
-      console.log(passwordMatch);
       if(!passwordMatch){
         const response = new ResponseBuilder()
         .setOk(false)
@@ -321,6 +309,164 @@ const loginUserController = async (req, res) => {
     return res.status(500).json(response);
   }
 }
+// ~ ---------------------------------------> Olvide mi contraseña <---------------------------------------
+const forgotPasswordController = async (req, res) => {
+  try{
+    //Extraemos los datos del body
+    const {email} = req.body;
+    const user = await UserRepository.getUserByEmail(email);
+      
+        // ! --------> Si el usuario no existe
+        if(!user){
+          const response = new ResponseBuilder()
+          .setOk(false)
+          .setStatus(404)
+          .setMessage("Bad Request")
+          .setPayload({
+            detail: "User not found",
+          })
+          .build();
+  
+          //? -------> Enviamos respuesta
+          console.warn("User not found in request User forgot password");
+          return res.status(404).json(response);
+        }
+  
+        // * --------> Si el usuario existe, creamos el token
+        const resetToken = jwt.sign({email: user.email, id:user._id}, ENVIROMENT.JWT_SECRET, {expiresIn: "1h"});
+        const url_reset = `${ENVIROMENT.FRONTEND_URL}/reset-password/${resetToken}`;
+  
+        //Enviamos el correo de verificacion
+        await sendEmail({
+            from: ENVIROMENT.GMAIL_USER,
+            to: email,
+            subject: "Reset your password",
+            html: 
+            `<h1>Reset your password</h1>
+            <p>Click the following link to reset your password</p>
+            <a href="${url_reset}">Reset</a>`
+        });
+  
+        const response = new ResponseBuilder()
+          .setOk(true)
+          .setStatus(200)
+          .setMessage("OK")
+          .setPayload({
+            message: `Email sended to ${user.email}`,
+          })
+          .build();
+  
+        //? -------> Enviamos respuesta
+        console.warn(`Email sended to ${user.email}`);
+        return res.status(200).json(response);
+  }
+  // ! --------> Si hay un error
+  catch(error){
+    //Creamos respuesta
+    const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(500)
+      .setMessage("Internal Server Error")
+      .setPayload({
+        detail: error.message,
+      })
+      .build();
+  
+    //? -------> Enviamos respuesta
+    console.error(error.message);
+    return res.status(500).json(response);
+  }
+}
+
+// ~ ---------------------------------------> Resetear contraseña <---------------------------------------
+const resetPasswordController = async (req, res) => {
+  try{
+    const {token} = req.params;
+    const {password} = req.body;
+    // ! --------> Si no hay token
+    if(!token){
+      const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(400)
+      .setMessage("Bad Request")
+      .setPayload({
+        detail: "Missing required fields",
+      })
+      .build();
+      console.warn("Missing token in request User reset password");
+      return res.status(400).json(response);
+     }
+
+      // * --------> Si hay token, verificamos la firma
+     const decoded = await jwt.verify(token, ENVIROMENT.JWT_SECRET);
+
+      // ! --------> Si la firma no es valida
+     if(!decoded){
+      const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(400)
+      .setMessage("Bad Request")
+      .setPayload({
+        detail: "Invalid token",
+      })
+      .build();
+      console.warn("Invalid token in request User reset password");
+      return res.status(400).json(response);
+     }
+
+      // * --------> Si la firma es valida
+      const user = await UserRepository.getUserByEmail(decoded.email);
+
+      // ! --------> Si el usuario no existe
+      if(!user){
+        const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(404)
+        .setMessage("Bad Request")
+        .setPayload({
+          detail: "User not found",
+        })
+        .build();
+        console.warn("User not found in request User reset password");
+        return res.status(404).json(response);
+      }
+
+      // * --------> Si el usuario existe, actualizamos la contraseña
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
+      UserRepository.saveUser(user);
+
+      const response = new ResponseBuilder()
+        .setOk(true)
+        .setStatus(200)
+        .setMessage("OK")
+        .setPayload({
+          message: `Password reseted for ${user.email}`,
+          user: user,
+        })
+        .build();
+
+      //? -------> Enviamos respuesta
+      console.warn(`Password reseted for ${user.email}`);
+      return res.status(200).json(response);
+    } 
+    // ! --------> Si hay un error
+    catch(error){
+      //Creamos respuesta
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(500)
+        .setMessage("Internal Server Error")
+        .setPayload({
+          detail: error.message,
+        })
+        .build();
+  
+      //? -------> Enviamos respuesta
+      console.error(error.message);
+      return res.status(500).json(response);
+    }
+  } 
 
 
-export {registerUserController, verifyMailController, loginUserController};
+export {registerUserController, verifyMailController, loginUserController, forgotPasswordController, resetPasswordController};

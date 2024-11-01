@@ -1,5 +1,5 @@
 import express from "express";
-import {registerUserController, verifyMailController, loginUserController} from "../controllers/auth.controller.js";
+import {registerUserController, verifyMailController, loginUserController, forgotPasswordController, resetPasswordController} from "../controllers/auth.controller.js";
 
 const authRouter = express.Router();
 
@@ -14,6 +14,9 @@ authRouter.get('/verify/:token', verifyMailController);
 authRouter.post('/login', loginUserController);
 
 // * ------------------ Ruta de forgot password ------------------>
-// authRouter.post('/forgot-password', ;)
+authRouter.post('/forgot-password/:token', forgotPasswordController);
+
+// * ------------------ Ruta de reset password ------------------>
+authRouter.post('/reset-password/:token', resetPasswordController);
 
 export default authRouter;

@@ -10,7 +10,7 @@ import transporter from "./config/transporter.config.js";
 const sendEmail = async (options) => {
     try{
       let response = await transporter.sendMail(options);
-      console.log(`Email sent: ${response.messageId}`);
+      console.log(`Email sent to ${options.to}`);
     }
     catch(error){
       console.error(`Error sending the email`, error);
