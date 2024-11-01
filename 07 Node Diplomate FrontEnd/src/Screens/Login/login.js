@@ -16,7 +16,7 @@ const handleSubmitLogin = async (e) => {
   try {
     // Send form data to the server for registration
     const response = await fetch("http://localhost:3000/api/auth/login", {
-      method: "POST",
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formObject),
     });
