@@ -17,6 +17,6 @@ authRouter.post('/login', loginUserController);
 authRouter.post('/forgot-password/:token', forgotPasswordController);
 
 // * ------------------ Ruta de reset password ------------------>
-authRouter.post('/reset-password/:token', resetPasswordController);
+authRouter.put('/reset-password/:token', resetPasswordController);
 
 export default authRouter;

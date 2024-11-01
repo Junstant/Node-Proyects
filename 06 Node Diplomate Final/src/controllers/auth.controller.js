@@ -414,6 +414,20 @@ const resetPasswordController = async (req, res) => {
       return res.status(400).json(response);
      }
 
+     // ! --------> Si no hay contraseña
+      if(!password){
+        const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Bad Request")
+        .setPayload({
+          detail: "Missing required fields",
+        })
+        .build();
+        console.warn("Missing password in request User reset password");
+        return res.status(400).json(response);
+      }
+
       // * --------> Si la firma es valida
       const user = await UserRepository.getUserByEmail(decoded.email);
 
