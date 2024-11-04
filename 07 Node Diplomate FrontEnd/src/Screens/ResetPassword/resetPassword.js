@@ -1,7 +1,7 @@
 import extractFormData from "../../utils/formExtactor.utils";
 
 // :: --------> Function to handle the form submission
-const handleSubmitResetPassword = async (e) => {
+const handleSubmitResetPassword = async (e, token) => {
   e.preventDefault();
 
   // Extract form data
@@ -14,16 +14,18 @@ const handleSubmitResetPassword = async (e) => {
   // Extract form data
   const formObject = extractFormData(defaultFields, formValues);
 
-  //Validate the password and confirm password
+  //Validate the password and confirm password fields are the same
+  console.log(formObject.password, formObject.confirmPassword);
   if (formObject.password !== formObject.confirmPassword) {
-    console.log("Passwords do not match");
+    console.error("Passwords do not match");
     return;
   }
 
   try {
     // Send form data to the server for registration
-    const response = await fetch("http://localhost:3000/api/auth/reset-password", {
-      method: "POST",
+    console.log("http://localhost:3000/api/auth/reset-password/" + token);
+    const response = await fetch("http://localhost:3000/api/auth/reset-password/" + token, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formObject),
     });

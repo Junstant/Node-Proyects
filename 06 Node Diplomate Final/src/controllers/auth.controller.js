@@ -445,6 +445,16 @@ const resetPasswordController = async (req, res) => {
         return res.status(404).json(response);
       }
 
+      //Enviamos el correo de avisando que la contraseña fue cambiada
+      await sendEmail({
+        from: ENVIROMENT.GMAIL_USER,
+        to: user.email,
+        subject: "Password reseted",
+        html: 
+        `<h1>Password reseted</h1>
+        <p>Your password has been reseted successfully</p>`
+    });
+
       // * --------> Si el usuario existe, actualizamos la contraseña
       const hashedPassword = await bcrypt.hash(password, 10);
       user.password = hashedPassword;

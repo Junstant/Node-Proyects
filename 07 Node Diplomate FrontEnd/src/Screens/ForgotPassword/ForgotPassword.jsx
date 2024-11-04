@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import handleSubmitForgotPassword from "./forgotPassword"; //Handle the form and send the data to the server
+import handleSubmitForgotPassword from "./forgotPassword.js"; //Handle the form and send the data to the server
 
 const ForgotPassword = () => {
   return (

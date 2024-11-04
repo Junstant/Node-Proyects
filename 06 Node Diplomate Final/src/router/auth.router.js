@@ -14,7 +14,7 @@ authRouter.get('/verify/:token', verifyMailController);
 authRouter.post('/login', loginUserController);
 
 // * ------------------ Ruta de forgot password ------------------>
-authRouter.post('/forgot-password/:token', forgotPasswordController);
+authRouter.post('/forgot-password/', forgotPasswordController);
 
 // * ------------------ Ruta de reset password ------------------>
 authRouter.put('/reset-password/:token', resetPasswordController);
