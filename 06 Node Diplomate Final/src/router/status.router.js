@@ -1,5 +1,8 @@
 import express from "express";
 import getPingController from "../controllers/status.controller.js";
+import vTokenMid from "../middlewares/auth.middleware.js";
+import vApiKeyMid from "../middlewares/apiKey.middleware.js";
+
 
 const statusRouter = express.Router();
 
@@ -7,5 +10,8 @@ const statusRouter = express.Router();
 
 // * ------------------ Ruta PING ------------------>
 statusRouter.get("/ping", getPingController)
+
+// * ------------------ Rutas Protegidas ------------------>
+statusRouter.get("/protected/ping", vTokenMid, vApiKeyMid, getPingController)
   
   export default statusRouter;
