@@ -12,6 +12,6 @@ const statusRouter = express.Router();
 statusRouter.get("/ping", getPingController)
 
 // * ------------------ Rutas Protegidas ------------------>
-statusRouter.get("/protected/ping", vTokenMid, vApiKeyMid, getPingController)
+statusRouter.get("/protected/ping", vTokenMid, getPingController)
   
   export default statusRouter;
