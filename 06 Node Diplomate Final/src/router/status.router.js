@@ -2,6 +2,7 @@ import express from "express";
 import getPingController from "../controllers/status.controller.js";
 import vTokenMid from "../middlewares/auth.middleware.js";
 import vApiKeyMid from "../middlewares/apiKey.middleware.js";
+import vRoleMid from "../middlewares/role.middleware.js";
 
 
 const statusRouter = express.Router();
