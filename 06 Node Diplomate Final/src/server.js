@@ -25,7 +25,7 @@ app.use(cors());
 app.use(express.json({extended: true}));
 
 // * ------> MiddleWare API KEY
-app.use(vApiKeyMid);
+// app.use(vApiKeyMid);
 
 // * ------> Enrutadores
 app.use('/api/status', statusRouter);

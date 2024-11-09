@@ -1,27 +1,14 @@
-import extractFormData from "../../utils/formExtactor.utils";
-
-// ? --------> Function to handle the form submission
-const handleSubmitRegister = async (e) => {
+// :: --------> Function to handle the form submission
+const handleSubmitRegister = async (e, values) => {
   e.preventDefault();
-
-  // Extract form data
-  const formValues = new FormData(e.target);
-  const defaultFields = {
-    name: "", 
-    email: "", 
-    password: "" 
-};
-  // Extract form data
-  const formObject = extractFormData(defaultFields, formValues);
 
   try {
     // Send form data to the server for registration
     const response = await fetch("http://localhost:3000/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formObject),
+      body: JSON.stringify(values),
     });
-
 
     // * -----> If the response is ok, log the data
     if (response.ok) {
