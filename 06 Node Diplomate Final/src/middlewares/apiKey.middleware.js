@@ -40,7 +40,7 @@ try{
     next();
 }
 // ! ----> Si hay un error
-catch(error){}
+catch(error){
  const response = new ResponseBuilder()
     .setOk(false)
     .setStatus(500)
@@ -51,6 +51,7 @@ catch(error){}
     .build();
     console.error(error.message);
     return res.status(500).json(response);
+}
 }
 
 export default vApiKeyMid;

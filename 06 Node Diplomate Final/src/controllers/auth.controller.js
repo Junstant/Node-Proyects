@@ -272,7 +272,7 @@ const loginUserController = async (req, res) => {
 
 
       // * --------> Si el usuario existe, creamos el token
-      const token = jwt.sign({email: user.email, id:user._id}, ENVIROMENT.JWT_SECRET, {expiresIn: "1h"});
+      const token = jwt.sign({email: user.email, id:user._id, role: user.role}, ENVIROMENT.JWT_SECRET, {expiresIn: "1h"});
       const response = new ResponseBuilder()
         .setOk(true)
         .setStatus(200)
@@ -284,6 +284,7 @@ const loginUserController = async (req, res) => {
             id: user._id,
             name: user.name,
             email: user.email,
+            role: user.role,
           }
         })
         .build();

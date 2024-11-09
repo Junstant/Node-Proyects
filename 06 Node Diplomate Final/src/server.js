@@ -24,9 +24,6 @@ app.use(cors());
 // * ------> MiddleWare JSON Config
 app.use(express.json({extended: true}));
 
-// * ------> MiddleWare API KEY
-// app.use(vApiKeyMid);
-
 // * ------> Enrutadores
 app.use('/api/status', statusRouter);
 app.use('/api/auth', authRouter);
