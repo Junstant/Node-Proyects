@@ -3,6 +3,7 @@ import statusRouter from "./router/status.router.js";
 import ENVIROMENT from "./config/enviroment.config.js";
 import authRouter from "./router/auth.router.js";
 import cors from "cors";
+import modulesRouter from "./router/modules.router.js";
 //Las responsabilidades se deben separar en las siguientes capas:
 // # Capa de controladores: Se encarga de manejar las peticiones HTTP, procesar la información (validandolos) y enviar una respuesta al cliente.
 // # Capa de rutas: Se encarga de redirigir las peticiones a los controladores.
@@ -11,7 +12,6 @@ import cors from "cors";
 
 // * Database connection
 import DBconnection from "./dataBase/config.js";
-import vApiKeyMid from "./middlewares/apiKey.middleware.js";
 
 
 // * -----------------------------------------> Server configuration ---------------------------->
@@ -27,6 +27,7 @@ app.use(express.json({extended: true}));
 // * ------> Enrutadores
 app.use('/api/status', statusRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/modules', modulesRouter);
 
 
 
