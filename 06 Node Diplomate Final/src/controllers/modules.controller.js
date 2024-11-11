@@ -5,7 +5,7 @@ import modulesValidations from "../utils/modulesValidation.util.js";
 // ~ ------------------------------------> Create module <------------------------------------ ~
 const createModule = async (req, res) => {
   // Extraer datos del body
-  const { name, schedule, location, proffesor, dependencies, timeLeft, state, absents, period, nextBlock, notes, homeworks, index } = req.body;
+  const { name, schedule, location, proffesor, dependencies, timeLeft, state, absents, period, nextBlock, notes, homeworks, index, Year } = req.body;
 
   try {
     // ^ --------------> Enviar los datos a la función de validación

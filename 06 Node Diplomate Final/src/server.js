@@ -4,6 +4,7 @@ import ENVIROMENT from "./config/enviroment.config.js";
 import authRouter from "./router/auth.router.js";
 import cors from "cors";
 import modulesRouter from "./router/modules.router.js";
+import yearRouter from "./router/year.router.js";
 
 //Las responsabilidades se deben separar en las siguientes capas:
 // # Capa de controladores: Se encarga de manejar las peticiones HTTP, procesar la información (validandolos) y enviar una respuesta al cliente.
@@ -29,6 +30,7 @@ app.use(express.json({extended: true}));
 app.use('/api/status', statusRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/modules', modulesRouter);
+app.use('/api/year', yearRouter);
 
 
 
