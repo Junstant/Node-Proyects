@@ -1,27 +1,23 @@
 import express from "express";
 import vRoleMid from "../middlewares/role.middleware.js";
 import vApiKeyMid from "../middlewares/apiKey.middleware.js";
-import getProducts from "../controllers/modules.controller.js";
+import {createModule, updateModule, deleteModule} from "../controllers/modules.controller.js";
+import vTokenMid from "../middlewares/auth.middleware.js";
 
 const modulesRouter = express.Router();
 
 // ^ ------------------ Controladores ------------------>
 modulesRouter.use(vApiKeyMid);
+modulesRouter.use(vTokenMid);
 modulesRouter.use(vRoleMid(["user", "admin"]));
 
-// * ------------------ Ver materias ------------------>
-modulesRouter.get('/', getProducts);
+// * ------------------ Crear materia ------------------>
+modulesRouter.post('/', createModule);
 
-// // * ------------------ Ver materias por ID ------------------>
-// modulesRouter.get('/:id', modulesController);
+// * ------------------ Actualizar materia ------------------>
+modulesRouter.put('/:id', updateModule);
 
-// // * ------------------ Crear materia ------------------>
-// modulesRouter.post('/', modulesController);
-
-// // * ------------------ Actualizar materia ------------------>
-// modulesRouter.put('/:id', modulesController);
-
-// // * ------------------ Eliminar materia ------------------>
-// modulesRouter.delete('/:id', modulesController);
+// * ------------------ Eliminar materia ------------------>
+modulesRouter.delete('/:id', deleteModule);
 
 export default modulesRouter;

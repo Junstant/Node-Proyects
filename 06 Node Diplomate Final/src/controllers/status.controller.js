@@ -1,5 +1,5 @@
 //Las funciones de los controladores son las encargadas de manejar las peticiones HTTP, procesar la información (validandolos) y enviar una respuesta al cliente.
-import ResponseBuilder from "../utils/builders/responseBuilder.utils.js";
+import ResponseBuilder from "../utils/builders/responseBuilder.builder.js";
 
 const getPingController = (req, res) => {
   //* ------> Intento de ejecutar el codigo

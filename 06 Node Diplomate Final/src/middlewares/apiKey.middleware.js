@@ -1,4 +1,4 @@
-import ResponseBuilder from "../utils/builders/responseBuilder.utils.js";
+import ResponseBuilder from "../utils/builders/responseBuilder.builder.js";
 import ENVIROMENT from "../config/enviroment.config.js";
 
 const vApiKeyMid = async (req, res, next) => {

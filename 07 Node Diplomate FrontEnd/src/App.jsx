@@ -5,6 +5,7 @@ import Login from "./Screens/Login/Login.jsx";
 import Register from "./Screens/Register/Register.jsx";
 import ForgotPassword from "./Screens/ForgotPassword/ForgotPassword.jsx";
 import ResetPassword from "./Screens/ResetPassword/ResetPassword.jsx";
+import Modules from "./Screens/Modules/Modules.jsx";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/register" element={<Register/>} />
         <Route path="/forgot-password" element={<ForgotPassword/>} />
         <Route path="/reset-password/:token" element={<ResetPassword/>} /> 
+        <Route path="/modules" element={Modules}/>
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
     </>

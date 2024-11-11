@@ -1,38 +1,52 @@
-//Aqui tendremos el modelo del usuario
 import mongoose from 'mongoose';
 
+//Esquema:
+/*
+Usuario:
+- Carreras:
+  - Años:
+    - Materias:
+*/
 
-//* ---------> Definimos el esquema del usuario
+
+// * ---------> Definimos el esquema del alumno
 const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    emailVerified: {
-        type: Boolean,
-        default: false
-    },
-    verifyToken: {
-        type: String,
-        required: true
-    },
-    role: {
-        type: String,
-        required: true,
-        default: 'user'
-    }
+  name: { // # Nombre del usuario
+    type: String,
+    required: true,
+    trim: true
+  },
+  email: { // # Correo del usuario
+    type: String,
+    required: true,
+    unique: true,
+    match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ // Validación de formato de email
+  },
+  password: { // # Contraseña del usuario encriptada
+    type: String,
+    required: true,
+    minlength: 6 
+  },
+  emailVerified: { // # Bandera que indica si el correo del usuario ha sido verificado
+    type: Boolean,
+    default: false
+  },
+  verifyToken: { // # Token de verificación con los datos del usuario
+    type: String,
+    required: true
+  },
+  role: { // # Rol del usuario
+    type: String,
+    required: true,
+    enum: ['user', 'admin'], // Limita los valores a 'user' o 'admin'
+    default: 'user'
+  },
+  carreer: { // #:: Carrera del usuario
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Career',
+  },
 });
 
-//* ---------> Exportamos el modelo
 const User = mongoose.model('User', userSchema);
 
 export default User;

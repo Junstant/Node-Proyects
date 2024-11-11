@@ -1,4 +1,4 @@
-import ResponseBuilder from "../utils/builders/responseBuilder.utils.js";
+import ResponseBuilder from "../utils/builders/responseBuilder.builder.js";
 
 // ? ----> Middleware para verificar el rol del usuario
 const vRoleMid = (role) => {
@@ -15,7 +15,7 @@ const vRoleMid = (role) => {
           })
           .build();
         //? -------> Enviamos respuesta
-        console.error("You don't have the necessary permissions");
+        console.error("[Role.Middleware] - You don't have the necessary permissions" );
         return res.status(401).json(response);
       }
 
@@ -50,7 +50,7 @@ const vRoleMid = (role) => {
         })
         .build();
       //? -------> Enviamos respuesta
-      console.error(error.message);
+      console.error('[Role.Middleware] - ' + error.message);
       return res.status(500).json(response);
     }
   };
