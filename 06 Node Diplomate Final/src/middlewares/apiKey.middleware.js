@@ -17,7 +17,7 @@ try{
             })
             .build();
         //? -------> Enviamos respuesta
-        console.error("x-api-key header is required");
+        console.error("[Api.Middleware] - x-api-key header is required");
         return res.status(401).json(response);
     }
 
@@ -33,7 +33,7 @@ try{
             })
             .build();
         //? -------> Enviamos respuesta
-        console.error("Invalid x-api-key");
+        console.error("[Api.Middleware] - Invalid x-api-key");
         return res.status(401).json(response);
     }
 
@@ -49,7 +49,7 @@ catch(error){
         detail: error.message,
     })
     .build();
-    console.error(error.message);
+    console.error('[Api.Middleware] - ' + error.message);
     return res.status(500).json(response);
 }
 }

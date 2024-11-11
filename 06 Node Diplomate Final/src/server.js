@@ -4,6 +4,7 @@ import ENVIROMENT from "./config/enviroment.config.js";
 import authRouter from "./router/auth.router.js";
 import cors from "cors";
 import modulesRouter from "./router/modules.router.js";
+
 //Las responsabilidades se deben separar en las siguientes capas:
 // # Capa de controladores: Se encarga de manejar las peticiones HTTP, procesar la información (validandolos) y enviar una respuesta al cliente.
 // # Capa de rutas: Se encarga de redirigir las peticiones a los controladores.

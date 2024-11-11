@@ -15,6 +15,7 @@ const getPingController = (req, res) => {
       .build();
       
       // ? ----------- Respuesta ------->
+      console.log("[Status.Controller] - Ping");
       res.status(200).json(response);
     } 
   
@@ -24,13 +25,14 @@ const getPingController = (req, res) => {
       const response = new ResponseBuilder()
       .setOk(false)
       .setStatus(500)
-      .setMessage("Internal Server Error")
+      .setMessage("[Status.Controller] - Internal Server Error")
       .setPayload({
         message: error.message,
       })
       .build();
   
       // ? ----------- Respuesta ------->
+      console.error("[Status.Controller] - " + error.message);
       res.status(500).json(response);
     }
   };

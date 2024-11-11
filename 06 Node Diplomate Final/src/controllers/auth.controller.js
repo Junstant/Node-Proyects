@@ -27,7 +27,7 @@ const registerUserController = async (req, res) => {
         .build();
 
       //? -------> Enviamos respuesta
-      console.warn("Missing required fields in request User registration"); 
+      console.warn("[Auth.Controller.Register] - Missing required fields in request User registration"); 
       return res.status(400).json(response);
     }
 
@@ -42,12 +42,12 @@ const registerUserController = async (req, res) => {
         .setStatus(400)
         .setMessage("Bad Request")
         .setPayload({
-          detail: "Email already registered",
+          detail: "[Auth.Controller.Register] - Email already registered",
         })
         .build();
 
       //? -------> Enviamos respuesta
-      console.warn("Email already registered");
+      console.warn("[Auth.Controller.Register] - Email already registered");
       return res.status(400).json(response);
     }
 
@@ -87,7 +87,7 @@ const registerUserController = async (req, res) => {
       .build();
 
     //? -------> Enviamos respuesta
-    console.warn(`User ${user.name} created`);
+    console.warn(`[Auth.Controller.Register] - User ${user.name} created`);
     return res.status(201).json(response);
   } 
 
@@ -105,7 +105,7 @@ const registerUserController = async (req, res) => {
       .build();
 
     //? -------> Enviamos respuesta
-    console.error(error.message);
+    console.error('[Auth.Controller.Register] - ' + error.message);
     return res.status(500).json(response);
   }
 };
@@ -125,7 +125,7 @@ const verifyMailController = async (req, res) => {
         detail: "Missing required fields",
       })
       .build();
-      console.warn("Missing token in request User registration");
+      console.warn("[Auth.Controller.Email] - Missing token in request User registration");
       return res.status(400).json(response);
      }
 
@@ -142,7 +142,7 @@ const verifyMailController = async (req, res) => {
         detail: "Invalid token",
       })
       .build();
-      console.warn("Invalid token in request User registration");
+      console.warn("[Auth.Controller.Email] - Invalid token in request User registration");
       return res.status(400).json(response);
      }
 
@@ -160,7 +160,7 @@ const verifyMailController = async (req, res) => {
           detail: "User not found",
         })
         .build();
-        console.warn("User not found in request User registration");
+        console.warn("[Auth.Controller.Email] - User not found in request User registration");
         return res.status(404).json(response);
       }
 
@@ -174,7 +174,7 @@ const verifyMailController = async (req, res) => {
           detail: "Email already verified",
         })
         .build();
-        console.warn("Email already verified in request User registration");
+        console.warn("[Auth.Controller.Email] - Email already verified in request User registration");
         return res.status(400).json(response);
       }
 
@@ -192,7 +192,7 @@ const verifyMailController = async (req, res) => {
         .build();
 
       //? -------> Enviamos respuesta
-      console.warn(`Email ${user.email} verified`);
+      console.warn(`[Auth.Controller.Email] - Email ${user.email} verified`);
       return res.status(200).json(response);
   }
   // ! --------> Si hay un error
@@ -208,7 +208,7 @@ const verifyMailController = async (req, res) => {
       .build();
 
     //? -------> Enviamos respuesta
-    console.error(error.message);
+    console.error('[Auth.Controller.Email] - ' + error.message);
     return res.status(500).json(response);
   }
 }
@@ -232,7 +232,7 @@ const loginUserController = async (req, res) => {
         .build();
 
         //? -------> Enviamos respuesta
-        console.warn("User not found in request User login");
+        console.warn("[Auth.Controller.Login] - User not found in request User login");
         return res.status(404).json(response);
       }
 
@@ -248,7 +248,7 @@ const loginUserController = async (req, res) => {
         .build();
 
         //? -------> Enviamos respuesta
-        console.warn("Email not verified in request User login");
+        console.warn("[Auth.Controller.Login] - Email not verified in request User login");
         return res.status(403).json(response);
       }
 
@@ -266,7 +266,7 @@ const loginUserController = async (req, res) => {
         .build();
 
         //? -------> Enviamos respuesta
-        console.warn("Incorrect password in request User login");
+        console.warn("[Auth.Controller.Login] - Incorrect password in request User login");
         return res.status(401).json(response);
       }
 
@@ -290,7 +290,7 @@ const loginUserController = async (req, res) => {
         .build();
 
       //? -------> Enviamos respuesta
-      console.warn(`User ${user.name} logged in`);
+      console.warn(`[Auth.Controller.Login] - User ${user.name} logged in`);
       return res.status(200).json(response);
   }
   // ! --------> Si hay un error
@@ -306,7 +306,7 @@ const loginUserController = async (req, res) => {
       .build();
 
     //? -------> Enviamos respuesta
-    console.error(error.message);
+    console.error('[Auth.Controller.Login] - ' + error.message);
     return res.status(500).json(response);
   }
 }
@@ -329,7 +329,7 @@ const forgotPasswordController = async (req, res) => {
           .build();
   
           //? -------> Enviamos respuesta
-          console.warn("User not found in request User forgot password");
+          console.warn("[Auth.Controller.ForgotPass] - User not found in request User forgot password");
           return res.status(404).json(response);
         }
   
@@ -358,7 +358,7 @@ const forgotPasswordController = async (req, res) => {
           .build();
   
         //? -------> Enviamos respuesta
-        console.warn(`Email sended to ${user.email}`);
+        console.warn(`[Auth.Controller.ForgotPass] - Email sended to ${user.email}`);
         return res.status(200).json(response);
   }
   // ! --------> Si hay un error
@@ -374,7 +374,7 @@ const forgotPasswordController = async (req, res) => {
       .build();
   
     //? -------> Enviamos respuesta
-    console.error(error.message);
+    console.error('[Auth.Controller.ForgotPass] - ' + error.message);
     return res.status(500).json(response);
   }
 }
@@ -394,7 +394,7 @@ const resetPasswordController = async (req, res) => {
         detail: "Missing required fields",
       })
       .build();
-      console.warn("Missing token in request User reset password");
+      console.warn("[Auth.Controller.ResetPass] - Missing token in request User reset password");
       return res.status(400).json(response);
      }
 
@@ -411,7 +411,7 @@ const resetPasswordController = async (req, res) => {
         detail: "Invalid token",
       })
       .build();
-      console.warn("Invalid token in request User reset password");
+      console.warn("[Auth.Controller.ResetPass] - Invalid token in request User reset password");
       return res.status(400).json(response);
      }
 
@@ -425,7 +425,7 @@ const resetPasswordController = async (req, res) => {
           detail: "Missing required fields",
         })
         .build();
-        console.warn("Missing password in request User reset password");
+        console.warn("[Auth.Controller.ResetPass] - Missing password in request User reset password");
         return res.status(400).json(response);
       }
 
@@ -442,7 +442,7 @@ const resetPasswordController = async (req, res) => {
           detail: "User not found",
         })
         .build();
-        console.warn("User not found in request User reset password");
+        console.warn("[Auth.Controller.ResetPass] - User not found in request User reset password");
         return res.status(404).json(response);
       }
 
@@ -472,7 +472,7 @@ const resetPasswordController = async (req, res) => {
         .build();
 
       //? -------> Enviamos respuesta
-      console.warn(`Password reseted for ${user.email}`);
+      console.warn(`[Auth.Controller.ResetPass] - Password reseted for ${user.email}`);
       return res.status(200).json(response);
     } 
     // ! --------> Si hay un error
@@ -488,7 +488,7 @@ const resetPasswordController = async (req, res) => {
         .build();
   
       //? -------> Enviamos respuesta
-      console.error(error.message);
+      console.error('[Auth.Controller.ResetPass] - ' + error.message);
       return res.status(500).json(response);
     }
   } 

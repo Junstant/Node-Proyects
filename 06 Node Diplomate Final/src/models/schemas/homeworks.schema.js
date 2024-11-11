@@ -5,7 +5,7 @@ const homeworkSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    'delivery-date':{ //# fecha de entrega de la tarea ingresado por el usuario
+    'deliveryDate':{ //# fecha de entrega de la tarea ingresado por el usuario
         type: Date,
         required: true
     },
@@ -21,10 +21,16 @@ const homeworkSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    'remember':{ //# bandera que indica si la tarea tiene recordatorio
-        type: Array,
-        required: true
-    }
+    'remember': [{ //# arreglo de objetos con descripción y estado de recordatorio
+        description: { //# descripción del recordatorio
+            type: String,
+            required: true
+        },
+        completed: { //# estado del recordatorio
+            type: Boolean,
+            required: true
+        }
+    }]
 });
 
 // * ---------> Exportamos el modelo

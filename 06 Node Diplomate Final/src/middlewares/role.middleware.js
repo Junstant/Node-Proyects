@@ -30,7 +30,7 @@ const vRoleMid = (role) => {
           })
           .build();
         //? -------> Enviamos respuesta
-        console.error("Role is required");
+        console.error("[Role.Middleware] - Role is required");
         return res.status(401).json(response);
       }
 

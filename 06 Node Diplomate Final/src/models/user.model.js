@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+import Career from './career.model.js';
 //Esquema:
 /*
 Usuario:
@@ -41,9 +41,9 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'admin'], // Limita los valores a 'user' o 'admin'
     default: 'user'
   },
-  carreer: { // #:: Carrera del usuario
+  career: { // #:: Carrera del usuario
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Career',
+    ref: Career,
   },
 });
 

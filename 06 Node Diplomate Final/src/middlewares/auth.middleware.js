@@ -18,7 +18,7 @@ const vTokenMid = async (req, res, next) => {
         })
         .build();
       //? -------> Enviamos respuesta
-      console.error("Authorization header is required");
+      console.error("[Auth.Middleware] - Authorization header is required");
       return res.status(401).json(response);
     }
 
@@ -33,7 +33,7 @@ const vTokenMid = async (req, res, next) => {
         .setStatus(401)
         .setMessage("Unauthorized")
         .setPayload({
-          detail: "Invalid token",
+          detail: "[Auth.Middleware] - Invalid token",
         })
         .build();
       //? -------> Enviamos respuesta
@@ -62,7 +62,7 @@ catch (error) {
       .build();
 
     //? -------> Enviamos respuesta
-    console.error(error.message);
+    console.error('[Auth.Middleware] - ' + error.message);
     return res.status(500).json(response);
   }
 };

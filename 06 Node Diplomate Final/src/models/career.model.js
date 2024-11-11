@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import Year from './years.model.js';
 
 const careerSchema = new mongoose.Schema({
     name: { // # Nombre de la carrera
@@ -7,7 +8,7 @@ const careerSchema = new mongoose.Schema({
     },
     years: [{ // #:: Años y sus respectivas materias
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Year',
+        ref: Year,
     }],
 });
 

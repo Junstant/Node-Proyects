@@ -1,11 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const absentSchema = new mongoose.Schema({
-  module: { // Referencia al módulo (materia) al que pertenece la falta
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Module',
-    required: true,
-  },
   date: { // Fecha de la falta
     type: Date,
     required: true,
