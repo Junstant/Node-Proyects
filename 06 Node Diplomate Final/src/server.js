@@ -5,6 +5,7 @@ import authRouter from "./router/auth.router.js";
 import cors from "cors";
 import modulesRouter from "./router/modules.router.js";
 import yearRouter from "./router/year.router.js";
+import careerRouter from "./router/career.router.js";
 
 //Las responsabilidades se deben separar en las siguientes capas:
 // # Capa de controladores: Se encarga de manejar las peticiones HTTP, procesar la información (validandolos) y enviar una respuesta al cliente.
@@ -14,6 +15,7 @@ import yearRouter from "./router/year.router.js";
 
 // * Database connection
 import DBconnection from "./dataBase/config.js";
+
 
 
 // * -----------------------------------------> Server configuration ---------------------------->
@@ -31,11 +33,9 @@ app.use('/api/status', statusRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/modules', modulesRouter);
 app.use('/api/year', yearRouter);
+app.use('/api/career', careerRouter);
 
-
-
-
-
+// * ------> Database connection message
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

@@ -22,7 +22,7 @@ const handleSubmitForgotPassword = async (e, values) => {
   } 
   // ! -----> If an error occurred, log the error
   catch (error) {
-    console.error("An error occurred:", error);
+    console.error("[ForgotPassword] - An error occurred:", error);
   }
 };
 

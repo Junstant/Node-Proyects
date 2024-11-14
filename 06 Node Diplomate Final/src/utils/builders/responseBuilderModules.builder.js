@@ -26,33 +26,13 @@ class ResponseBuilderModules{
                 messages: []
             },
             {
-                name: "timeLeft",
-                messages: []
-            },
-            {
                 name: "state",
-                messages: []
-            },
-            {
-                name: "absents",
                 messages: []
             },
             {
                 name: "period",
                 messages: []
             },
-            {
-                name: "nextBlock",
-                messages: []
-            },
-            {
-                name: "notes",
-                messages: []
-            },
-            {
-                name: "homeworks",
-                messages: []
-            }
         ],
         payload: {}
     }

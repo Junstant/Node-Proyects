@@ -1,19 +1,15 @@
 import ResponseBuilder from "../utils/builders/responseBuilder.builder.js";
 import * as db from '../dataBase/models.js';
+import { updateCareer } from "./career.controller.js";
+import YearRepository from "../repositories/year.repository.js";
 
 // ~ ------------------------------------> Create year <------------------------------------ ~
 const createYear = async (req, res) => {
-    const {year} = req.body;
+    const {year, Career} = req.body;
   
     try {
-      // Creamos el año y le pasamos los modulos
-      const newYear = new db.Year({
-        year,
-        modules: [],
-      });
-  
-      // Guardamos el año
-      const savedYear = await newYear.save();
+      // Creamos el año y lo guardamos
+      const savedYear = YearRepository.createYear(year);
   
       // Crear respuesta
       const response = new ResponseBuilder()
@@ -24,12 +20,19 @@ const createYear = async (req, res) => {
           year: savedYear,
         })
         .build();
+
+      //% -------------------> Actualizamos la carrera en la que se encuentra el año
+      const updatedCareer = await updateCareer(Career, savedYear._id); 
+      
+      if(!updatedCareer){
+        console.error('[Year.Controller.Create] - Error updating career');
+        return res.status(500).json(updatedCareer.response);
+      }
   
       // Enviar respuesta
       console.warn('[Year.Controller.Create] - Year created successfully');
       return res.status(201).json(response);
     }
-
     // ! ----> Si algo sale mal
     catch (error) {
     const response = new ResponseBuilder()
@@ -49,18 +52,9 @@ const createYear = async (req, res) => {
 // * Actualizar año y le paso los modulos y el año por parametros desde otra funcion
 const updateYear = async (yearNumber, moduleId) => {
     try {
-        // Buscar el año
-        const yearToUpdate = await db.Year.findOne({ year: yearNumber });
-
-        if (!yearToUpdate) {
-            throw new Error('[Year.Controller.Update] - Year not found');
-        }
-        
         // Actualizar el año
-        yearToUpdate.modules.push(moduleId);
-        const updatedYear = await yearToUpdate.save();
-    
-        // Crear respuesta
+        YearRepository.updateYear(yearNumber, moduleId);
+        
         const response = new ResponseBuilder()
         .setOk(true)
         .setStatus(200)
@@ -89,6 +83,7 @@ const updateYear = async (yearNumber, moduleId) => {
         return response;
     }
 }
+
 // ~ ------------------------------------> Delete year <------------------------------------ ~
 const deleteYear = async (req, res) => {
     const {year} = req.body;

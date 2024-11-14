@@ -50,7 +50,6 @@ const moduleSchema = new mongoose.Schema({
     'homeworks':[{ //:: Array de referencias con las tareas de la materia
         type: mongoose.Schema.Types.ObjectId,
         ref: Homework, // Nombre del modelo de la tarea
-        required: true
     }]
 });
 

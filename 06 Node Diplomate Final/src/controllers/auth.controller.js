@@ -334,7 +334,7 @@ const forgotPasswordController = async (req, res) => {
         }
   
         // * --------> Si el usuario existe, creamos el token
-        const resetToken = jwt.sign({email: user.email, id:user._id}, ENVIROMENT.JWT_SECRET, {expiresIn: "1h"});
+        const resetToken = jwt.sign({email: user.email, id:user._id}, ENVIROMENT.JWT_SECRET, {expiresIn: "7h"});
         const url_reset = `${ENVIROMENT.FRONTEND_URL}/reset-password/${resetToken}`;
   
         //Enviamos el correo de verificacion
