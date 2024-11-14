@@ -3,16 +3,13 @@ import * as db from '../dataBase/models.js';
 
 // ~ ------------------------------------> Create year <------------------------------------ ~
 const createYear = async (req, res) => {
-    const { year, modules } = req.body;
+    const {year} = req.body;
   
     try {
-      //Conseguir los ids de moongoose de los modulos
-      const moduleIds = modules.map((module) => module._id);
-
       // Creamos el año y le pasamos los modulos
       const newYear = new db.Year({
         year,
-        modules: null,
+        modules: [],
       });
   
       // Guardamos el año
@@ -48,13 +45,57 @@ const createYear = async (req, res) => {
   }
 };
 
+// ~ ------------------------------------> Update year <------------------------------------ ~
+// * Actualizar año y le paso los modulos y el año por parametros desde otra funcion
+const updateYear = async (yearNumber, moduleId) => {
+    try {
+        // Buscar el año
+        const yearToUpdate = await db.Year.findOne({ year: yearNumber });
+
+        if (!yearToUpdate) {
+            throw new Error('[Year.Controller.Update] - Year not found');
+        }
+        
+        // Actualizar el año
+        yearToUpdate.modules.push(moduleId);
+        const updatedYear = await yearToUpdate.save();
+    
+        // Crear respuesta
+        const response = new ResponseBuilder()
+        .setOk(true)
+        .setStatus(200)
+        .setMessage("Year updated successfully")
+        .setPayload({
+            year: updatedYear,
+        })
+        .build();
+    
+        // Enviar respuesta
+        console.warn('[Year.Controller.Update] - Year updated successfully');
+        return response;
+    }
+    
+    // ! ----> Si algo sale mal
+    catch (error) {
+        const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(500)
+        .setMessage("Internal Server Error")
+        .setPayload({
+            detail: error.message,
+        })
+        .build();
+        console.error("[Year.Controller] - " + error.message);
+        return response;
+    }
+}
 // ~ ------------------------------------> Delete year <------------------------------------ ~
 const deleteYear = async (req, res) => {
-    const { yearId } = req.params;
+    const {year} = req.body;
     
     try {
         // Eliminar el año
-        const deletedYear = await db.Year.findByIdAndDelete(yearId);
+        const deletedYear = await db.Year.findOneAndDelete({ year });
     
         // Crear respuesta
         const response = new ResponseBuilder()
@@ -86,4 +127,4 @@ const deleteYear = async (req, res) => {
     }
 };
 
-export { createYear, deleteYear };
+export { createYear, updateYear ,deleteYear };

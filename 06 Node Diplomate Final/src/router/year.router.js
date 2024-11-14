@@ -15,6 +15,6 @@ yearRouter.use(vRoleMid(["user", "admin"]));
 yearRouter.post('/', createYear);
 
 // * ------------------ Eliminar año ------------------>
-yearRouter.delete('/:id', deleteYear);
+yearRouter.delete('/', deleteYear);
 
 export default yearRouter;

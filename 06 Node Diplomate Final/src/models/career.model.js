@@ -6,7 +6,7 @@ const careerSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    years: [{ // #:: Años y sus respectivas materias
+    years: [{ // :: Años y sus respectivas materias
         type: mongoose.Schema.Types.ObjectId,
         ref: Year,
     }],

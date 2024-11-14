@@ -1,6 +1,7 @@
 import ResponseBuilder from "../utils/builders/responseBuilder.builder.js";
 import * as db from '../dataBase/models.js';
 import modulesValidations from "../utils/modulesValidation.util.js";
+import { updateYear } from "./year.controller.js";
 
 // ~ ------------------------------------> Create module <------------------------------------ ~
 const createModule = async (req, res) => {
@@ -99,11 +100,26 @@ const createModule = async (req, res) => {
       })
       .build();
 
+    
+
+    console.log(Year);
+    //% -------------------> Actualizamos el año en el que se encuentra el módulo
+    const updatedYear = await updateYear(Year, newModule._id);
+    
+
+    if(!updatedYear){
+      console.error('[Modules.Controller.Create] - Error updating year');
+      return res.status(500).json(updatedYear.response);
+    }
+
+
     // Enviar respuesta
     console.warn('[Modules.Controller.Create] - Module created successfully');
     return res.status(201).json(response);
-
+    
   } 
+
+
   //! ----> Si hay un error en el proceso
   catch (error) {
     const response = new ResponseBuilder()
