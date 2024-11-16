@@ -1,149 +1,155 @@
-import ResponseBuilderModules from './builders/responseBuilderModules.builder.js';
+import ResponseBuilderModules from "./builders/responseBuilderModules.builder.js";
 
+//% ---------- Esquema de validación para cada campo ------>
+const validationSchema = {
+  //^ ---> Nombre
+  name: {
+    required: true,
+    type: "string",
+    minLength: 1,
+    errorMsg: "Name is required and must be a non-empty string",
+  },
 
-const resHelp = (response, field, message) => {
-    console.log(response, field, message);
-    response.response.fieldErrors[field].messages.push(message);
-    response.setOk(false);
-    response.setStatus(400);
-    response.setPayload({
-        message: "Module not created",
-    });
-    return response;
+  //^ ---> Horario
+  schedule: {
+    type: "array",
+    customValidator: (schedule, resHelp) => {
+      const validDays = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
+      const timePattern = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+
+      schedule.forEach((day, index) => {
+        if (!day.name || !validDays.includes(day.name)) {
+          resHelp("schedule", `Invalid or missing day name at index ${index}`);
+        }
+        if (!day.fromHr || !timePattern.test(day.fromHr)) {
+          resHelp("schedule", `Invalid or missing fromHr at index ${index}`);
+        }
+        if (!day.toHr || !timePattern.test(day.toHr)) {
+          resHelp("schedule", `Invalid or missing toHr at index ${index}`);
+        }
+      });
+    },
+  },
+
+  //^ ---> Ubicación
+  location: {
+    required: true,
+    errorMsg: "Location is required",
+  },
+
+  //^ ---> Profesor
+  proffesor: {
+    required: true,
+    errorMsg: "Proffesor is required",
+  },
+
+  //^ ---> Dependencias
+  dependencies: {
+    type: "array",
+    customValidator: (dependencies, resHelp) => {
+      dependencies.forEach((dep, index) => {
+        if (!dep) resHelp("dependencies", `Dependency at index ${index} is required`);
+      });
+    },
+  },
+
+  //^ ---> State
+  state: {
+    required: true,
+    validValues: ["In Progress", "Approved", "Failed", "Pending"],
+    errorMsg: "State must be one of the valid states",
+  },
+
+  //^ ---> Absents
+  period: {
+    type: "object",
+    customValidator: (period, resHelp) => {
+      if (typeof period.year !== "number") {
+        resHelp("period", "Year must be a number");
+      }
+      const validSemesters = ["Bimonthly", "Quarterly", "Four-monthly", "Annual"];
+      if (!validSemesters.includes(period.semester)) {
+        resHelp("period", "Semester must be a valid option");
+      }
+    },
+  },
+
+  //^ ---> Year
+  year: {
+    type: "number",
+    required: true,
+    errorMsg: "Year is required and must be a number",
+  },
 };
 
-const modulesValidations = (name, schedule, location, proffesor, dependencies, state, period) => {
-    // Crear respuesta
-    const response = new ResponseBuilderModules();
+//% ---------- Función de ayuda para agregar errores ------>
+const resHelp = (response, field, message) => {
+  // Inicializar fieldErrors[field] si no existe
+  if (!response.response.fieldErrors[field]) {
+    response.response.fieldErrors[field] = { messages: [] };
+  }
 
-    //! --> Si no hay nombre
-    if(!name){
-        resHelp(response, 0, "Name is required");
-    }
-    //! --> Si la cantidad de caracteres del nombre es 0
-    if(name.trim().length === 0){
-        resHelp(response, 0, "Name has to be at least 1 character long");
-    }
-    //! --> Si el nombre no es un string
-    if(typeof name !== 'string'){
-        resHelp(response, 0, "Name has to be a string");
-    }
+  // Agregar el mensaje de error
+  response.response.fieldErrors[field].messages.push(message);
 
-    //! --> Si no hay horario
-    if(!schedule){
-        resHelp(response, 1, "Schedule is required");
-    }
+  response.setOk(false); // Importante: mantener el estado como false al detectar un error
+  response.setStatus(400);
+  response.setPayload({
+    message: "Module not created",
+  });
+};
 
-    //! --> Si schedule no cumple con el formato correcto de schedule.schema.js
-    const daysV = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
-    const fromHrV = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
-    const toHrV = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
-    //Verfica si hay un schedule y si es un array
-    if(Array.isArray(schedule)){
-        schedule.forEach((day) => {
-            if(!day.name){
-                resHelp(response, 1, "Day name is required");
-            }
-            if(typeof day.name !== 'string'){
-                resHelp(response, 1, "Day name has to be a string");
-            }
-            if(!daysV.includes(day.name)){
-                resHelp(response, 1, "Day name has to be a valid day of the week");
-            }
+// ? ---> Función principal de validación
+const modulesValidations = (fields = {}) => {
+  const response = new ResponseBuilderModules();
+  response.setOk(true);
 
-            if(!day.fromHr){
-                resHelp(response, 1, "From hour is required");
-            }
-            if(!fromHrV.test(day.fromHr)){
-                resHelp(response, 1, "The format of from hour has to be HH:MM");
-            }
+  // ? --->  Iterar sobre el esquema y validar cada campo
+  for (const field in validationSchema) {
+    const rules = validationSchema[field];
+    const value = fields[field];
 
-            if(!day.toHr){
-                resHelp(response, 1, "To hour is required");
-            }
-            if(!toHrV.test(day.toHr)){
-                resHelp(response, 1, "The format of to hour has to be HH:MM");
-            }
-        });
+    // ? --->  Validar si es requerido y está ausente
+    if (rules.required && (value === undefined || value === null || value === "")) {
+      resHelp(response, field, rules.errorMsg || `${field} is required`);
+      continue;
     }
 
-    //! --> Si no hay ubicación
-    if(!location){
-        resHelp(response, 2, "Location is required");
+    // ? ---> Validar el tipo
+    if (rules.type && typeof value !== rules.type) {
+      resHelp(response, field, `${field} must be of type ${rules.type}`);
+      continue;
     }
 
-    //! --> Si no hay profesor
-    if(!proffesor){
-        resHelp(response, 3, "Proffesor is required");
+    // ? ---> Validar valores permitidos
+    if (rules.validValues && !rules.validValues.includes(value)) {
+      resHelp(response, field, `${field} must be one of ${rules.validValues.join(", ")}`);
+      continue;
     }
 
-    //! --> Si no hay dependencias
-    if(!dependencies){
-        resHelp(response, 4, "Dependencies are required");
+    // ? ---> Validación de longitud mínima
+    if (rules.minLength && value.length < rules.minLength) {
+      resHelp(response, field, rules.errorMsg || `${field} must be at least ${rules.minLength} characters long`);
+      continue;
     }
 
-    //! --> Si las dependencias no son un array o no tienen el formato correcto
-    if(Array.isArray(dependencies)){
-        dependencies.forEach((dependency) => {
-            if(!dependency){
-                resHelp(response, 4, "Dependency is required");
-            }
-        });
+    // ? --->  Ejecutar validador personalizado si existe
+    if (rules.customValidator) {
+      rules.customValidator(value, (field, message) => resHelp(response, field, message));
     }
+  }
 
-    //! --> Si no hay estado o no tiene el formato correcto
-    const statesV = ['In Progress', 'Approved', 'Failed', 'Pending'];
-    if(!state){
-        resHelp(response, 5, "State is required");
-    }
-    if(!statesV.includes(state)){
-        resHelp(response, 5, "State has to be a valid state");
-    }
-
-    //! --> Si no hay periodo
-    if(!period){
-        resHelp(response, 6, "Period is required");
-    }
-
-    //! --> Si el periodo no es un objeto
-    if(typeof period !== 'object'){
-        resHelp(response, 6, "Period has to be an object");
-    }
-
-    //! --> Si la propiedad year no es un número
-    if(!period.year){
-        resHelp(response, 6, "Year is required");
-    }
-
-    if(typeof period.year !== 'number'){
-        resHelp(response, 6, "Year has to be a number");
-    }
-
-    //! --> Si la propiedad semester un string o no cumple con el formato correcto
-    const semestersV = ['Bimonthly','Quarterly','Four-monthly','Annual'];
-
-    if(!period.semester){
-        resHelp(response, 6, "Semester is required");
-    }
-    if(typeof period.semester !== 'string'){
-        resHelp(response, 6, "Semester has to be a string");
-    }
-    if(!semestersV.includes(period.semester)){
-        resHelp(response, 6, "Semester has to be a valid semester");
-    }
-
-    // //! --> Si hubo un error en la validación
-    if (response.ok === false) {
-        return response;
-    }
-
-    //* --> Si esta todo correcto
-    response.setOk(true);
-    response.setStatus(200);
-    response.setPayload({
-        message: "Module created successfully",
-    });
+  // ? ---> Verificar si hubo errores
+  if (response.response.fieldErrors.some((fieldError) => fieldError.messages.length > 0)) {
     return response;
-}
+  }
+
+  // * ---> Si todo es correcto
+  response.setOk(true);
+  response.setStatus(200);
+  response.setPayload({ message: "Module created successfully" });
+
+  return response;
+};
 
 export default modulesValidations;

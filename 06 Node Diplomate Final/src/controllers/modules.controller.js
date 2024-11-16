@@ -6,11 +6,11 @@ import YearRepository from "../repositories/year.repository.js";
 // ~ ------------------------------------> Create module <------------------------------------ ~
 const createModule = async (req, res) => {
   // Extraer datos del body
-  const { name, schedule, location, proffesor, dependencies, state, period, index, Year } = req.body;
+  const { year } = req.body;
 
   try {
     // ^ --------------> Enviar los datos a la función de validación
-    const Validations = modulesValidations(name, schedule, location, proffesor, dependencies, state, period);
+    const Validations = modulesValidations(year);
 
     // ^ --------------> Validar si hay errores
     if(Validations.response.ok === false){
@@ -19,7 +19,7 @@ const createModule = async (req, res) => {
     }
 
     // ^ --------------> Crear el módulo
-    const newModule = await ModuleRepository.createModule(name, schedule, location, proffesor, dependencies, state, period, index, Year);
+    const newModule = await ModuleRepository.createModule();
     
     // Crear respuesta
     const response = new ResponseBuilder()
@@ -32,9 +32,9 @@ const createModule = async (req, res) => {
       .build();
 
     //% -------------------> Actualizamos el año en el que se encuentra el módulo
-    const updatedYear = await YearRepository.updateYear(Year, newModule._id);
+    const updatedYear = await YearRepository.updateYear(year, newModule._id);
     
-
+    // ! --> Si hay un error al actualizar el año
     if(!updatedYear){
       console.error('[Modules.Controller.Create] - Error updating year');
       return res.status(500).json(updatedYear.response);
@@ -45,7 +45,6 @@ const createModule = async (req, res) => {
     return res.status(201).json(response);
     
   } 
-
 
   //! ----> Si hay un error en el proceso
   catch (error) {
@@ -66,12 +65,15 @@ const createModule = async (req, res) => {
 
 // ~ ------------------------------------> Update module <------------------------------------ ~
 const updateModule = async (req, res) => {
+  // Extraer datos de los parámetros
+  const {id} = req.params;
+
   // Extraer datos del body
-  const { id, name, schedule, location, proffesor, dependencies, state, absents, period, notes, homeworks, index, Year } = req.body;
+  const {name, scheduleId, location, proffesor, dependencies, state, absentsId, period, notesId, homeworksId} = req.body;
 
   try {
     // ^ --------------> Enviar los datos a la función de validación
-    const Validations = modulesValidations(name, schedule, location, proffesor, dependencies, state, absents, period, notes, homeworks);
+    const Validations = modulesValidations(name, location, proffesor, dependencies, state, period);
 
     // ^ --------------> Validar si hay errores
     if(Validations.setOk === false){
@@ -80,7 +82,20 @@ const updateModule = async (req, res) => {
     }
 
     // ^ --------------> Actualizar el módulo
-    const updatedModule = await ModuleRepository.updateModule(id, name, schedule, location, proffesor, dependencies, state, absents, period, notes, homeworks, index, Year);
+    const dataToUpdate = {
+      name,
+      scheduleId,
+      location,
+      proffesor,
+      dependencies,
+      state,
+      absentsId,
+      period,
+      notesId,
+      homeworksId
+    };
+    
+    const updatedModule = await ModuleRepository.updateModule(id, dataToUpdate);
 
     // Crear respuesta
     const response = new ResponseBuilder()
@@ -117,7 +132,7 @@ const updateModule = async (req, res) => {
 // ~ ------------------------------------> Delete module <------------------------------------ ~
 const deleteModule = async (req, res) => {
   // Extraer datos del body
-  const { id } = req.body;
+  const { id } = req.params;
 
   try {
     // ^ --------------> Eliminar el módulo

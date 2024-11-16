@@ -6,33 +6,37 @@ class ResponseBuilderModules{
         message: "",
         fieldErrors: [
             {
-                name: "name",
+                name: "name", //0
                 messages: []
             },
             {
-                name: "schedule",
+                name: "schedule", //1
                 messages: []
             },
             {
-                name: "location",
+                name: "location", //2
                 messages: []
             },
             {
-                name: "proffesor",
+                name: "proffesor", //3
                 messages: []
             },
             {
-                name: "dependencies",
+                name: "dependencies", //4
                 messages: []
             },
             {
-                name: "state",
+                name: "state", //5
                 messages: []
             },
             {
-                name: "period",
+                name: "period", //6
                 messages: []
             },
+            {
+                name: "year", //7
+                messages: []
+            }
         ],
         payload: {}
     }

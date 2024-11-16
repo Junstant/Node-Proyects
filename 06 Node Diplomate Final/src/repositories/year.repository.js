@@ -50,6 +50,30 @@ class YearRepository {
     
     return updatedYear;
   }
+
+  //^ ---> Remove year
+  static async removeYear(year) {
+    const yearToRemove = await db.Year.findOne({ year });
+    
+    //! ---> Si el año no existe, lanzar un error
+    if (!yearToRemove) {
+      throw new Error("[Year.Controller.Remove] - Year not found");
+    }
+
+    //* ---> Si existe, eliminarlo
+    await yearToRemove.deleteOne();
+
+    return yearToRemove;
+  }
+
+  //^ ---> Get all years
+  static async getAllYears() {
+    const years = await db.Year.find();
+    if (!years) {
+      throw new Error("[Year.Repository.GetAllYears] - Years not found");
+    }
+    return years;
+  }
 }
 
 export default YearRepository;

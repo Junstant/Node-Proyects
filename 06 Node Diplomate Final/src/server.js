@@ -6,6 +6,7 @@ import cors from "cors";
 import modulesRouter from "./router/modules.router.js";
 import yearRouter from "./router/year.router.js";
 import careerRouter from "./router/career.router.js";
+import scheduleRouter from "./router/schedule.router.js";
 
 //Las responsabilidades se deben separar en las siguientes capas:
 // # Capa de controladores: Se encarga de manejar las peticiones HTTP, procesar la información (validandolos) y enviar una respuesta al cliente.
@@ -34,6 +35,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/modules', modulesRouter);
 app.use('/api/year', yearRouter);
 app.use('/api/career', careerRouter);
+app.use('/api/schedule', scheduleRouter);
 
 // * ------> Database connection message
 app.listen(PORT, () => {
