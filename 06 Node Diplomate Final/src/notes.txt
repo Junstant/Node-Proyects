@@ -1,0 +1,9 @@
+#^ --------------> TO DO:
+#! Probar el deleteSchedules de schedule.Controller.js
+#! Probar el update de schedule.Controller.js
+#! Revisar las funciones de controller y demas en busca de codigo innecesario o sin uso
+
+
+# * --------------> DONE:
+# *Probar el create de schedule.Controller.js
+# *Probar el getAll de schedule.Controller.js

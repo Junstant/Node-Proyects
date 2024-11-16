@@ -33,7 +33,7 @@ class scheduleModule {
   //^ --------------------> Get all schedules
   static async getAllSchedules(moduleId) {
     const moduleFinded = await ModuleRepository.getModuleById(moduleId);
-    return moduleFinded.schedules;
+    return moduleFinded.schedule;
   }
 
   //^ --------------------> Remove schedule
