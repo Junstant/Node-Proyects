@@ -37,16 +37,25 @@ class scheduleModule {
   }
 
   //^ --------------------> Remove schedule
-  static async removeSchedule(id) {
+  static async removeSchedule(id, moduleId) {
     const schedule = await db.Schedule.findById(id);
     if (!schedule) {
       throw new Error("[Schedule.Repository.RemoveSchedule] - Schedule not found");
     }
-    await db.Schedule.deleteOne({schedule});
+    await db.Schedule.deleteOne({_id: schedule._id});
+
+    const moduleFinded = await ModuleRepository.getModuleById(moduleId);
+    if (!moduleFinded) {
+      throw new Error("[Schedule.Repository.RemoveSchedule] - Module not found");
+    }
+
+    const actualModule = ModuleRepository.removeScheduleFromModule(moduleId, id);
+
+    return schedule._id, actualModule.schedule;
   }
 
   //^ --------------------> Update schedule
-  async updateSchedule(id, schedule) {
+  static async updateSchedule(id, schedule) {
     const updatedSchedule = await db.Schedule.findById(id);
     if (!updatedSchedule) {
       throw new Error("[Schedule.Repository.UpdateSchedule] - Schedule not found");

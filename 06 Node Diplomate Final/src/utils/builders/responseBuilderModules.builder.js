@@ -30,13 +30,25 @@ class ResponseBuilderModules{
                 messages: []
             },
             {
-                name: "period", //6
+                name: "absents", //6
                 messages: []
             },
             {
-                name: "year", //7
+                name: "period", //7
                 messages: []
-            }
+            },
+            {
+                name: "notes", //8
+                messages: []
+            },
+            {
+                name: "homeworks", //9
+                messages: []
+            },
+            {
+                name: "year", //10 --> Año de la materia
+                messages: []
+            },
         ],
         payload: {}
     }

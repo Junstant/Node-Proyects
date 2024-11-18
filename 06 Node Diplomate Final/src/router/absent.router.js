@@ -1,26 +1,26 @@
 import express from "express";
 import vRoleMid from "../middlewares/role.middleware.js";
 import vApiKeyMid from "../middlewares/apiKey.middleware.js";
-import {createSchedule, getAllSchedules, deleteSchedule, updateSchedule } from "../controllers/schedule.controller.js";
+import {createAbsent, getAllAbsents, updateAbsent, deleteAbsent} from "../controllers/absent.controller.js";
 import vTokenMid from "../middlewares/auth.middleware.js";
 
-const scheduleRouter = express.Router();
+const absentRouter = express.Router();
 
 // ^ ------------------ Controladores ------------------>
-scheduleRouter.use(vApiKeyMid);
-scheduleRouter.use(vTokenMid);
-scheduleRouter.use(vRoleMid(["user", "admin"]));
+absentRouter.use(vApiKeyMid);
+absentRouter.use(vTokenMid);
+absentRouter.use(vRoleMid(["user", "admin"]));
 
 // * ------------------ Crear horario ------------------>
-scheduleRouter.post('/', createSchedule);
+absentRouter.post('/', createAbsent);
 
 // * ------------------ Actualizar horario ------------------>
-scheduleRouter.put('/', updateSchedule);
+absentRouter.put('/', updateAbsent);
 
 // * ------------------ Eliminar horario ------------------>
-scheduleRouter.delete('/', deleteSchedule);
+absentRouter.delete('/', deleteAbsent);
 
 // * ------------------ Obtener todos los horarios ------------------>
-scheduleRouter.get('/', getAllSchedules);
+absentRouter.get('/', getAllAbsents);
 
-export default scheduleRouter;
+export default absentRouter;

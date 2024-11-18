@@ -1,13 +1,26 @@
 import * as db from "../dataBase/models.js";
+import ModuleRepository from "./module.repository.js";
 
 class absentModule {
   //^ --------------------> Create a new absent
-  static async createAbsent(absent) {
+  static async createAbsent(moduleId ,absent) {
+    console.log(absent.date, absent.reason, absent.absenceNumber);
     const newAbsent = new db.Absent({
       date: absent.date,
-      justification: absent.justification,
+      reason: absent.reason,
+      absenceNumber: absent.absenceNumber,
     });
+
     await newAbsent.save();
+
+    //Buscar el módulo para agregar la ausencia
+    const moduleFinded = await ModuleRepository.getModuleById(moduleId);
+    if (!moduleFinded) {
+      throw new Error("[Absent.Repository.CreateAbsent] - Module not found");
+    }
+
+    //Agregar la ausencia al módulo
+    ModuleRepository.addAbsentToModule(moduleId, newAbsent._id);
     return newAbsent;
   }
 
@@ -30,12 +43,23 @@ class absentModule {
   }
 
   //^ --------------------> Remove absent
-  static async removeAbsent(id) {
+  static async removeAbsent(moduleId, id) {
     const absent = await db.Absent.findById(id);
     if (!absent) {
       throw new Error("[Absent.Repository.RemoveAbsent] - Absent not found");
     }
-    await db.Absent.deleteOne({ absent });
+    await db.Absent.deleteOne({ _id: id });
+
+    //Buscar el módulo para eliminar la ausencia
+    const moduleFinded = await ModuleRepository.getModuleById(moduleId);
+    if (!moduleFinded) {
+      throw new Error("[Absent.Repository.RemoveAbsent] - Module not found");
+    }
+
+    //Eliminar la ausencia del módulo
+    ModuleRepository.removeAbsentFromModule(moduleId, id);
+
+    return absent;
   }
 
   //^ --------------------> Update absent

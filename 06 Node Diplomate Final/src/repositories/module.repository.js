@@ -67,7 +67,7 @@ static async updateModule(id, data) {
     return moduleDeleted;
   }
 
-  //^ ---> Add schedule to module
+  //$$ ---> Add schedule to module
   static async addScheduleToModule(moduleId, scheduleId) {
     const moduleToUpdate = await Module.findById(moduleId);
 
@@ -82,6 +82,55 @@ static async updateModule(id, data) {
 
     return updatedModule;
   }
+  
+  //$$ ---> Remove schedule from module
+  static async removeScheduleFromModule(moduleId, scheduleId) {
+    const moduleToUpdate = await Module.findById(moduleId);
+  
+    //! ---> Si el módulo no existe, lanzar un error
+    if (!moduleToUpdate) {
+      throw new Error("[Module.Repository.RemoveScheduleFromModule] - Module not found");
+    }
+  
+    //* ---> Si existe, actualizarlo
+    moduleToUpdate.schedule = moduleToUpdate.schedule.filter((schedule) => schedule != scheduleId);
+    const updatedModule = await moduleToUpdate.save();
+  
+    return updatedModule;
+  }
+
+  //$$ ---> Add absent to module
+  static async addAbsentToModule(moduleId, absentId) {
+    const moduleToUpdate = await Module.findById(moduleId);
+
+    //! ---> Si el módulo no existe, lanzar un error
+    if (!moduleToUpdate) {
+      throw new Error("[Module.Repository.AddAbsentToModule] - Module not found");
+    }
+
+    //* ---> Si existe, actualizarlo
+    moduleToUpdate.absents.push(absentId);
+    const updatedModule = await moduleToUpdate.save();
+
+    return updatedModule;
+  }
+
+  //$$ ---> Remove absent from module
+  static async removeAbsentFromModule(moduleId, absentId) {
+    const moduleToUpdate = await Module.findById(moduleId);
+  
+    //! ---> Si el módulo no existe, lanzar un error
+    if (!moduleToUpdate) {
+      throw new Error("[Module.Repository.RemoveAbsentFromModule] - Module not found");
+    }
+  
+    //* ---> Si existe, actualizarlo
+    moduleToUpdate.absent = moduleToUpdate.absent.filter((absent) => absent != absentId);
+    const updatedModule = await moduleToUpdate.save();
+  
+    return updatedModule;
+  }
 }
+
 
 export default ModuleRepository;

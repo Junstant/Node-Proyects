@@ -55,12 +55,31 @@ const validationSchema = {
 
   //^ ---> State
   state: {
+    type: "string",
     required: true,
     validValues: ["In Progress", "Approved", "Failed", "Pending"],
     errorMsg: "State must be one of the valid states",
   },
 
   //^ ---> Absents
+  absents: {
+    type: "array",
+    customValidator: (absents, resHelp) => {
+      absents.forEach((absent, index) => {
+        if (!absent.date || isNaN(new Date(absent.date).getTime())) {
+          resHelp("absents", `Invalid or missing date at index ${index}`);
+        }
+        if (!absent.reason || typeof absent.reason !== "string" || absent.reason.trim().length === 0) {
+          resHelp("absents", `Invalid or missing reason at index ${index}`);
+        }
+        if (!absent.absenceNumber || typeof absent.absenceNumber !== "number" || absent.absenceNumber <= 0) {
+          resHelp("absents", `Invalid or missing absenceNumber at index ${index}`);
+        }
+      });
+    },
+  },
+
+  //^ ---> Period
   period: {
     type: "object",
     customValidator: (period, resHelp) => {
@@ -71,6 +90,68 @@ const validationSchema = {
       if (!validSemesters.includes(period.semester)) {
         resHelp("period", "Semester must be a valid option");
       }
+    },
+  },
+
+  //^ ---> Notes
+  notes: {
+    type: "array",
+    customValidator: (notes, resHelp) => {
+      notes.forEach((note, index) => {
+        if (!note.title || typeof note.title !== "string" || note.title.trim().length === 0) {
+          resHelp("notes", `Invalid or missing title at index ${index}`);
+        }
+        if (note.calification === undefined || typeof note.calification !== "number" || note.calification < 0 || note.calification > 10) {
+          resHelp("notes", `Invalid or missing calification at index ${index}. Must be a number between 0 and 10.`);
+        }
+      });
+    },
+  },
+
+  //^ ---> Homeworks
+  homeworks: {
+    type: "array",
+    customValidator: (homeworks, resHelp) => {
+      homeworks.forEach((homework, index) => {
+        // Validar 'title'
+        if (!homework.title || typeof homework.title !== "string" || homework.title.trim().length === 0) {
+          resHelp("homeworks", `Invalid or missing title at index ${index}`);
+        }
+
+        // Validar 'deliveryDate'
+        if (!homework.deliveryDate || isNaN(new Date(homework.deliveryDate).getTime())) {
+          resHelp("homeworks", `Invalid or missing deliveryDate at index ${index}`);
+        }
+
+        // Validar 'description'
+        if (!homework.description || typeof homework.description !== "string" || homework.description.trim().length === 0) {
+          resHelp("homeworks", `Invalid or missing description at index ${index}`);
+        }
+
+        // Validar 'completed'
+        if (homework.completed === undefined || typeof homework.completed !== "boolean") {
+          resHelp("homeworks", `Invalid or missing completed flag at index ${index}`);
+        }
+
+        // Validar 'calification'
+        if (homework.calification === undefined || typeof homework.calification !== "number" || homework.calification < 0 || homework.calification > 10) {
+          resHelp("homeworks", `Invalid or missing calification at index ${index}. Must be a number between 0 and 10.`);
+        }
+
+        // Validar 'remember' como array de objetos
+        if (!Array.isArray(homework.remember)) {
+          resHelp("homeworks", `Invalid or missing remember array at index ${index}`);
+        } else {
+          homework.remember.forEach((reminder, remIndex) => {
+            if (!reminder.description || typeof reminder.description !== "string" || reminder.description.trim().length === 0) {
+              resHelp("homeworks", `Invalid or missing reminder description at index ${index}, reminder ${remIndex}`);
+            }
+            if (reminder.completed === undefined || typeof reminder.completed !== "boolean") {
+              resHelp("homeworks", `Invalid or missing reminder completed flag at index ${index}, reminder ${remIndex}`);
+            }
+          });
+        }
+      });
     },
   },
 
