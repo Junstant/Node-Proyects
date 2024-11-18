@@ -9,7 +9,7 @@ const createSchedule = async (req, res) => {
 
   try {
     // ^ --------------> Enviar los datos a la función de validación
-    const Validations = modulesValidations(schedule);
+    const Validations = modulesValidations({schedule});
 
     // ^ --------------> Validar si hay errores
     if(Validations.response.ok === false){

@@ -8,3 +8,5 @@
 # *Probar el getAll de schedule.Controller.js
 # *Probar el deleteSchedules de schedule.Controller.js
 # *Probar el update de schedule.Controller.js
+# *Probar el create de absent.Controller.js
+# *Probar el getAll de absent.Controller.js

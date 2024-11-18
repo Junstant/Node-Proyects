@@ -21,7 +21,7 @@ const moduleSchema = new mongoose.Schema({
         required: false,
         default: 'Your location here'
     },
-    'proffesor':{ //# nombre del profesor ingresado por el usuario
+    'professor':{ //# nombre del profesor ingresado por el usuario
         type: String,
         required: false,
         default: 'Your proffesor here'

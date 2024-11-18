@@ -18,7 +18,7 @@ class ResponseBuilderModules{
                 messages: []
             },
             {
-                name: "proffesor", //3
+                name: "professor", //3
                 messages: []
             },
             {

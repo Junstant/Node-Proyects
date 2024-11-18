@@ -3,15 +3,19 @@ import ModuleRepository from "./module.repository.js";
 
 class absentModule {
   //^ --------------------> Create a new absent
-  static async createAbsent(moduleId ,absent) {
-    console.log(absent.date, absent.reason, absent.absenceNumber);
-    const newAbsent = new db.Absent({
-      date: absent.date,
-      reason: absent.reason,
-      absenceNumber: absent.absenceNumber,
-    });
+  static async createAbsent(moduleId ,absents) {
+    const savedAbsents = [];
 
-    await newAbsent.save();
+    for (const absent of absents) {
+      const newAbsent = new db.Absent({
+        date: absent.date,
+        reason: absent.reason,
+        absenceNumber: absent.absenceNumber,
+      });
+      
+      const savedAbsent = await newAbsent.save(); // Espera que se guarde cada ausencia
+      savedAbsents.push(savedAbsent);
+    }
 
     //Buscar el módulo para agregar la ausencia
     const moduleFinded = await ModuleRepository.getModuleById(moduleId);
@@ -20,8 +24,11 @@ class absentModule {
     }
 
     //Agregar la ausencia al módulo
-    ModuleRepository.addAbsentToModule(moduleId, newAbsent._id);
-    return newAbsent;
+    for (const savedAbsent of savedAbsents) {
+      ModuleRepository.addAbsentToModule(moduleId, savedAbsent._id);
+    }
+    
+    return savedAbsents;
   }
 
   //^ --------------------> Find absent by id
@@ -63,13 +70,14 @@ class absentModule {
   }
 
   //^ --------------------> Update absent
-  async updateAbsent(id, absent) {
+  static async updateAbsent(id, absent) {
     const updatedAbsent = await db.Absent.findById(id);
     if (!updatedAbsent) {
       throw new Error("[Absent.Repository.UpdateAbsent] - Absent not found");
     }
     updatedAbsent.date = absent.date;
-    updatedAbsent.justification = absent.justification;
+    updatedAbsent.reason = absent.reason;
+    updatedAbsent.absenceNumber = absent.absenceNumber;
     return await updatedAbsent.save();
   }
 }

@@ -1,36 +1,36 @@
 import ResponseBuilder from "../utils/builders/responseBuilder.builder.js";
 import modulesValidations from "../utils/modulesValidation.util.js";
-import absentModule from "../repositories/absent.repository.js";
+import noteModule from "../repositories/notes.repository.js";
 
-// ~ ------------------------------------> Create absent <------------------------------------ ~
-const createAbsent = async (req, res) => {
+// ~ ------------------------------------> Create note <------------------------------------ ~
+const createNote = async (req, res) => {
   // Extraer datos del body
-  const { absents, moduleId } = req.body;
+  const { notes, moduleId } = req.body;
   try {
     // ^ --------------> Enviar los datos a la función de validación
-    const Validations = modulesValidations({absents});
-
+    const Validations = modulesValidations({notes});
+    
     // ^ --------------> Validar si hay errores
     if(Validations.response.ok === false){
-      console.error('[Absent.Controller.Create] - Validation error');
+      console.error('[Note.Controller.Create] - Validation error');
       return res.status(400).json(Validations.response);
     }
 
     // ^ --------------> Crear el módulo
-    const newAbsent = await absentModule.createAbsent(moduleId, absents);
+    const newNote = await noteModule.createNote(moduleId, notes);
     
     // Crear respuesta
     const response = new ResponseBuilder()
       .setOk(true)
       .setStatus(201)
-      .setMessage("Absent created successfully")
+      .setMessage("Note created successfully")
       .setPayload({
-        absent: newAbsent,
+        notes: newNote,
       })
       .build();
 
     // Enviar respuesta
-    console.warn('[Absent.Controller.Create] - Absent created successfully');
+    console.warn('[Note.Controller.Create] - Note created successfully');
     return res.status(201).json(response);
     
   } 
@@ -47,32 +47,31 @@ const createAbsent = async (req, res) => {
       .build();
 
     // Enviar respuesta de error
-    console.error('[Absent.Controller.Create] - Internal Server Error');
+    console.error('[Note.Controller.Create] - Internal Server Error');
     return res.status(500).json(response);
   }
 };
 
-// ~ ------------------------------------> Get all absents <------------------------------------ ~
-const getAllAbsents = async (req, res) => {
+// ~ ------------------------------------> Get all notes <------------------------------------ ~
+const getAllNotes = async (req, res) => {
     const {moduleId} = req.body;
   try {
     // ^ --------------> Obtener todos los módulos
-    const absents = await absentModule.getAllAbsents(moduleId);
-    
+    const notes = await noteModule.getAllNotes(moduleId);
+
     // Crear respuesta
     const response = new ResponseBuilder()
       .setOk(true)
       .setStatus(200)
-      .setMessage("Absents retrieved successfully")
+      .setMessage("Notes obtained successfully")
       .setPayload({
-        absents,
+        notes,
       })
       .build();
 
     // Enviar respuesta
-    console.warn('[Absent.Controller.GetAll] - Absents retrieved successfully');
+    console.warn('[Note.Controller.GetAll] - Notes obtained successfully');
     return res.status(200).json(response);
-    
   } 
 
   //! ----> Si hay un error en el proceso
@@ -87,43 +86,41 @@ const getAllAbsents = async (req, res) => {
       .build();
 
     // Enviar respuesta de error
-    console.error('[Absent.Controller.GetAll] - Internal Server Error');
+    console.error('[Note.Controller.GetAll] - Internal Server Error');
     return res.status(500).json(response);
   }
 };
 
-// ~ ------------------------------------> Update absent <------------------------------------ ~
-const updateAbsent = async (req, res) => {
+// ~ ------------------------------------> Update note <------------------------------------ ~
+const updateNote = async (req, res) => {
   // Extraer datos del body
-  const { absent, id } = req.body;
-
+  const { noteId, note } = req.body;
   try {
     // ^ --------------> Enviar los datos a la función de validación
-    const Validations = modulesValidations(absent);
-
+    const Validations = modulesValidations({note});
+    
     // ^ --------------> Validar si hay errores
     if(Validations.response.ok === false){
-      console.error('[Absent.Controller.Update] - Validation error');
+      console.error('[Note.Controller.Update] - Validation error');
       return res.status(400).json(Validations.response);
     }
 
     // ^ --------------> Actualizar el módulo
-    const updatedAbsent = await absentModule.updateAbsent(id,absent);
-    
+    const updatedNote = await noteModule.updateNote(noteId, note);
+
     // Crear respuesta
     const response = new ResponseBuilder()
       .setOk(true)
       .setStatus(200)
-      .setMessage("Absent updated successfully")
+      .setMessage("Note updated successfully")
       .setPayload({
-        absent: updatedAbsent,
+        note: updatedNote,
       })
       .build();
 
     // Enviar respuesta
-    console.warn('[Absent.Controller.Update] - Absent updated successfully');
+    console.warn('[Note.Controller.Update] - Note updated successfully');
     return res.status(200).json(response);
-    
   } 
 
   //! ----> Si hay un error en el proceso
@@ -138,34 +135,32 @@ const updateAbsent = async (req, res) => {
       .build();
 
     // Enviar respuesta de error
-    console.error('[Absent.Controller.Update] - Internal Server Error');
+    console.error('[Note.Controller.Update] - Internal Server Error');
     return res.status(500).json(response);
   }
 };
 
-// ~ ------------------------------------> Delete absent <------------------------------------ ~
-const deleteAbsent = async (req, res) => {
+// ~ ------------------------------------> Delete note <------------------------------------ ~
+const deleteNote = async (req, res) => {
   // Extraer datos del body
-  const { moduleId, id } = req.body;
-
+  const { noteId } = req.body;
   try {
     // ^ --------------> Eliminar el módulo
-    const deletedAbsent = await absentModule.removeAbsent(moduleId, id);
-    
+    const deletedNote = await noteModule.deleteNote(noteId);
+
     // Crear respuesta
     const response = new ResponseBuilder()
       .setOk(true)
       .setStatus(200)
-      .setMessage("Absent deleted successfully")
+      .setMessage("Note deleted successfully")
       .setPayload({
-        absent: deletedAbsent,
+        note: deletedNote,
       })
       .build();
 
     // Enviar respuesta
-    console.warn('[Absent.Controller.Delete] - Absent deleted successfully');
+    console.warn('[Note.Controller.Delete] - Note deleted successfully');
     return res.status(200).json(response);
-    
   } 
 
   //! ----> Si hay un error en el proceso
@@ -180,9 +175,9 @@ const deleteAbsent = async (req, res) => {
       .build();
 
     // Enviar respuesta de error
-    console.error('[Absent.Controller.Delete] - Internal Server Error');
+    console.error('[Note.Controller.Delete] - Internal Server Error');
     return res.status(500).json(response);
   }
 };
 
-export {createAbsent, getAllAbsents, updateAbsent, deleteAbsent};
+export { createNote, getAllNotes, updateNote, deleteNote };

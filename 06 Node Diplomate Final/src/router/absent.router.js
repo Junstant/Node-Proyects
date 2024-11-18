@@ -11,16 +11,16 @@ absentRouter.use(vApiKeyMid);
 absentRouter.use(vTokenMid);
 absentRouter.use(vRoleMid(["user", "admin"]));
 
-// * ------------------ Crear horario ------------------>
+// * ------------------ Crear ausencia ------------------>
 absentRouter.post('/', createAbsent);
 
-// * ------------------ Actualizar horario ------------------>
+// * ------------------ Actualizar ausencia ------------------>
 absentRouter.put('/', updateAbsent);
 
-// * ------------------ Eliminar horario ------------------>
+// * ------------------ Eliminar ausencia ------------------>
 absentRouter.delete('/', deleteAbsent);
 
-// * ------------------ Obtener todos los horarios ------------------>
+// * ------------------ Obtener todos las ausencias ------------------>
 absentRouter.get('/', getAllAbsents);
 
 export default absentRouter;

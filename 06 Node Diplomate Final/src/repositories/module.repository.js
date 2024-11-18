@@ -1,9 +1,5 @@
 import Module from "../models/modules.model.js";
 import * as db from "../dataBase/models.js";
-import absentModule from "./absent.repository.js";
-import homeworkModule from "./homework.repository.js";
-import noteModule from "./note.repository.js";
-import scheduleModule from "./schedule.repository.js";
 
 //Class to handle module related operations in the database
 class ModuleRepository {
@@ -43,29 +39,31 @@ class ModuleRepository {
     return newModule;
   }
 
-//^ --------------------> Update module
-static async updateModule(id, data) {
-  // Crear un objeto vacío para almacenar solo los campos definidos
-  const updateData = {};
+  //^ --------------------> Update module
+  static async updateModule(id, data) {
+    // Crear un objeto vacío para almacenar solo los campos definidos
+    const updateData = {};
 
-  // Asignar directamente campos que no son arrays o no requieren push
-  const directFields = ["name", "location", "proffesor", "dependencies", "state", "period"];
-  for (const field of directFields) {
+    // Asignar directamente campos que no son arrays o no requieren push
+    const directFields = ["name", "location", "professor", "dependencies", "state", "period"];
+    for (const field of directFields) {
       if (data[field] !== undefined) {
-          updateData[field] = data[field];
+        updateData[field] = data[field];
       }
-  }
+    }
 
-  // Realizar la actualización usando findByIdAndUpdate con operadores $set y $push
-  const updatedModule = await Module.findByIdAndUpdate(id, updateData, { new: true });
-  return updatedModule;
-}
+    // Realizar la actualización usando findByIdAndUpdate con operadores $set y $push
+    const updatedModule = await Module.findByIdAndUpdate(id, updateData, { new: true });
+    return updatedModule;
+  }
 
   //^ ---> Delete module
   static async deleteModule(id) {
     const moduleDeleted = await Module.findByIdAndDelete(id);
     return moduleDeleted;
   }
+
+  // % --------------------------------- Module related operations --------------------------------- %
 
   //$$ ---> Add schedule to module
   static async addScheduleToModule(moduleId, scheduleId) {
@@ -82,20 +80,20 @@ static async updateModule(id, data) {
 
     return updatedModule;
   }
-  
+
   //$$ ---> Remove schedule from module
   static async removeScheduleFromModule(moduleId, scheduleId) {
     const moduleToUpdate = await Module.findById(moduleId);
-  
+
     //! ---> Si el módulo no existe, lanzar un error
     if (!moduleToUpdate) {
       throw new Error("[Module.Repository.RemoveScheduleFromModule] - Module not found");
     }
-  
+
     //* ---> Si existe, actualizarlo
     moduleToUpdate.schedule = moduleToUpdate.schedule.filter((schedule) => schedule != scheduleId);
     const updatedModule = await moduleToUpdate.save();
-  
+
     return updatedModule;
   }
 
@@ -118,19 +116,50 @@ static async updateModule(id, data) {
   //$$ ---> Remove absent from module
   static async removeAbsentFromModule(moduleId, absentId) {
     const moduleToUpdate = await Module.findById(moduleId);
-  
+
     //! ---> Si el módulo no existe, lanzar un error
     if (!moduleToUpdate) {
       throw new Error("[Module.Repository.RemoveAbsentFromModule] - Module not found");
     }
-  
+
     //* ---> Si existe, actualizarlo
-    moduleToUpdate.absent = moduleToUpdate.absent.filter((absent) => absent != absentId);
+    moduleToUpdate.absents = moduleToUpdate.absents.filter((absent) => absent != absentId);
     const updatedModule = await moduleToUpdate.save();
-  
+
+    return updatedModule;
+  }
+
+  //$$ ---> Add a note to module
+  static async addNoteToModule(moduleId, noteId) {
+    const moduleToUpdate = await Module.findById(moduleId);
+
+    //! ---> Si el módulo no existe, lanzar un error
+    if (!moduleToUpdate) {
+      throw new Error("[Module.Repository.AddNoteToModule] - Module not found");
+    }
+
+    //* ---> Si existe, actualizarlo
+    moduleToUpdate.notes.push(noteId);
+    const updatedModule = await moduleToUpdate.save();
+
+    return updatedModule;
+  }
+
+  //$$ ---> Remove note from module
+  static async removeNoteFromModule(moduleId, noteId) {
+    const moduleToUpdate = await Module.findById(moduleId);
+
+    //! ---> Si el módulo no existe, lanzar un error
+    if (!moduleToUpdate) {
+      throw new Error("[Module.Repository.RemoveNoteFromModule] - Module not found");
+    }
+
+    //* ---> Si existe, actualizarlo
+    moduleToUpdate.notes = moduleToUpdate.notes.filter((note) => note != noteId);
+    const updatedModule = await moduleToUpdate.save();
+
     return updatedModule;
   }
 }
-
 
 export default ModuleRepository;
