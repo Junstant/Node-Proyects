@@ -1,5 +1,6 @@
 import Module from "../models/modules.model.js";
 import * as db from "../dataBase/models.js";
+import YearRepository from "./year.repository.js";
 
 //Class to handle module related operations in the database
 class ModuleRepository {
@@ -14,29 +15,16 @@ class ModuleRepository {
     return moduleFinded;
   }
 
-  //^ ---> Get module by name
-  static async getModuleByName(name) {
-    const moduleFinded = await Module.findOne({ name });
-
-    //! ---> Si el módulo no existe, lanzar un error
-    if (!moduleFinded) {
-      throw new Error("[Module.Repository.GetModuleByName] - Module not found");
-    }
-    return moduleFinded;
-  }
-
-  //^ ---> Save module to database
-  static async saveModule(newModule) {
-    return await newModule.save();
-  }
-
   //^ --------------------> Create a new module
-  static async createModule() {
+  static async createModule(year) {
     // Crear un nuevo módulo
     const newModule = new db.Module({});
+
+    // Agregar el módulo al año
+    YearRepository.addModuleToYear(year, newModule._id);
+
     // Guardar el módulo en la base de datos
-    await newModule.save();
-    return newModule;
+    return await newModule.save();
   }
 
   //^ --------------------> Update module
@@ -58,8 +46,16 @@ class ModuleRepository {
   }
 
   //^ ---> Delete module
-  static async deleteModule(id) {
+  static async deleteModule(year, id) {
     const moduleDeleted = await Module.findByIdAndDelete(id);
+
+    //! ---> Si el módulo no existe, lanzar un error
+    if (!moduleDeleted) {
+      throw new Error("[Module.Repository.DeleteModule] - Module not found");
+    }
+
+    // Eliminar el módulo del año
+    YearRepository.removeModuleFromYear(year, id);
     return moduleDeleted;
   }
 
@@ -156,6 +152,38 @@ class ModuleRepository {
 
     //* ---> Si existe, actualizarlo
     moduleToUpdate.notes = moduleToUpdate.notes.filter((note) => note != noteId);
+    const updatedModule = await moduleToUpdate.save();
+
+    return updatedModule;
+  }
+
+  //$$ ---> Add homework to module
+  static async addHomeworkToModule(moduleId, homeworkId) {
+    const moduleToUpdate = await Module.findById(moduleId);
+
+    //! ---> Si el módulo no existe, lanzar un error
+    if (!moduleToUpdate) {
+      throw new Error("[Module.Repository.AddHomeworkToModule] - Module not found");
+    }
+
+    //* ---> Si existe, actualizarlo
+    moduleToUpdate.homeworks.push(homeworkId);
+    const updatedModule = await moduleToUpdate.save();
+
+    return updatedModule;
+  }
+
+  //$$ ---> Remove homework from module
+  static async removeHomeworkFromModule(moduleId, homeworkId) {
+    const moduleToUpdate = await Module.findById(moduleId);
+
+    //! ---> Si el módulo no existe, lanzar un error
+    if (!moduleToUpdate) {
+      throw new Error("[Module.Repository.RemoveHomeworkFromModule] - Module not found");
+    }
+
+    //* ---> Si existe, actualizarlo
+    moduleToUpdate.homeworks = moduleToUpdate.homeworks.filter((homework) => homework != homeworkId);
     const updatedModule = await moduleToUpdate.save();
 
     return updatedModule;

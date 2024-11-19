@@ -1,11 +1,12 @@
 import Year from "../models/years.model.js";
 import * as db from "../dataBase/models.js";
+import CareerRepository from "./career.repository.js";
 
 //Class to handle year related operations in the database
 class YearRepository {
   //^ ---> Get year by number
   static async getYearByNumber(year) {
-    const yearFinded = await Year.findOne({ year });
+    const yearFinded = await Year.findOne({ year: year });
 
     //! ---> Si el año no existe, lanzar un error
     if (!yearFinded) {
@@ -14,54 +15,42 @@ class YearRepository {
     return yearFinded;
   }
 
-  //^ ---> Save year to database
-  static async saveYear(newYear) {
-    return await newYear.save();
-  }
-
   //^ ---> Create a new year
-  static async createYear(year) {
+  static async createYear(year, careerId) {
+    const yearFinded = await Year.findOne({ year: year });
 
     //! ---> Si el año ya existe, lanzar un error
-    if (this.getYearByNumber(year)) {
+    if (yearFinded) {
       throw new Error("[Year.Repository.Create] - Year already exists");
     }
-
     //* ---> Si no existe, crearlo y guardarlo
-    const newYear = new db.Year({
-      year,
-    });
-    return await newYear.save();
-  }
+    const newYear = new db.Year({year});
 
-  //^ ---> Update year
-  static async updateYear(yearNumber, moduleId) {
-
-    const yearToUpdate = await db.Year.findOne({ year: yearNumber });
-    
-    //! ---> Si el año no existe, lanzar un error
-    if (!yearToUpdate) {
-      throw new Error("[Year.Controller.Update] - Year not found");
+    // Agregar el año a la carrera
+    const added = CareerRepository.addYearToCareer(careerId, newYear._id);
+    if (!added) {
+      throw new Error("[Year.Repository.Create] - Error adding year to career");
     }
 
-    //* ---> Si existe, actualizarlo
-    yearToUpdate.modules.push(moduleId);
-    const updatedYear = await yearToUpdate.save();
-    
-    return updatedYear;
+    return await newYear.save();
   }
 
   //^ ---> Remove year
-  static async removeYear(year) {
+  static async removeYear(year, careerId) {
     const yearToRemove = await db.Year.findOne({ year });
     
     //! ---> Si el año no existe, lanzar un error
     if (!yearToRemove) {
       throw new Error("[Year.Controller.Remove] - Year not found");
     }
-
     //* ---> Si existe, eliminarlo
     await yearToRemove.deleteOne();
+
+    // Eliminar el año de la carrera
+    const removed = await CareerRepository.removeYearFromCareer(careerId, yearToRemove._id);
+    if (!removed) {
+      throw new Error("[Year.Repository.Remove] - Error removing year from career");
+    }
 
     return yearToRemove;
   }
@@ -74,6 +63,40 @@ class YearRepository {
     }
     return years;
   }
+
+
+  // % --------------------------------- Module related operations --------------------------------- %
+  
+  //$$ ---> Add module to year
+  static async addModuleToYear(yearNumber, moduleId) {
+    const yearToUpdate = await Year.findOne({ year: yearNumber });
+  
+    //! ---> Si el año no existe, lanzar un error
+    if (!yearToUpdate) {
+      throw new Error("[Year.Repository.AddModuleToYear] - Year not found");
+    }
+    //* ---> Si existe, actualizarlo
+    yearToUpdate.modules.push(moduleId);
+    const updatedYear = await yearToUpdate.save();
+  
+    return updatedYear;
+  }
+
+  //$$ ---> Remove module from year
+  static async removeModuleFromYear(yearNumber, moduleId) {
+    const yearToUpdate = await Year.findOne({ year: yearNumber });
+
+    //! ---> Si el año no existe, lanzar un error
+    if (!yearToUpdate) {
+      throw new Error("[Year.Repository.RemoveModuleFromYear] - Year not found");
+    }
+    //* ---> Si existe, actualizarlo
+    yearToUpdate.modules = yearToUpdate.modules.filter((module) => module != moduleId);
+    const updatedYear = await yearToUpdate.save();
+
+    return updatedYear;
+  }
 }
+
 
 export default YearRepository;

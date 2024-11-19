@@ -115,7 +115,7 @@ const validationSchema = {
 
   //^ ----> Validación de tareas
   homeworks: {
-    type: "array",
+    type: "object",
     customValidator: (homeworks, resHelp) => {
       homeworks.forEach((homework, index) => {
         if (!homework.title || typeof homework.title !== "string" || homework.title.trim().length === 0) {
@@ -148,6 +148,7 @@ const validationSchema = {
       });
     },
   },
+
 
   //^ ----> Validación de año
   year: {

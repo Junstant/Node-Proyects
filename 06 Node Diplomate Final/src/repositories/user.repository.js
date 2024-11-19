@@ -7,7 +7,7 @@ class UserRepository {
     const user = await User.findOne({ _id: id });
 
     //! ---> Si el usuario no existe, lanzar un error
-    if(!user) {
+    if (!user) {
       throw new Error("[User.Repository.GetUserById] - User not found");
     }
 
@@ -17,11 +17,6 @@ class UserRepository {
   //^ ---> Get user by email
   static async getUserByEmail(email) {
     const user = await User.findOne({ email });
-
-    //! ---> Si el usuario no existe, lanzar un error
-    if(!user) {
-      throw new Error("[User.Repository.GetUserByEmail] - User not found");
-    }
 
     return user;
   }
@@ -36,7 +31,7 @@ class UserRepository {
     const user = await UserRepository.getUserById(id);
 
     //! ---> Si el usuario no existe, lanzar un error
-    if(!user) {
+    if (!user) {
       throw new Error("[User.Repository.SetEmailVerified] - User not found");
     }
 
@@ -46,21 +41,50 @@ class UserRepository {
 
   //^ ---> Create a new user
   static async createUser(name, email, password, verifyToken) {
-    const user = new User({ 
-        name, 
-        email, 
-        password,
-        verifyToken,
-        // emailVerified: false -----> Por defecto es false
-        career: [],
+    const user = new User({
+      name,
+      email,
+      password,
+      verifyToken,
+      career: [],
     });
 
     //! ---> Si existe otro usuario con el mismo correo, lanzar un error
-    if (UserRepository.getUserByEmail(email)) {
+    const findedUser = await User.findOne({email: email});
+    if (findedUser) {
       throw new Error("[User.Repository.Create] - User already exists");
     }
 
     return await UserRepository.saveUser(user);
+  }
+
+  // % --------------------------------- Module related operations --------------------------------- %
+
+
+  // $$ ----> Add career to user
+  static async addCareerToUser(userId, careerId) {
+    const userToUpdate = await User.findOne({ _id: userId });
+
+    //! ---> Si el usuario no existe, lanzar un error
+    if (!userToUpdate) {
+      throw new Error("[User.Repository.AddCareerToUser] - User not found");
+    }
+
+    userToUpdate.career.push(careerId);
+    return await UserRepository.saveUser(userToUpdate);
+  }
+
+  // $$ ----> Remove career from user
+  static async removeCareerFromUser(userId, careerId) {
+    const userToUpdate = await User.findOne({ _id: userId });
+
+    //! ---> Si el usuario no existe, lanzar un error
+    if (!userToUpdate) {
+      throw new Error("[User.Repository.RemoveCareerFromUser] - User not found");
+    }
+
+    userToUpdate.career = userToUpdate.career.filter((id) => id !== careerId);
+    return await UserRepository.saveUser(userToUpdate);
   }
 }
 

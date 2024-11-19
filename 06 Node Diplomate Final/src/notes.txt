@@ -1,12 +1,31 @@
 #^ --------------> TO DO:
 
 #! Revisar las funciones de controller y demas en busca de codigo innecesario o sin uso
-
+#! Seguir con el career.Controller.js
+#! Verificar year controller 
 
 # * --------------> DONE:
+# # ----> Schedule
 # *Probar el create de schedule.Controller.js
 # *Probar el getAll de schedule.Controller.js
 # *Probar el deleteSchedules de schedule.Controller.js
 # *Probar el update de schedule.Controller.js
+
+# # ----> Absents
 # *Probar el create de absent.Controller.js
 # *Probar el getAll de absent.Controller.js
+# *Probar el deleteAbsents de absent.Controller.js
+# *Probar el update de absent.Controller.js
+
+# # ----> Notes
+# *Probar el create de notes.Controller.js
+# *Probar el getAll de notes.Controller.js
+# *Probar el update de notes.Controller.js
+# *Probar el deleteNotes de notes.Controller.js
+
+# # ----> Homework
+# *Probar el create de homework.Controller.js
+# *Probar el getAll de homework.Controller.js
+# *Probar el update de homework.Controller.js
+# *Probar el deleteHomework de homework.Controller.js
+

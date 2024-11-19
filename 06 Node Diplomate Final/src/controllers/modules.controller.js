@@ -1,7 +1,6 @@
 import ResponseBuilder from "../utils/builders/responseBuilder.builder.js";
 import modulesValidations from "../utils/modulesValidation.util.js";
 import ModuleRepository from "../repositories/module.repository.js";
-import YearRepository from "../repositories/year.repository.js";
 
 // ~ ------------------------------------> Create module <------------------------------------ ~
 const createModule = async (req, res) => {
@@ -19,7 +18,7 @@ const createModule = async (req, res) => {
     }
 
     // ^ --------------> Crear el módulo
-    const newModule = await ModuleRepository.createModule();
+    const newModule = await ModuleRepository.createModule(year);
     
     // Crear respuesta
     const response = new ResponseBuilder()
@@ -30,20 +29,10 @@ const createModule = async (req, res) => {
         module: newModule,
       })
       .build();
-
-    //% -------------------> Actualizamos el año en el que se encuentra el módulo
-    const updatedYear = await YearRepository.updateYear(year, newModule._id);
     
-    // ! --> Si hay un error al actualizar el año
-    if(!updatedYear){
-      console.error('[Modules.Controller.Create] - Error updating year');
-      return res.status(500).json(updatedYear.response);
-    }
-
     // Enviar respuesta
     console.warn('[Modules.Controller.Create] - Module created successfully');
     return res.status(201).json(response);
-    
   } 
 
   //! ----> Si hay un error en el proceso
@@ -95,6 +84,7 @@ const updateModule = async (req, res) => {
       homeworksId
     };
     
+    // ^ --------------> Enviar los datos a la función de actualización
     const updatedModule = await ModuleRepository.updateModule(id, dataToUpdate);
 
     // Crear respuesta
@@ -132,11 +122,11 @@ const updateModule = async (req, res) => {
 // ~ ------------------------------------> Delete module <------------------------------------ ~
 const deleteModule = async (req, res) => {
   // Extraer datos del body
-  const { id } = req.params;
+  const { year, id } = req.params;
 
   try {
     // ^ --------------> Eliminar el módulo
-    const deletedModule = await ModuleRepository.deleteModule(id);
+    const deletedModule = await ModuleRepository.deleteModule(year, id);
 
     // Crear respuesta
     const response = new ResponseBuilder()
