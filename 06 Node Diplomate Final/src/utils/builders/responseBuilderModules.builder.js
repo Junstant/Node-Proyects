@@ -57,6 +57,9 @@ class ResponseBuilderModules{
         this.response.ok = ok;
         return this;
     }
+    getOk(){
+        return this.response.ok;
+    }
     //Define el estado de la respuesta
     setStatus(status){
         this.response.status = status;

@@ -7,7 +7,6 @@ class ModuleRepository {
   //^ ---> Get module by id
   static async getModuleById(id) {
     const moduleFinded = await Module.findOne({ _id: id });
-
     //! ---> Si el módulo no existe, lanzar un error
     if (!moduleFinded) {
       throw new Error("[Module.Repository.GetModuleById] - Module not found");
@@ -17,13 +16,13 @@ class ModuleRepository {
 
   //^ --------------------> Create a new module
   static async createModule(year) {
-    // Crear un nuevo módulo
     const newModule = new db.Module({});
 
-    // Agregar el módulo al año
-    YearRepository.addModuleToYear(year, newModule._id);
-
-    // Guardar el módulo en la base de datos
+    //! ---> Si el año no existe, lanzar un error
+    const moduleAdded = await YearRepository.addModuleToYear(year, newModule._id);
+    if (!moduleAdded) {
+      throw new Error("[Module.Repository.CreateModule] - Error adding module to year");
+    }
     return await newModule.save();
   }
 
@@ -39,17 +38,24 @@ class ModuleRepository {
         updateData[field] = data[field];
       }
     }
-
-    // Realizar la actualización usando findByIdAndUpdate con operadores $set y $push
-    const updatedModule = await Module.findByIdAndUpdate(id, updateData, { new: true });
-    return updatedModule;
+    const moduleToUpdate = await Module.findById(id);
+    //! ---> Si el módulo no existe, lanzar un error
+    if (!moduleToUpdate) {
+      throw new Error("[Module.Repository.UpdateModule] - Module not found");
+    }
+    moduleToUpdate.set(updateData);
+    return await moduleToUpdate.save();
   }
 
   //^ ---> Delete module
   static async deleteModule(year, id) {
-    const moduleDeleted = await Module.findByIdAndDelete(id);
-
+    //! ---> Si el año no existe, lanzar un error
+    const yearFinded = await YearRepository.getYearByNumber(year);
+    if (!yearFinded) {
+      throw new Error("[Module.Repository.DeleteModule] - Year not found");
+    }
     //! ---> Si el módulo no existe, lanzar un error
+    const moduleDeleted = await Module.findByIdAndDelete(id);
     if (!moduleDeleted) {
       throw new Error("[Module.Repository.DeleteModule] - Module not found");
     }
@@ -57,6 +63,16 @@ class ModuleRepository {
     // Eliminar el módulo del año
     YearRepository.removeModuleFromYear(year, id);
     return moduleDeleted;
+  }
+
+  //^ ---> Get all modules
+  static async getAllModules(yearNumber) {
+    const year = await YearRepository.getYearByNumber(yearNumber);
+    //! ---> Si el año no existe, lanzar un error
+    if (!year) {
+      throw new Error("[Module.Repository.GetAllModules] - Year not found");
+    }
+    return await Module.find({ _id: { $in: year.modules } });
   }
 
   // % --------------------------------- Module related operations --------------------------------- %

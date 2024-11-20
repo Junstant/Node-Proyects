@@ -1,3 +1,7 @@
+# % --------------> REMINDER:
+# Acordarse de activar nuevamente las validaciones de las rutas
+
+
 #^ --------------> TO DO:
 
 #! Revisar las funciones de controller y demas en busca de codigo innecesario o sin uso
@@ -29,3 +33,8 @@
 # *Probar el update de homework.Controller.js
 # *Probar el deleteHomework de homework.Controller.js
 
+# # ----> Modules
+# *Probar el create de modules.Controller.js
+# *Probar el update de modules.Controller.js
+# *Probar el deleteModules de modules.Controller.js
+# *Probar el getAll de modules.Controller.js

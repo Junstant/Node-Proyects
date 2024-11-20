@@ -101,4 +101,42 @@ const deleteYear = async (req, res) => {
   }
 };
 
-export { createYear, deleteYear };
+// ~ ------------------------------------> Get all years from a career <------------------------------------ ~
+const getAllYears = async (req, res) => {
+  const { careerId } = req.body;
+
+  try {
+    // Obtener todos los años de una carrera
+    const years = await YearRepository.getAllYears(careerId);
+
+    // Crear respuesta
+    const response = new ResponseBuilder()
+      .setOk(true)
+      .setStatus(200)
+      .setMessage("Years retrieved successfully")
+      .setPayload({
+        years,
+      })
+      .build();
+
+    // Enviar respuesta
+    console.warn("[Year.Controller.GetAll] - Years retrieved successfully");
+    return res.status(200).json(response);
+  } 
+
+  // ! ----> Si algo sale mal
+  catch (error) {
+    const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(500)
+      .setMessage("Internal Server Error")
+      .setPayload({
+        detail: error.message,
+      })
+      .build();
+    console.error("[Year.Controller] - " + error.message);
+    return res.status(500).json(response);
+  }
+};
+
+export { createYear, deleteYear, getAllYears };

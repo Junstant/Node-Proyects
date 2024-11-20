@@ -7,9 +7,9 @@ import vTokenMid from "../middlewares/auth.middleware.js";
 const absentRouter = express.Router();
 
 // ^ ------------------ Controladores ------------------>
-absentRouter.use(vApiKeyMid);
-absentRouter.use(vTokenMid);
-absentRouter.use(vRoleMid(["user", "admin"]));
+// absentRouter.use(vApiKeyMid);
+// absentRouter.use(vTokenMid);
+// absentRouter.use(vRoleMid(["user", "admin"]));
 
 // * ------------------ Crear ausencia ------------------>
 absentRouter.post('/', createAbsent);

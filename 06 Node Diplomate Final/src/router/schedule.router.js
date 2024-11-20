@@ -7,9 +7,9 @@ import vTokenMid from "../middlewares/auth.middleware.js";
 const scheduleRouter = express.Router();
 
 // ^ ------------------ Controladores ------------------>
-scheduleRouter.use(vApiKeyMid);
-scheduleRouter.use(vTokenMid);
-scheduleRouter.use(vRoleMid(["user", "admin"]));
+// scheduleRouter.use(vApiKeyMid);
+// scheduleRouter.use(vTokenMid);
+// scheduleRouter.use(vRoleMid(["user", "admin"]));
 
 // * ------------------ Crear horario ------------------>
 scheduleRouter.post('/', createSchedule);

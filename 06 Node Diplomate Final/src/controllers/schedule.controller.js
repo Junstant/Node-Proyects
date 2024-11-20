@@ -12,7 +12,7 @@ const createSchedule = async (req, res) => {
     const Validations = modulesValidations({schedule});
 
     // ^ --------------> Validar si hay errores
-    if(Validations.response.ok === false){
+    if(Validations.getOk() === false){
       console.error('[Schedule.Controller.Create] - Validation error');
       return res.status(400).json(Validations.response);
     }
@@ -143,7 +143,7 @@ const updateSchedule = async (req, res) => {
     const Validations = modulesValidations(schedule);
 
     // ^ --------------> Validar si hay errores
-    if(Validations.response.ok === false){
+    if(Validations.getOk() === false){
       console.error('[Schedule.Controller.Update] - Validation error');
       return res.status(400).json(Validations.response);
     }

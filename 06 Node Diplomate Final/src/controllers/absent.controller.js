@@ -11,7 +11,7 @@ const createAbsent = async (req, res) => {
     const Validations = modulesValidations({absents});
 
     // ^ --------------> Validar si hay errores
-    if(Validations.response.ok === false){
+    if(Validations.getOk() === false){
       console.error('[Absent.Controller.Create] - Validation error');
       return res.status(400).json(Validations.response);
     }
@@ -47,7 +47,7 @@ const createAbsent = async (req, res) => {
       .build();
 
     // Enviar respuesta de error
-    console.error('[Absent.Controller.Create] - Internal Server Error');
+    console.error('[Absent.Controller.Create] - ' + error.message);
     return res.status(500).json(response);
   }
 };
@@ -80,14 +80,14 @@ const getAllAbsents = async (req, res) => {
     const response = new ResponseBuilder()
       .setOk(false)
       .setStatus(500)
-      .setMessage("Internal Server Error")
+      .setMessage("Internal Server Error" + error.message)
       .setPayload({
         detail: error.message,
       })
       .build();
 
     // Enviar respuesta de error
-    console.error('[Absent.Controller.GetAll] - Internal Server Error');
+    console.error('[Absent.Controller.GetAll] - ' + error.message);
     return res.status(500).json(response);
   }
 };
@@ -102,7 +102,7 @@ const updateAbsent = async (req, res) => {
     const Validations = modulesValidations(absent);
 
     // ^ --------------> Validar si hay errores
-    if(Validations.response.ok === false){
+    if(Validations.getOk() === false){
       console.error('[Absent.Controller.Update] - Validation error');
       return res.status(400).json(Validations.response);
     }
@@ -138,7 +138,7 @@ const updateAbsent = async (req, res) => {
       .build();
 
     // Enviar respuesta de error
-    console.error('[Absent.Controller.Update] - Internal Server Error');
+    console.error('[Absent.Controller.Update] - ' + error.message);
     return res.status(500).json(response);
   }
 };
@@ -180,7 +180,7 @@ const deleteAbsent = async (req, res) => {
       .build();
 
     // Enviar respuesta de error
-    console.error('[Absent.Controller.Delete] - Internal Server Error');
+    console.error('[Absent.Controller.Delete] - ' + error.message);
     return res.status(500).json(response);
   }
 };

@@ -10,14 +10,12 @@ class UserRepository {
     if (!user) {
       throw new Error("[User.Repository.GetUserById] - User not found");
     }
-
     return user;
   }
 
   //^ ---> Get user by email
   static async getUserByEmail(email) {
     const user = await User.findOne({ email });
-
     return user;
   }
 
@@ -34,7 +32,7 @@ class UserRepository {
     if (!user) {
       throw new Error("[User.Repository.SetEmailVerified] - User not found");
     }
-
+    //Actualizar el estado de verificación del correo
     user.emailVerified = bool;
     return await UserRepository.saveUser(user);
   }
@@ -54,7 +52,6 @@ class UserRepository {
     if (findedUser) {
       throw new Error("[User.Repository.Create] - User already exists");
     }
-
     return await UserRepository.saveUser(user);
   }
 

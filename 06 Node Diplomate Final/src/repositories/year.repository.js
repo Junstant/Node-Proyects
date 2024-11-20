@@ -56,11 +56,13 @@ class YearRepository {
   }
 
   //^ ---> Get all years
-  static async getAllYears() {
-    const years = await db.Year.find();
-    if (!years) {
-      throw new Error("[Year.Repository.GetAllYears] - Years not found");
+  static async getAllYears(careerId) {
+    const career = await CareerRepository.getCareerById(careerId);
+    //! ---> Si la carrera no existe, lanzar un error
+    if (!career) {
+      throw new Error("[Year.Repository.GetAllYears] - Career not found");
     }
+    const years = await db.Year.find({ _id: { $in: career.years } });
     return years;
   }
 

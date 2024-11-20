@@ -11,7 +11,7 @@ const createHomework = async (req, res) => {
     const Validations = modulesValidations({homeworks});
     
     // ^ --------------> Validar si hay errores
-    if(Validations.response.ok === false){
+    if(Validations.getOk() === false){
       console.error('[Homework.Controller.Create] - Validation error');
       return res.status(400).json(Validations.response);
     }
@@ -47,7 +47,7 @@ const createHomework = async (req, res) => {
       .build();
 
     // Enviar respuesta de error
-    console.error('[Homework.Controller.Create] - Internal Server Error');
+    console.error('[Homework.Controller.Create] - ' + error.message);
     return res.status(500).json(response);
   }
 };
@@ -85,7 +85,7 @@ const getAllHomeworks = async (req, res) => {
       .build();
 
     // Enviar respuesta de error
-    console.error('[Homework.Controller.GetAll] - Internal Server Error');
+    console.error('[Homework.Controller.GetAll] - ' + error.message);
     return res.status(500).json(response);
   }
 };
@@ -99,7 +99,7 @@ const updateHomework = async (req, res) => {
     const Validations = modulesValidations({homework});
     
     // ^ --------------> Validar si hay errores
-    if(Validations.response.ok === false){
+    if(Validations.getOk() === false){
       console.error('[Homework.Controller.Update] - Validation error');
       return res.status(400).json(Validations.response);
     }
@@ -135,7 +135,7 @@ const updateHomework = async (req, res) => {
       .build();
 
     // Enviar respuesta de error
-    console.error('[Homework.Controller.Update] - Internal Server Error');
+    console.error('[Homework.Controller.Update] - ' + error.message);
     return res.status(500).json(response);
   }
 };
@@ -176,7 +176,7 @@ const removeHomework = async (req, res) => {
       .build();
 
     // Enviar respuesta de error
-    console.error('[Homework.Controller.Remove] - Internal Server Error');
+    console.error('[Homework.Controller.Remove] - ' + error.message);
     return res.status(500).json(response);
   }
 };

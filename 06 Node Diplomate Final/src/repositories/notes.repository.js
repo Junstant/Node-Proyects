@@ -42,11 +42,14 @@ class noteModule {
   }
 
   //^ --------------------> Get all notes
-  static async getAllNotes() {
-    const notes = await db.Note.find();
-    if (!notes) {
-      throw new Error("[Note.Repository.GetAllNotes] - Notes not found");
+  static async getAllNotes(moduleId) {
+    //! ---> Si el módulo no existe, lanzar un error
+    const moduleFinded = await ModuleRepository.getModuleById(moduleId);
+    if (!moduleFinded) {
+      throw new Error("[Note.Repository.GetAllNotes] - Module not found");
     }
+    //Obtener todas las notas del módulo
+    const notes = await db.Note.find({ _id: { $in: moduleFinded.notes } });
     return notes;
   }
 

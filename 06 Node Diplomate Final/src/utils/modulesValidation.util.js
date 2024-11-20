@@ -5,7 +5,7 @@ import ResponseBuilderModules from "./builders/responseBuilderModules.builder.js
 const validationSchema = {
   //^ ----> Validación de nombre
   name: {
-    required: true,
+    required: false,
     type: "string",
     minLength: 1,
     errorMsg: "Name is required and must be a non-empty string",
@@ -38,18 +38,19 @@ const validationSchema = {
 
   //^ ----> Validación de ubicación
   location: {
-    required: true,
+    required: false,
     errorMsg: "Location is required",
   },
 
   //^ ----> Validación de profesor
   professor: {
-    required: true,
-    errorMsg: "Proffesor is required",
+    required: false,
+    errorMsg: "Professor is required",
   },
 
   //^ ----> Validación de dependencias
   dependencies: {
+    required: false,
     type: "array",
     customValidator: (dependencies, resHelp) => {
       dependencies.forEach((dep, index) => {
@@ -61,7 +62,7 @@ const validationSchema = {
   //^ ----> Validación de estado
   state: {
     type: "string",
-    required: true,
+    required: false,
     validValues: ["In Progress", "Approved", "Failed", "Pending"],
     errorMsg: "State must be one of the valid states",
   },
@@ -86,6 +87,7 @@ const validationSchema = {
 
   //^ ----> Validación de periodo
   period: {
+    required: false,
     type: "object",
     customValidator: (period, resHelp) => {
       if (typeof period.year !== "number") {
@@ -150,11 +152,16 @@ const validationSchema = {
   },
 
 
-  //^ ----> Validación de año
+  //^ ----> Validación de año tiene que ser un número entre 1 y 20
   year: {
     type: "number",
     required: true,
     errorMsg: "Year is required and must be a number",
+    customValidator: (year, resHelp) => {
+      if (year < 1 || year > 20) {
+        resHelp("year", "Year must be a number between 1 and 20");
+      }
+    },
   },
 };
 
@@ -179,16 +186,17 @@ const modulesValidations = (fields = {}) => {
   response.setOk(true);
   response.response.fieldErrors = {}; // Inicializar errores
 
-  for (const field in fields) {
-    // Validar solo los campos presentes en 'fields'
+  for (const field in validationSchema) {
     const rules = validationSchema[field];
     const value = fields[field];
 
-    if (!rules) {
-      continue; // Si el campo no tiene reglas definidas, saltar
+    // Si el campo no está en 'fields' o es undefined, no se valida
+    if (value === undefined || value === null) {
+      continue;
     }
 
-    if (rules.required && (value === undefined || value === null || value === "")) {
+    // Si el campo está presente, entonces validamos con las reglas
+    if (rules.required && (value === "" || value === undefined || value === null)) {
       resHelp(response, field, rules.errorMsg || `${field} is required`);
       continue;
     }
@@ -226,5 +234,6 @@ const modulesValidations = (fields = {}) => {
 
   return response;
 };
+
 
 export default modulesValidations;

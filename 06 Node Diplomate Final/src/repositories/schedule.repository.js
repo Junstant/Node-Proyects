@@ -33,7 +33,12 @@ class scheduleModule {
   //^ --------------------> Get all schedules
   static async getAllSchedules(moduleId) {
     const moduleFinded = await ModuleRepository.getModuleById(moduleId);
-    return moduleFinded.schedule;
+    //! ---> Si el módulo no existe, lanzar un error
+    if (!moduleFinded) {
+      throw new Error("[Schedule.Repository.GetAllSchedules] - Module not found");
+    }
+    const schedules = await db.Schedule.find({ _id: { $in: moduleFinded.schedule } });
+    return schedules;
   }
 
   //^ --------------------> Remove schedule

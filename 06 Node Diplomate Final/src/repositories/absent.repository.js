@@ -6,21 +6,21 @@ class absentModule {
   static async createAbsent(moduleId ,absents) {
     const savedAbsents = [];
 
+    //Buscar el módulo para agregar la ausencia
+    const moduleFinded = await ModuleRepository.getModuleById(moduleId);
+    if (!moduleFinded) {
+      throw new Error("[Absent.Repository.CreateAbsent] - Module not found");
+    }
+    //Crear la ausencia
     for (const absent of absents) {
       const newAbsent = new db.Absent({
         date: absent.date,
         reason: absent.reason,
         absenceNumber: absent.absenceNumber,
       });
-      
-      const savedAbsent = await newAbsent.save(); // Espera que se guarde cada ausencia
+      //Guardar la ausencia
+      const savedAbsent = await newAbsent.save(); 
       savedAbsents.push(savedAbsent);
-    }
-
-    //Buscar el módulo para agregar la ausencia
-    const moduleFinded = await ModuleRepository.getModuleById(moduleId);
-    if (!moduleFinded) {
-      throw new Error("[Absent.Repository.CreateAbsent] - Module not found");
     }
 
     //Agregar la ausencia al módulo
@@ -34,6 +34,7 @@ class absentModule {
   //^ --------------------> Find absent by id
   static async getAbsentById(id) {
     const absent = await db.Absent.findById(id);
+    //! ---> Si la ausencia no existe, lanzar un error
     if (!absent) {
       throw new Error("[Absent.Repository.GetAbsentById] - Absent not found");
     }
@@ -41,29 +42,33 @@ class absentModule {
   }
 
   //^ --------------------> Get all absents
-  static async getAllAbsents() {
-    const absents = await db.Absent.find();
-    if (!absents) {
-      throw new Error("[Absent.Repository.GetAllAbsents] - Absents not found");
+  static async getAllAbsents(moduleId) {
+    //Buscar el módulo
+    const moduleFinded = await ModuleRepository.getModuleById(moduleId);
+    if (!moduleFinded) {
+      throw new Error("[Absent.Repository.GetAllAbsents] - Module not found");
     }
+    //Obtener todas las ausencias del módulo
+    const absents = await db.Absent.find({ _id: { $in: moduleFinded.absents } });
     return absents;
   }
 
   //^ --------------------> Remove absent
   static async removeAbsent(moduleId, id) {
     const absent = await db.Absent.findById(id);
+    //! ---> Si la ausencia no existe, lanzar un error
     if (!absent) {
       throw new Error("[Absent.Repository.RemoveAbsent] - Absent not found");
     }
-    await db.Absent.deleteOne({ _id: id });
 
     //Buscar el módulo para eliminar la ausencia
     const moduleFinded = await ModuleRepository.getModuleById(moduleId);
     if (!moduleFinded) {
       throw new Error("[Absent.Repository.RemoveAbsent] - Module not found");
     }
-
-    //Eliminar la ausencia del módulo
+    
+    //Eliminar la ausencia del módulo y de la base de datos
+    await db.Absent.deleteOne({ _id: id });
     ModuleRepository.removeAbsentFromModule(moduleId, id);
 
     return absent;
@@ -72,6 +77,7 @@ class absentModule {
   //^ --------------------> Update absent
   static async updateAbsent(id, absent) {
     const updatedAbsent = await db.Absent.findById(id);
+    //! ---> Si la ausencia no existe, lanzar un error
     if (!updatedAbsent) {
       throw new Error("[Absent.Repository.UpdateAbsent] - Absent not found");
     }

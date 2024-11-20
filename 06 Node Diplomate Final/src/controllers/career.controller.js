@@ -197,4 +197,57 @@ const deleteCareer = async (req, res) => {
   }
 };
 
-export { createCareer, updateCareer, deleteCareer };
+// ~ ------------------------------------> Get all careers from a user <------------------------------------ ~
+const getAllCareers = async (req, res) => {
+  // Extraer datos del body
+  const { userId } = req.body;
+
+  try {
+    //! ---> Validar si los campos requeridos están presentes
+    if (!userId) {
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Missing required fields")
+        .build();
+
+      console.error("[Career.Controller.GetAll] - Missing required fields (userId)");
+      return res.status(400).json(response);
+    }
+
+    // ^ --------------> Obtener todas las carreras
+    const careers = await CareerRepository.getAllCareers(userId);
+
+    // Crear respuesta
+    const response = new ResponseBuilder()
+      .setOk(true)
+      .setStatus(200)
+      .setMessage("Careers fetched successfully")
+      .setPayload({
+        careers,
+      })
+      .build();
+
+    // Enviar respuesta
+    console.warn("[Career.Controller.GetAll] - Careers fetched successfully");
+    return res.status(200).json(response);
+  }
+
+  //! ----> Si hay un error en el proceso
+  catch (error) {
+    const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(500)
+      .setMessage("Internal Server Error")
+      .setPayload({
+        detail: error.message,
+      })
+      .build();
+
+    // Enviar respuesta de error
+    console.error("[Career.Controller.GetAll] - " + error.message);
+    return res.status(500).json(response);
+  }
+};
+
+export { createCareer, updateCareer, deleteCareer, getAllCareers };

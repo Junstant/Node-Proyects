@@ -1,7 +1,6 @@
 import Career from '../models/career.model.js';
 import { Career as CareerModel } from '../dataBase/models.js';
 import UserRepository from './user.repository.js';
-import ResponseBuilder from '../utils/builders/responseBuilder.builder.js';
 
 // Clase para manejar operaciones relacionadas con carreras en la base de datos
 class CareerRepository {
@@ -35,11 +34,12 @@ class CareerRepository {
     if (careerFinded) {
       throw new Error("[Career.Repository.Create] - Career already exists");
     }
-    //* ---> Si no existe, crearla y guardarla
+    //* ---> Si no existe, crearla
     const newCareer = new CareerModel({ userId, name });
 
     // Agregar la carrera al usuario
     const added = await UserRepository.addCareerToUser(userId, newCareer._id);
+    //! ---> Si no se pudo agregar, lanzar un error
     if (!added) {
       throw new Error("[Career.Repository.Create] - Error adding career to user");
     }
@@ -55,15 +55,15 @@ class CareerRepository {
     if (!careerToRemove) {
       throw new Error("[Career.Controller.Remove] - Career not found");
     }
-    //* ---> Si existe, eliminarla
-    await careerToRemove.deleteOne();
 
-    // Eliminar la carrera del usuario
+    //! ---> Eliminar la carrera del usuario
     const removed = await UserRepository.removeCareerFromUser(userId, careerToRemove._id);
     if (!removed) {
       throw new Error("[Career.Repository.Remove] - Error removing career from user");
     }
 
+    //* ---> Si existe, eliminarla
+    await careerToRemove.deleteOne();
     return careerToRemove;
   }
 
@@ -83,11 +83,12 @@ class CareerRepository {
   }
 
   //^ ---> Get all careers
-  static async getAllCareers() {
-    const careers = await CareerModel.find();
-    if (!careers) {
-      throw new Error("[Career.Repository.GetAllCareers] - Careers not found");
+  static async getAllCareers(userId) {
+    const user = await UserRepository.getUserById(userId);
+    if (!user) {
+      throw new Error("[Career.Repository.GetAllCareers] - User not found");
     }
+    const careers = await Career.find({_id: { $in: user.career }});
     return careers;
   }
 

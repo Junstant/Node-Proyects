@@ -11,7 +11,7 @@ const createNote = async (req, res) => {
     const Validations = modulesValidations({notes});
     
     // ^ --------------> Validar si hay errores
-    if(Validations.response.ok === false){
+    if(Validations.getOk() === false){
       console.error('[Note.Controller.Create] - Validation error');
       return res.status(400).json(Validations.response);
     }
@@ -100,7 +100,7 @@ const updateNote = async (req, res) => {
     const Validations = modulesValidations({note});
     
     // ^ --------------> Validar si hay errores
-    if(Validations.response.ok === false){
+    if(Validations.getOk() === false){
       console.error('[Note.Controller.Update] - Validation error');
       return res.status(400).json(Validations.response);
     }

@@ -7,20 +7,20 @@ import vTokenMid from "../middlewares/auth.middleware.js";
 const notesRouter = express.Router();
 
 // ^ ------------------ Controladores ------------------>
-notesRouter.use(vApiKeyMid);
-notesRouter.use(vTokenMid);
-notesRouter.use(vRoleMid(["user", "admin"]));
+// notesRouter.use(vApiKeyMid);
+// notesRouter.use(vTokenMid);
+// notesRouter.use(vRoleMid(["user", "admin"]));
 
-// * ------------------ Crear ausencia ------------------>
+// * ------------------ Crear notas ------------------>
 notesRouter.post('/', createNote);
 
-// * ------------------ Actualizar ausencia ------------------>
+// * ------------------ Actualizar notas ------------------>
 notesRouter.put('/', updateNote);
 
-// * ------------------ Eliminar ausencia ------------------>
+// * ------------------ Eliminar notas ------------------>
 notesRouter.delete('/', deleteNote);
 
-// * ------------------ Obtener todas las ausencias ------------------>
+// * ------------------ Obtener todas las notas ------------------>
 notesRouter.get('/', getAllNotes);
 
 export default notesRouter;

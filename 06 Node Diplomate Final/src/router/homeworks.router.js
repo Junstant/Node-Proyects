@@ -7,9 +7,9 @@ import vTokenMid from "../middlewares/auth.middleware.js";
 const homeworksRouter = express.Router();
 
 // ^ ------------------ Controladores ------------------>
-homeworksRouter.use(vApiKeyMid);
-homeworksRouter.use(vTokenMid);
-homeworksRouter.use(vRoleMid(["user", "admin"]));
+// homeworksRouter.use(vApiKeyMid);
+// homeworksRouter.use(vTokenMid);
+// homeworksRouter.use(vRoleMid(["user", "admin"]));
 
 // * ------------------ Crear tarea ------------------>
 homeworksRouter.post('/', createHomework);
