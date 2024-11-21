@@ -21,13 +21,16 @@ class homeworkModule {
         calification: homework.calification,
         remember: homework.remember,
       });
-      //Guardar la tarea
+
+      //* ----> Agregar la tarea al módulo
+      const added = await ModuleRepository.addHomeworkToModule(moduleId, newHomework._id);
+      if (!added) {
+        throw new Error("[Homework.Repository.CreateHomework] - Error adding homework to module");
+      }
+
+      //* ----> Guardar la tarea
       const savedHomework = await newHomework.save();
       savedHomeworks.push(savedHomework);
-    }
-    //Agregar la tarea al módulo
-    for (const savedHomework of savedHomeworks) {
-      ModuleRepository.addHomeworkToModule(moduleId, savedHomework._id);
     }
 
     return savedHomeworks;
@@ -63,16 +66,19 @@ class homeworkModule {
     if (!homework) {
       throw new Error("[Homework.Repository.RemoveHomework] - Homework not found");
     }
-    //Buscar el módulo para eliminar la tarea
+    //* ----> Buscar el módulo para eliminar la tarea
     const moduleFinded = await ModuleRepository.getModuleById(moduleId);
     if (!moduleFinded) {
       throw new Error("[Homework.Repository.RemoveHomework] - Module not found");
     }
 
-    //Eliminar la tarea del módulo y de la base de datos
+    //* ----> Eliminar la tarea del módulo y de la base de datos
+    const removed = ModuleRepository.removeHomeworkFromModule(moduleId, id);
+    if (!removed) {
+      throw new Error("[Homework.Repository.RemoveHomework] - Error removing homework from module");
+    }
+    
     await db.Homework.deleteOne({ _id: id });
-    ModuleRepository.removeHomeworkFromModule(moduleId, id);
-
     return homework;
   }
 

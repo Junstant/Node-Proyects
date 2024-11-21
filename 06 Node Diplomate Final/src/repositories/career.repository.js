@@ -1,10 +1,10 @@
-import Career from '../models/career.model.js';
-import { Career as CareerModel } from '../dataBase/models.js';
-import UserRepository from './user.repository.js';
+import Career from "../models/career.model.js";
+import { Career as CareerModel } from "../dataBase/models.js";
+import UserRepository from "./user.repository.js";
 
 // Clase para manejar operaciones relacionadas con carreras en la base de datos
 class CareerRepository {
-  //^ ---> Obtener carrera por id
+  //^ ------------------> Obtener carrera por id
   static async getCareerById(id) {
     const careerFinded = await Career.findOne({ _id: id });
 
@@ -15,7 +15,7 @@ class CareerRepository {
     return careerFinded;
   }
 
-  //^ ---> Obtener carrera por nombre
+  //^ ------------------> Obtener carrera por nombre
   static async getCareerByName(name) {
     const careerFinded = await Career.findOne({ name });
 
@@ -26,7 +26,7 @@ class CareerRepository {
     return careerFinded;
   }
 
-  //^ ---> Crear una nueva carrera
+  //^ ------------------> Crear una nueva carrera
   static async createCareer(userId, name) {
     const careerFinded = await Career.findOne({ name });
 
@@ -47,9 +47,9 @@ class CareerRepository {
     return await newCareer.save();
   }
 
-  //^ ---> Remove career
-  static async removeCareer(userId, name) {
-    const careerToRemove = await CareerModel.findOne({ name });
+  //^ ------------------> Remove career
+  static async removeCareer(userId, careerId) {
+    const careerToRemove = await CareerModel.findOne({ _id: careerId });
 
     //! ---> Si la carrera no existe, lanzar un error
     if (!careerToRemove) {
@@ -67,14 +67,21 @@ class CareerRepository {
     return careerToRemove;
   }
 
-  //^ ---> Update career
-  static async updateCareer(name, newName) {
-    const careerToUpdate = await CareerModel.findOne({ name });
+  //^ ------------------> Update career
+  static async updateCareer(id, newName) {
+    const careerToUpdate = await CareerModel.findOne({ _id: id });
 
     //! ---> Si la carrera no existe, lanzar un error
     if (!careerToUpdate) {
       throw new Error("[Career.Repository.Update] - Career not found");
     }
+
+    //! ---> Si la nueva carrera ya existe, lanzar un error
+    const careerFinded = await CareerModel.findOne({ name: newName });
+    if (careerFinded) {
+      throw new Error("[Career.Repository.Update] - Career already exists, please choose another name");
+    }
+
     //* ---> Si existe, actualizarla
     careerToUpdate.name = newName;
     const updatedCareer = await careerToUpdate.save();
@@ -88,7 +95,7 @@ class CareerRepository {
     if (!user) {
       throw new Error("[Career.Repository.GetAllCareers] - User not found");
     }
-    const careers = await Career.find({_id: { $in: user.career }});
+    const careers = await Career.find({ _id: { $in: user.career } });
     return careers;
   }
 
@@ -117,12 +124,15 @@ class CareerRepository {
     if (!careerToUpdate) {
       throw new Error("[Career.Repository.RemoveYearFromCareer] - Career not found");
     }
-    //* ---> Si existe, actualizarlo
-    careerToUpdate.years = careerToUpdate.years.filter((year) => year != yearId);
-    const updatedCareer = await careerToUpdate.save();
 
+    //* ---> Si existe, actualizarlo
+    careerToUpdate.years = careerToUpdate.years.filter(
+      (year) => !year.equals(yearId) // Comparación correcta usando .equals()
+    );
+
+    const updatedCareer = await careerToUpdate.save();
     return updatedCareer;
-}
+  }
 }
 
 export default CareerRepository;

@@ -7,6 +7,20 @@ const createNote = async (req, res) => {
   // Extraer datos del body
   const { notes, moduleId } = req.body;
   try {
+    //! ---> Si no se envía el id, lanzar un error
+    if(!moduleId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Module Id is required")
+        .setPayload({ detail: "Module Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Note.Controller.Create] - Module Id is required');
+      return res.status(400).json(response);
+    }
+
     // ^ --------------> Enviar los datos a la función de validación
     const Validations = modulesValidations({notes});
     
@@ -56,6 +70,20 @@ const createNote = async (req, res) => {
 const getAllNotes = async (req, res) => {
     const {moduleId} = req.body;
   try {
+    //! ---> Si no se envía el id, lanzar un error
+    if(!moduleId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Module Id is required")
+        .setPayload({ detail: "Module Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Note.Controller.GetAll] - Module Id is required');
+      return res.status(400).json(response);
+    }
+
     // ^ --------------> Obtener todos los módulos
     const notes = await noteModule.getAllNotes(moduleId);
 
@@ -96,6 +124,20 @@ const updateNote = async (req, res) => {
   // Extraer datos del body
   const { noteId, note } = req.body;
   try {
+    //! ---> Si no se envía el id, lanzar un error
+    if(!noteId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Note Id is required")
+        .setPayload({ detail: "Note Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Note.Controller.Update] - Note Id is required');
+      return res.status(400).json(response);
+    }
+
     // ^ --------------> Enviar los datos a la función de validación
     const Validations = modulesValidations({note});
     
@@ -145,6 +187,34 @@ const deleteNote = async (req, res) => {
   // Extraer datos del body
   const { noteId, moduleId } = req.body;
   try {
+    //! ---> Si no se envía el id, lanzar un error
+    if(!noteId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Note Id is required")
+        .setPayload({ detail: "Note Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Note.Controller.Delete] - Note Id is required');
+      return res.status(400).json(response);
+    }
+
+    //! ---> Si no se envía el id, lanzar un error
+    if(!moduleId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Module Id is required")
+        .setPayload({ detail: "Module Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Note.Controller.Delete] - Module Id is required');
+      return res.status(400).json(response);
+    }
+
     // ^ --------------> Eliminar el módulo
     const deletedNote = await noteModule.removeNote(moduleId,noteId);
 

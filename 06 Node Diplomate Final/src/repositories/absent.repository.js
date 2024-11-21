@@ -18,14 +18,15 @@ class absentModule {
         reason: absent.reason,
         absenceNumber: absent.absenceNumber,
       });
-      //Guardar la ausencia
+      //* ---> Agregar la ausencia al módulo
+      const added = await ModuleRepository.addAbsentToModule(moduleId, newAbsent._id);
+      if (!added) {
+        throw new Error("[Absent.Repository.CreateAbsent] - Error adding absent to module");
+      }
+
+      //* ---> Guardar la ausencia
       const savedAbsent = await newAbsent.save(); 
       savedAbsents.push(savedAbsent);
-    }
-
-    //Agregar la ausencia al módulo
-    for (const savedAbsent of savedAbsents) {
-      ModuleRepository.addAbsentToModule(moduleId, savedAbsent._id);
     }
     
     return savedAbsents;

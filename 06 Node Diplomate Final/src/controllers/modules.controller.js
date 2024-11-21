@@ -111,6 +111,20 @@ const deleteModule = async (req, res) => {
   const { year, moduleId } = req.body;
 
   try {
+    //! ----> Si no se envía el id del módulo
+    if(!moduleId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Module Id is required")
+        .setPayload({ detail: "Module Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Modules.Controller.Delete] - Module Id is required');
+      return res.status(400).json(response);
+    }
+
     // ^ --------------> Enviar los datos a la función de validación
     const Validations = modulesValidations(year);
 

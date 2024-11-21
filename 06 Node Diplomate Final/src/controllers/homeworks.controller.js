@@ -7,6 +7,20 @@ const createHomework = async (req, res) => {
   // Extraer datos del body
   const { homeworks, moduleId } = req.body;
   try {
+    //! ---> Si no se envía el id, lanzar un error
+    if(!moduleId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Module Id is required")
+        .setPayload({ detail: "Module Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Homework.Controller.Create] - Module Id is required');
+      return res.status(400).json(response);
+    }
+
     // ^ --------------> Enviar los datos a la función de validación
     const Validations = modulesValidations({homeworks});
     
@@ -56,6 +70,20 @@ const createHomework = async (req, res) => {
 const getAllHomeworks = async (req, res) => {
     const {moduleId} = req.body;
   try {
+    //! ---> Si no se envía el id, lanzar un error
+    if(!moduleId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Module Id is required")
+        .setPayload({ detail: "Module Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Homework.Controller.GetAll] - Module Id is required');
+      return res.status(400).json(response);
+    }
+
     // ^ --------------> Obtener todos los módulos
     const homeworks = await homeworkModule.getAllHomeworks(moduleId);
     // Crear respuesta
@@ -95,6 +123,20 @@ const updateHomework = async (req, res) => {
   // Extraer datos del body
   const { homework, id } = req.body;
   try {
+    //! ---> Si no se envía el id, lanzar un error
+    if(!id){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Homework Id is required")
+        .setPayload({ detail: "Homework Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Homework.Controller.Update] - Homework Id is required');
+      return res.status(400).json(response);
+    }
+
     // ^ --------------> Enviar los datos a la función de validación
     const Validations = modulesValidations({homework});
     
@@ -145,6 +187,20 @@ const removeHomework = async (req, res) => {
   // Extraer datos del body
   const { id, moduleId } = req.body;
   try {
+    //! ---> Si no se envía el id, lanzar un error
+    if(!id){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Homework Id is required")
+        .setPayload({ detail: "Homework Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Homework.Controller.Remove] - Homework Id is required');
+      return res.status(400).json(response);
+    }
+
     // ^ --------------> Eliminar la tarea
     const removedHomework = await homeworkModule.removeHomework(moduleId, id);
 

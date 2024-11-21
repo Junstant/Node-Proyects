@@ -1,5 +1,4 @@
 import ENVIROMENT from "../config/enviroment.config.js";
-import User from "../models/user.model.js";
 import ResponseBuilder from "../utils/builders/responseBuilder.builder.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";

@@ -54,14 +54,17 @@ class ModuleRepository {
     if (!yearFinded) {
       throw new Error("[Module.Repository.DeleteModule] - Year not found");
     }
+
+    //* ---> Eliminar el módulo del año
+    const yearRemoved = await YearRepository.removeModuleFromYear(year, id);
+    if (!yearRemoved) {
+      throw new Error("[Module.Repository.DeleteModule] - Error removing module from year");
+    }
     //! ---> Si el módulo no existe, lanzar un error
     const moduleDeleted = await Module.findByIdAndDelete(id);
     if (!moduleDeleted) {
       throw new Error("[Module.Repository.DeleteModule] - Module not found");
     }
-
-    // Eliminar el módulo del año
-    YearRepository.removeModuleFromYear(year, id);
     return moduleDeleted;
   }
 

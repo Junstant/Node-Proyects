@@ -2,7 +2,7 @@ import User from "../models/user.model.js";
 
 //Class to handle user related operations in the database
 class UserRepository {
-  //^ ---> Get user by id
+  //^ ------------------> Get user by id
   static async getUserById(id) {
     const user = await User.findOne({ _id: id });
 
@@ -13,18 +13,18 @@ class UserRepository {
     return user;
   }
 
-  //^ ---> Get user by email
+  //^ ------------------>Get user by email
   static async getUserByEmail(email) {
     const user = await User.findOne({ email });
     return user;
   }
 
-  //^ ---> Save user to database
+  //^ ------------------> Save user to database
   static async saveUser(user) {
     return await user.save();
   }
 
-  //^ ---> Set user to verified status
+  //^ ------------------> Set user to verified status
   static async setEmailVerified(bool, id) {
     const user = await UserRepository.getUserById(id);
 
@@ -37,7 +37,7 @@ class UserRepository {
     return await UserRepository.saveUser(user);
   }
 
-  //^ ---> Create a new user
+  //^ ------------------> Create a new user
   static async createUser(name, email, password, verifyToken) {
     const user = new User({
       name,
@@ -80,7 +80,12 @@ class UserRepository {
       throw new Error("[User.Repository.RemoveCareerFromUser] - User not found");
     }
 
-    userToUpdate.career = userToUpdate.career.filter((id) => id !== careerId);
+    const index = userToUpdate.career.indexOf(careerId);
+    if (index === -1) {
+      throw new Error("[User.Repository.RemoveCareerFromUser] - Career not found");
+    }
+
+    userToUpdate.career.splice(index, 1);
     return await UserRepository.saveUser(userToUpdate);
   }
 }

@@ -43,20 +43,26 @@ class scheduleModule {
 
   //^ --------------------> Remove schedule
   static async removeSchedule(id, moduleId) {
+    //! ---> Si el horario no existe, lanzar un error
     const schedule = await db.Schedule.findById(id);
     if (!schedule) {
       throw new Error("[Schedule.Repository.RemoveSchedule] - Schedule not found");
     }
-    await db.Schedule.deleteOne({_id: schedule._id});
-
+    
+    //! ---> Si el módulo no existe, lanzar un error
     const moduleFinded = await ModuleRepository.getModuleById(moduleId);
     if (!moduleFinded) {
       throw new Error("[Schedule.Repository.RemoveSchedule] - Module not found");
     }
 
+    //Actualizar el módulo con el horario eliminado y luego eliminarlo
     const actualModule = ModuleRepository.removeScheduleFromModule(moduleId, id);
-
-    return schedule._id, actualModule.schedule;
+    if (!actualModule) {
+      throw new Error("[Schedule.Repository.RemoveSchedule] - Error removing schedule from module");
+    }
+    
+    await db.Schedule.deleteOne({_id: schedule._id});
+    return schedule;
   }
 
   //^ --------------------> Update schedule

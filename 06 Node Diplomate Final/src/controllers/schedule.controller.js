@@ -8,6 +8,20 @@ const createSchedule = async (req, res) => {
   const { schedule, moduleId } = req.body;
 
   try {
+    //! ---> Si no se envía el id, lanzar un error
+    if(!moduleId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Module Id is required")
+        .setPayload({ detail: "Module Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Schedule.Controller.Create] - Module Id is required');
+      return res.status(400).json(response);
+    }
+
     // ^ --------------> Enviar los datos a la función de validación
     const Validations = modulesValidations({schedule});
 
@@ -57,6 +71,20 @@ const createSchedule = async (req, res) => {
 const getAllSchedules = async (req, res) => {
     const {moduleId} = req.body;
   try {
+    //! ---> Si no se envía el id, lanzar un error
+    if(!moduleId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Module Id is required")
+        .setPayload({ detail: "Module Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Schedule.Controller.GetAll] - Module Id is required');
+      return res.status(400).json(response);
+    }
+
     // ^ --------------> Obtener todos los módulos
     const schedules = await scheduleModule.getAllSchedules(moduleId);
 
@@ -98,6 +126,20 @@ const deleteSchedule = async (req, res) => {
   const { id, moduleId } = req.body;
 
   try {
+    //! ----> Si no se envía el id del módulo
+    if(!moduleId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Module Id is required")
+        .setPayload({ detail: "Module Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Schedule.Controller.Delete] - Module Id is required');
+      return res.status(400).json(response);
+    }
+
     // ^ --------------> Eliminar el módulo
     const deletedSchedule = await scheduleModule.removeSchedule(id, moduleId);
 
@@ -139,6 +181,20 @@ const updateSchedule = async (req, res) => {
   const { id, schedule } = req.body;
 
   try {
+    //! ---> Si no se envía el id, lanzar un error
+    if(!id){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Schedule Id is required")
+        .setPayload({ detail: "Schedule Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Schedule.Controller.Update] - Schedule Id is required');
+      return res.status(400).json(response);
+    }
+
     // ^ --------------> Enviar los datos a la función de validación
     const Validations = modulesValidations(schedule);
 

@@ -8,25 +8,20 @@ class noteModule {
 
     //Recorrer las notas y guardarlas
     for (const note of notes) {
-      console.log(note);
       const newNote = new db.Note({
         title: note.title,
         calification: note.calification,
       });
 
-      const savedNote = await newNote.save(); // Espera que se guarde cada nota
+      //* ----> Guardar la nota en el módulo
+      const added = await ModuleRepository.addNoteToModule(moduleId, newNote._id);
+      if (!added) {
+        throw new Error("[Note.Repository.CreateNote] - Error adding note to module");
+      }
+
+      //* ----> Guardar la nota
+      const savedNote = await newNote.save(); 
       savedNotes.push(savedNote);
-    }
-
-    //Buscar el módulo para agregar la nota
-    const moduleFinded = await ModuleRepository.getModuleById(moduleId);
-    if (!moduleFinded) {
-      throw new Error("[Note.Repository.CreateNote] - Module not found");
-    }
-
-    //Agregar la nota al módulo
-    for (const savedNote of savedNotes) {
-      ModuleRepository.addNoteToModule(moduleId, savedNote._id);
     }
 
     return savedNotes;
@@ -55,20 +50,21 @@ class noteModule {
 
   //^ --------------------> Remove note
   static async removeNote(moduleId, id) {
-    const note = await db.Note.findById(id);
-    if (!note) {
-      throw new Error("[Note.Repository.RemoveNote] - Note not found");
-    }
-    await db.Note.deleteOne({ _id: id });
-
-    //Buscar el módulo para eliminar la nota
+    //! ---> Si el módulo no existe, lanzar un error
     const moduleFinded = await ModuleRepository.getModuleById(moduleId);
     if (!moduleFinded) {
       throw new Error("[Note.Repository.RemoveNote] - Module not found");
     }
 
-    //Eliminar la nota del módulo
+    //! ---> Si la nota no existe, lanzar un error
+    const note = await db.Note.findById(id);
+    if (!note) {
+      throw new Error("[Note.Repository.RemoveNote] - Note not found");
+    }
+
+    //Eliminar la nota del primero del módulo y luego de la base de datos
     ModuleRepository.removeNoteFromModule(moduleId, id);
+    await db.Note.deleteOne({ _id: id });
 
     return note;
   }

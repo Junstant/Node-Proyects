@@ -23,11 +23,11 @@ class YearRepository {
     if (yearFinded) {
       throw new Error("[Year.Repository.Create] - Year already exists");
     }
-    //* ---> Si no existe, crearlo y guardarlo
+    //* ---> Si no existe lo creo
     const newYear = new db.Year({year});
 
     // Agregar el año a la carrera
-    const added = CareerRepository.addYearToCareer(careerId, newYear._id);
+    const added = await CareerRepository.addYearToCareer(careerId, newYear._id);
     if (!added) {
       throw new Error("[Year.Repository.Create] - Error adding year to career");
     }
@@ -43,15 +43,13 @@ class YearRepository {
     if (!yearToRemove) {
       throw new Error("[Year.Controller.Remove] - Year not found");
     }
-    //* ---> Si existe, eliminarlo
-    await yearToRemove.deleteOne();
-
-    // Eliminar el año de la carrera
+    //! ---> Eliminar el año de la carrera
     const removed = await CareerRepository.removeYearFromCareer(careerId, yearToRemove._id);
     if (!removed) {
       throw new Error("[Year.Repository.Remove] - Error removing year from career");
     }
-
+    //* ---> Si existe, eliminarlo
+    await yearToRemove.deleteOne();
     return yearToRemove;
   }
 
@@ -93,9 +91,8 @@ class YearRepository {
       throw new Error("[Year.Repository.RemoveModuleFromYear] - Year not found");
     }
     //* ---> Si existe, actualizarlo
-    yearToUpdate.modules = yearToUpdate.modules.filter((module) => module != moduleId);
+    yearToUpdate.modules.pull(moduleId);
     const updatedYear = await yearToUpdate.save();
-
     return updatedYear;
   }
 }

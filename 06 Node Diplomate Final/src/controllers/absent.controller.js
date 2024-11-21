@@ -7,6 +7,20 @@ const createAbsent = async (req, res) => {
   // Extraer datos del body
   const { absents, moduleId } = req.body;
   try {
+    //! ---> Si no se envía el id, lanzar un error
+    if(!moduleId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Module Id is required")
+        .setPayload({ detail: "Module Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Absent.Controller.Create] - Module Id is required');
+      return res.status(400).json(response);
+    }
+
     // ^ --------------> Enviar los datos a la función de validación
     const Validations = modulesValidations({absents});
 
@@ -56,6 +70,23 @@ const createAbsent = async (req, res) => {
 const getAllAbsents = async (req, res) => {
     const {moduleId} = req.body;
   try {
+    //! ---> Si no se envía el id, lanzar un error
+    if(!moduleId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Module Id is required")
+        .setPayload({
+          detail: "Module Id is required",
+        })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Absent.Controller.GetAll] - Module Id is required');
+      return res.status(400).json(response);
+    }
+
+
     // ^ --------------> Obtener todos los módulos
     const absents = await absentModule.getAllAbsents(moduleId);
     
@@ -98,6 +129,21 @@ const updateAbsent = async (req, res) => {
   const { absent, id } = req.body;
 
   try {
+    //! ---> Si no se envía el id, lanzar un error
+    if(!id){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Absent Id is required")
+        .setPayload({ detail: "Absent Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Absent.Controller.Update] - Absent Id is required');
+      return res.status(400).json(response);
+    }
+
+
     // ^ --------------> Enviar los datos a la función de validación
     const Validations = modulesValidations(absent);
 
@@ -149,6 +195,34 @@ const deleteAbsent = async (req, res) => {
   const { moduleId, id } = req.body;
 
   try {
+    //! ---> Si no se envía el id, lanzar un error
+    if(!id){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Absent Id is required")
+        .setPayload({ detail: "Absent Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Absent.Controller.Delete] - Absent Id is required');
+      return res.status(400).json(response);
+    }
+
+    //! ---> Si no se envía el id, lanzar un error
+    if(!moduleId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Module Id is required")
+        .setPayload({ detail: "Module Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Absent.Controller.Delete] - Module Id is required');
+      return res.status(400).json(response);
+    }
+
     // ^ --------------> Eliminar el módulo
     const deletedAbsent = await absentModule.removeAbsent(moduleId, id);
     

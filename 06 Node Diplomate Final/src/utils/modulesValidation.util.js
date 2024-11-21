@@ -51,7 +51,7 @@ const validationSchema = {
   //^ ----> Validación de dependencias
   dependencies: {
     required: false,
-    type: "array",
+    type: "object",
     customValidator: (dependencies, resHelp) => {
       dependencies.forEach((dep, index) => {
         if (!dep) resHelp("dependencies", `Dependency at index ${index} is required`);

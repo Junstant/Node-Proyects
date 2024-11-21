@@ -70,11 +70,11 @@ const createCareer = async (req, res) => {
 // ~ ------------------------------------> Update career <------------------------------------ ~
 const updateCareer = async (req, res) => {
   // Extraer datos del body
-  const { name, newName } = req.body;
+  const { careerId, newName } = req.body;
 
   try {
     //! ---> Validar si los campos requeridos están presentes
-    if (!name || !newName) {
+    if (!careerId || !newName) {
       const response = new ResponseBuilder()
         .setOk(false)
         .setStatus(400)
@@ -85,8 +85,8 @@ const updateCareer = async (req, res) => {
       return res.status(400).json(response);
     }
 
-    //! ---> Si el name o newName no son strings
-    if (typeof name !== "string" || typeof newName !== "string") {
+    //! ---> Si el newName no es string
+    if (typeof newName !== "string") {
       const response = new ResponseBuilder()
         .setOk(false)
         .setStatus(400)
@@ -98,7 +98,7 @@ const updateCareer = async (req, res) => {
     }
 
     // ^ --------------> Actualizar la carrera
-    const updatedCareer = await CareerRepository.updateCareer(name, newName);
+    const updatedCareer = await CareerRepository.updateCareer(careerId, newName);
 
     // Crear respuesta
     const response = new ResponseBuilder()
@@ -135,35 +135,23 @@ const updateCareer = async (req, res) => {
 // ~ ------------------------------------> Delete career <------------------------------------ ~
 const deleteCareer = async (req, res) => {
   // Extraer datos del body
-  const { userId, name } = req.body;
+  const { userId, careerId } = req.body;
 
   try {
     //! ---> Validar si los campos requeridos están presentes
-    if (!userId || !name) {
+    if (!userId || !careerId) {
       const response = new ResponseBuilder()
         .setOk(false)
         .setStatus(400)
         .setMessage("Missing required fields")
         .build();
 
-      console.error("[Career.Controller.Delete] - Missing required fields (name or userId)");
-      return res.status(400).json(response);
-    }
-
-    //! ---> Si el name no es un string
-    if (typeof name !== "string") {
-      const response = new ResponseBuilder()
-        .setOk(false)
-        .setStatus(400)
-        .setMessage("Invalid name field")
-        .build();
-
-      console.error("[Career.Controller.Delete] - Invalid name field");
+      console.error("[Career.Controller.Delete] - Missing required fields (userId or careerId)");
       return res.status(400).json(response);
     }
 
     // ^ --------------> Eliminar la carrera
-    const deletedCareer = await CareerRepository.removeCareer(userId, name);
+    const deletedCareer = await CareerRepository.removeCareer(userId, careerId);
 
     // Crear respuesta
     const response = new ResponseBuilder()
