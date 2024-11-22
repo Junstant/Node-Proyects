@@ -1,5 +1,6 @@
 import backFetch from "../../utils/fetchHTTP.utils.js";
 import customResponse from "../../utils/responseBuilder.utils.js";
+import ENVIROMENT from "../../config/enviroment.config.js";
 
 // :: --------> Function to handle the form submission
 const handleSubmitLogin = async (e, values) => {
@@ -7,7 +8,12 @@ const handleSubmitLogin = async (e, values) => {
 
   try {
     // Send form data to the server for registration
-    const response = await backFetch("http://localhost:3000/api/auth/login", "POST", values);
+    const response = await backFetch({
+      url: "http://localhost:3000/api/auth/login", 
+      method: "POST", 
+      headers: {'x-api-key': ENVIROMENT.API_INTERNAL},
+      body: {...values}
+    });
 
     //Create a custom response
     const result = await customResponse(response, "User logged in successfully", "Login failed");

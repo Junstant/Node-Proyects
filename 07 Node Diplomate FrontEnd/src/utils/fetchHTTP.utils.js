@@ -17,28 +17,41 @@
  *   .catch(error => console.error(error));
  */
 
-//? --------> Function to fetch data from the backend
-const backFetch = async (url, method, body) => {
+// ^ ------------ Function to fetch data from the backend ----------------->
+const backFetch = async ({ url, method = "GET", body = null, headers = {}, queryParams = {} }) => {
   try {
-    const response = await fetch(url, {
-      method: method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
+    // Construct query string if queryParams is provided
+    const queryString = new URLSearchParams(queryParams).toString();
+    const fullUrl = queryString ? `${url}?${queryString}` : url;
 
+    // Configure fetch options
+    const options = {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        ...headers, // Merge custom headers
+      },
+    };
+
+    // Add body if method allows and body is provided
+    if (body && ["POST", "PUT", "PATCH"].includes(method.toUpperCase())) {
+      options.body = JSON.stringify(body);
+    }
+
+    // Make the fetch call
+    const response = await fetch(fullUrl, options);
+
+    // Parse JSON response
     const data = await response.json();
 
-    // * -----> if the response is ok, return the data
+    // Handle response status
     if (response.ok) {
       return { success: true, data };
-    } 
-    // ! -----> If the response is not ok, return the error
-    else {
-      return { success: false, error: data };
+    } else {
+      return { success: false, error: data, status: response.status };
     }
-  } 
-  catch (error) {
-    // ! -----> Catch network or parsing errors
+  } catch (error) {
+    // Handle network or other errors
     return { success: false, error: error.message || "Network error" };
   }
 };

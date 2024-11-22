@@ -1,22 +1,19 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./Screens/Home/Home";
-import Login from "./Screens/Login/Login.jsx";
-import Register from "./Screens/Register/Register.jsx";
+import LoginRegister from "./Screens/LoginRegsiter/LoginRegister.jsx";
 import ForgotPassword from "./Screens/ForgotPassword/ForgotPassword.jsx";
 import ResetPassword from "./Screens/ResetPassword/ResetPassword.jsx";
-import Modules from "./Screens/Modules/Modules.jsx";
 
 function App() {
   return (
     <>
       <Routes>
         <Route path="/" element={<Home/>} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/register" element={<Register/>} />
+        <Route path="/login" element={<LoginRegister/>} />
+        <Route path="/register" element={<LoginRegister/>} />
         <Route path="/forgot-password" element={<ForgotPassword/>} />
         <Route path="/reset-password/:token" element={<ResetPassword/>} /> 
-        <Route path="/modules" element={Modules}/>
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
     </>

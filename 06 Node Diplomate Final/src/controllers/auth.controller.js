@@ -11,10 +11,10 @@ const registerUserController = async (req, res) => {
 //* ---> Intento de ejecutar el codigo    
   try {
     //Extraemos los datos del body
-    const { name, email, password } = req.body;
+    const { email, password } = req.body;
 
     //! --------> Si algun campo esta vacio
-    if (!name || !email || !password) {
+    if (!email || !password) {
       //Creamos respuesta
       const response = new ResponseBuilder()
         .setOk(false)
