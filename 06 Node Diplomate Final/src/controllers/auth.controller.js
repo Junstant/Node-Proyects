@@ -278,7 +278,7 @@ const loginUserController = async (req, res) => {
 
 
       // * --------> Si el usuario existe, creamos el token
-      const token = jwt.sign({email: user.email, id:user._id, role: user.role}, ENVIROMENT.JWT_SECRET, {expiresIn: "1h"});
+      const token = jwt.sign({email: user.email, id:user._id, role: user.role}, ENVIROMENT.JWT_SECRET, {expiresIn: "7h"});
       const response = new ResponseBuilder()
         .setOk(true)
         .setStatus(200)
@@ -340,7 +340,7 @@ const forgotPasswordController = async (req, res) => {
         }
   
         // * --------> Si el usuario existe, creamos el token
-        const resetToken = jwt.sign({email: user.email, id:user._id}, ENVIROMENT.JWT_SECRET, {expiresIn: "7h"});
+        const resetToken = jwt.sign({email: user.email, id:user._id}, ENVIROMENT.JWT_SECRET, {expiresIn: "2h"});
         const url_reset = `${ENVIROMENT.FRONTEND_URL}/reset-password/${resetToken}`;
   
         //Enviamos el correo de verificacion
@@ -506,14 +506,43 @@ const verifyUserTokenController = async (req, res) => {
     const decoded = await jwt.verify(token, ENVIROMENT.JWT_SECRET);
     const user = await UserRepository.getUserByEmail(decoded.email);
 
+    // ! --------> Si el usuario no existe
+    if(!user){
+      const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(404)
+      .setMessage("Bad Request")
+      .setPayload({
+        detail: "User not found",
+      })
+      .build();
+      console.warn("[Auth.Controller.VerifyToken] - User not found in request User token verification");
+      return res.status(404).json(response);
+    }
+
+    // ! --------> Si el email no esta verificado
+    if(user.emailVerified == false){
+      const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(403)
+      .setMessage("Forbidden")
+      .setPayload({
+        detail: "Please verify your email to login",
+      })
+      .build();
+      console.warn("[Auth.Controller.VerifyToken] - Email not verified in request User token verification");
+      return res.status(403).json(response);
+    }
+
     //Creamos respuesta
     const userToReturn = {
       id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,
+      career: user.career,
     }
-
+    
     const response = new ResponseBuilder()
       .setOk(true)
       .setStatus(200)

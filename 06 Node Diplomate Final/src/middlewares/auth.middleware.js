@@ -40,8 +40,23 @@ const vTokenMid = async (req, res, next) => {
       console.error("Invalid token");
       return res.status(401).json(response);
     }
-    
+
+    // * ----> Desencriptamos el token
     const decoded = jwt.verify(accessToken, ENVIROMENT.JWT_SECRET);
+
+    //! ----> Si el token esta vencido
+    if(decoded.exp < Date.now() / 1000){
+      const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(401)
+      .setMessage("Unauthorized")
+      .setPayload({
+        detail: "Token expired",
+      })
+      .build();
+      console.warn("[Auth.Controller.VerifyToken] - Token expired in request User token verification");
+      return res.status(401).json(response);
+    }
     
     // * ----> Si el token es valido
     req.user = decoded;

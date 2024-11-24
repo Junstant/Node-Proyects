@@ -3,9 +3,8 @@ import customResponse from "../../utils/responseBuilder.utils";
 import ENVIROMENT from "../../config/enviroment.config";
 
 // ^ --------> Function to verify the user's session
-const verifySession = async (setUser, setUserTokenFunc, token, actualRoute) => {
+const verifySession = async (setUser, setUserTokenFunc, token) => {
   try {
-    console.log("Verifying session...");  
     if (!token) {
       console.log("No token found");
       setUser(null);
@@ -35,11 +34,6 @@ const verifySession = async (setUser, setUserTokenFunc, token, actualRoute) => {
       setUser(null);
       setUserTokenFunc(null);
       console.log("Session verification failed");
-
-      // Redirect to the login page if the user is not logged in
-      // if (actualRoute !== "/") {
-      //   window.location.href = "/";
-      // }
     }
   } 
     // ! -----> If an error occurred, log the error

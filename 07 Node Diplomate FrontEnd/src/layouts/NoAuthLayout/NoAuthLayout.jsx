@@ -12,8 +12,8 @@ const NoAuthLayout = () => {
       setUserTokenFunc(userToken);
     }
   }, []);
-
   if (userToken) return <Navigate to="/app" />;
+  
 
   // ? ------------------ NoAuth layout component ------->
   return (

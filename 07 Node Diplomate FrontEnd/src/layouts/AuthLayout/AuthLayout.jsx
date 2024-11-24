@@ -1,23 +1,38 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useUserStore from "../../stores/userStore";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import verifySession from "./authLayout";
 
 // ? ------------------ Auth layout logic ------->
 const AuthLayout = () => {
+  const { userToken, setUser, setUserTokenFunc, user } = useUserStore();
   const location = useLocation();
-  const { userToken, setUser, setUserTokenFunc } = useUserStore();
+  const [loading, setLoading] = useState(true);
 
-  //* --> Check if user is logged in and verify the session
   useEffect(() => {
-    if (userToken) {
-      verifySession(setUser, setUserTokenFunc, userToken, location.pathname);
-    }
-  }, []);
+    const verify = async () => {
+      if (userToken) {
+        try {
+          await verifySession(setUser, setUserTokenFunc, userToken);
+        } catch (error) {
+          console.error("Error verifying session:", error);
+          setUser(null);
+          setUserTokenFunc(null);
+        }
+      }
+      setLoading(false);
+    };
 
-  // ! --> Redirect to login if the user is not authenticated
-  if (!userToken) {
-    return <Navigate to="/login" state={{ from: location, alertMessage: "You must log in to acces that page" }} replace />;
+    verify();
+  }, [userToken, setUser, setUserTokenFunc]);
+
+  // Evitar renderizar componentes si estamos cargando o no hay usuario
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!userToken || !user) {
+    return <Navigate to="/login" state={{ from: location, alertMessage: "You must log in to access that page" }} replace />;
   }
 
   return (

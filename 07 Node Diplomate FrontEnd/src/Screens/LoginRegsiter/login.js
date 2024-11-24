@@ -35,7 +35,7 @@ const handleSubmitLogin = async (e, values, setErrors, setUser, setUserTokenFunc
     });
     // Create a custom response
     const result = await customResponse(response, "User logged in successfully", "Login failed");
-    console.log(result);
+    
     //* ---> Login successful
     if (result.success) {
       // Clear errors if login is successful
@@ -46,7 +46,7 @@ const handleSubmitLogin = async (e, values, setErrors, setUser, setUserTokenFunc
       setUser(result.data.payload.user);
 
       // Make a redirect to the dashboard
-      // navigate("/app");
+      navigate("/app");
     } 
     
     // ! ---> Login failed
