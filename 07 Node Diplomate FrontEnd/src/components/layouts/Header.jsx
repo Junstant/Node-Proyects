@@ -1,10 +1,11 @@
 import React from 'react'
 import { Button } from '@mui/material'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   return (
     <div>
-        <div><a href='/'><img src="" alt="Logo"/>Studemio</a></div>
+        <div><Link to="/"><img src="" alt="Logo"/>Studemio</Link></div>
         <div>
             <ul>
                 <li>Product</li>
@@ -13,8 +14,8 @@ const Header = () => {
             </ul>
         </div>
         <div>
-            <Button variant="outlined"><a href='/Login'>Login</a></Button>
-            <Button variant="contained"><a href='/Login'>Get Studemio</a></Button>
+            <Button variant="outlined"><Link to="/Login">Login</Link> </Button>
+            <Button variant="contained"><Link to="/Register">Get studemio</Link></Button>
         </div>
     </div>
   )

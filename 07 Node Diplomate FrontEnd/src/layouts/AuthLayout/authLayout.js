@@ -5,6 +5,7 @@ import ENVIROMENT from "../../config/enviroment.config";
 // ^ --------> Function to verify the user's session
 const verifySession = async (setUser, setUserTokenFunc, token, actualRoute) => {
   try {
+    console.log("Verifying session...");  
     if (!token) {
       console.log("No token found");
       setUser(null);
@@ -28,7 +29,6 @@ const verifySession = async (setUser, setUserTokenFunc, token, actualRoute) => {
     // * ---> If the session is verified, update the user's information
     if (result.success) {
       setUser(result.data.payload.user);
-      setUserTokenFunc(result.data.payload.token);
     }
     // ! ---> If the session is not verified, log out the user
     else {
@@ -37,9 +37,9 @@ const verifySession = async (setUser, setUserTokenFunc, token, actualRoute) => {
       console.log("Session verification failed");
 
       // Redirect to the login page if the user is not logged in
-      if (actualRoute !== "/") {
-        window.location.href = "/";
-      }
+      // if (actualRoute !== "/") {
+      //   window.location.href = "/";
+      // }
     }
   } 
     // ! -----> If an error occurred, log the error

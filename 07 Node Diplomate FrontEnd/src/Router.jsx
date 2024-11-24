@@ -8,9 +8,11 @@ import LoginRegister from "./Screens/LoginRegsiter/LoginRegister.jsx";
 import ForgotPassword from "./Screens/ForgotPassword/ForgotPassword.jsx";
 import ResetPassword from "./Screens/ResetPassword/ResetPassword.jsx";
 
+// ^ ------------------ Router ------------>
 const router = createBrowserRouter([
   {
-    path: "/",
+    // ? ------------------ Auth routes ------------>
+    path: "/app",
     element: <AuthLayout />,
     children: [
       {
@@ -24,6 +26,7 @@ const router = createBrowserRouter([
     ],
   },
   {
+    // ? ------------------ No Auth routes ------------>
     path: "/",
     element: <NoAuthLayout />,
     children: [
@@ -44,7 +47,7 @@ const router = createBrowserRouter([
         element: <ForgotPassword />,
       },
       {
-        path: "reset-password", // Relative path
+        path: "reset-password/:token", // Relative path
         element: <ResetPassword />,
       },
     ],

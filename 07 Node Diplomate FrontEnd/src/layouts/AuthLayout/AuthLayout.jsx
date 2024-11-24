@@ -6,25 +6,23 @@ import verifySession from "./authLayout";
 // ? ------------------ Auth layout logic ------->
 const AuthLayout = () => {
   const location = useLocation();
-
-  //* --> Check if user is logged in
   const { userToken, setUser, setUserTokenFunc } = useUserStore();
 
-  // Check if user is logged in
+  //* --> Check if user is logged in and verify the session
   useEffect(() => {
-    const token = localStorage.getItem("userToken");
-    if (token) {
-      setUserTokenFunc(token);
-      verifySession(setUser, setUserTokenFunc, token, location.pathname);
+    if (userToken) {
+      verifySession(setUser, setUserTokenFunc, userToken, location.pathname);
     }
-  }, [setUser, setUserTokenFunc, location.pathname]);
+  }, []);
 
-  if (!userToken) return <Navigate to="/" />;
+  // ! --> Redirect to login if the user is not authenticated
+  if (!userToken) {
+    return <Navigate to="/login" state={{ from: location, alertMessage: "You must log in to acces that page" }} replace />;
+  }
 
-  // ? ------------------ Auth layout component ------->
   return (
     <div>
-      AuthLayout
+      <h1>Authenticated Layout</h1>
       <Outlet />
     </div>
   );

@@ -8,13 +8,12 @@ const NoAuthLayout = () => {
 
   // * ---> Check if user is logged in
   useEffect(() => {
-    const token = localStorage.getItem("userToken");
-    if (token) {
-      setUserTokenFunc(token);
+    if (userToken) {
+      setUserTokenFunc(userToken);
     }
-  }, [setUserTokenFunc]);
+  }, []);
 
-  if (userToken) return <Navigate to="/dashboard" />;
+  if (userToken) return <Navigate to="/app" />;
 
   // ? ------------------ NoAuth layout component ------->
   return (

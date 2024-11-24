@@ -34,15 +34,13 @@ const handleSubmitRegister = async (e, values, setErrors) => {
     });
 
     //Create a custom response
-    const result = await customResponse(response, "User registered successfully", "Registration failed");
+    const result = await customResponse(response, "Confirmation email sent to the adress", "Registration failed");
 
     //* ---> Registration successful
     if(result.success){
      //Aca podrias redirigir a otra pagina o mostrar un mensaje de exito
-     setErrors({}); 
-     console.log("User registered successfully");
-     //Make a redirect to userPanel.jsx
-     window.location.href = "/userPanel";
+     setErrors({ general: "Confirmation email sent to the adress" });
+
     }
     // ! ---> Registration failed
     else{

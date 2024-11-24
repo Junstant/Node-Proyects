@@ -45,8 +45,8 @@ const handleSubmitLogin = async (e, values, setErrors, setUser, setUserTokenFunc
       setUserTokenFunc(result.data.payload.token);
       setUser(result.data.payload.user);
 
-      //Make a redirect to userPanel.jsx
-      // navigate("/userPanel");
+      // Make a redirect to the dashboard
+      // navigate("/app");
     } 
     
     // ! ---> Login failed
