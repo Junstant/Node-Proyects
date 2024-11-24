@@ -7,9 +7,9 @@ import vTokenMid from "../middlewares/auth.middleware.js";
 const modulesRouter = express.Router();
 
 // ^ ------------------ Controladores ------------------>
-// modulesRouter.use(vApiKeyMid);
-// modulesRouter.use(vTokenMid);
-// modulesRouter.use(vRoleMid(["user", "admin"]));
+modulesRouter.use(vApiKeyMid);
+modulesRouter.use(vTokenMid);
+modulesRouter.use(vRoleMid(["user", "admin"]));
 
 // * ------------------ Crear materia ------------------>
 modulesRouter.post('/', createModule);

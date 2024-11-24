@@ -1,27 +1,58 @@
 import backFetch from "../../utils/fetchHTTP.utils.js";
 import customResponse from "../../utils/responseBuilder.utils.js";
-
-// :: --------> Function to handle the form submission
-const handleSubmitRegister = async (e, values) => {
+import ENVIROMENT from "../../config/enviroment.config.js";
+import { isRequired, isEmail, isStrongPassword } from "../../utils/fieldsValidator.utils.js";
+ 
+// ^ --------> Function to handle the form submission
+const handleSubmitRegister = async (e, values, setErrors) => {
   e.preventDefault();
-
   try {
-    // Send form data to the server for registration
-    const response = await backFetch("http://localhost:3000/api/auth/register", "POST", values);
+    // ? -----> Validate form fields
+    const nameError = isRequired(values.name);
+    const emailError = isRequired(values.email) || isEmail(values.email);
+    const passwordError = isRequired(values.password) || isStrongPassword(values.password);
+
+    // ! -----> If there are validation errors, stop execution
+    if (nameError || emailError || passwordError) {
+      setErrors({ name: nameError, email: emailError, password: passwordError });
+      return;
+    }
+
+    // * -----> Create the body of the request
+    const valuesBody = {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    };
+
+    // # ---> Send form data to the server for registration
+    const response = await backFetch({
+      url: "http://localhost:3000/api/auth/register",
+      method: "POST",
+      headers: { "x-api-key": ENVIROMENT.API_INTERNAL },
+      body: valuesBody,
+    });
 
     //Create a custom response
     const result = await customResponse(response, "User registered successfully", "Registration failed");
 
+    //* ---> Registration successful
     if(result.success){
      //Aca podrias redirigir a otra pagina o mostrar un mensaje de exito
+     setErrors({}); 
+     console.log("User registered successfully");
+     //Make a redirect to userPanel.jsx
+     window.location.href = "/userPanel";
     }
+    // ! ---> Registration failed
     else{
-      console.error("Registration failed:", result.error);
+      setErrors({ general:'Error: '+ result.error.payload.detail || "Registration failed. Please check your credentials." });
     }
   } 
   // ! -----> If an error occurred, log the error
   catch (error) {
-    console.error("An error occurred:", error);
+    console.error("[Register] - An error occurred:", error);
+    setErrors({ general: "An unexpected error occurred. Please try again later." });
   }
 };
 

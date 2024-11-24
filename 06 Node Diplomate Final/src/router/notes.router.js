@@ -7,9 +7,9 @@ import vTokenMid from "../middlewares/auth.middleware.js";
 const notesRouter = express.Router();
 
 // ^ ------------------ Controladores ------------------>
-// notesRouter.use(vApiKeyMid);
-// notesRouter.use(vTokenMid);
-// notesRouter.use(vRoleMid(["user", "admin"]));
+notesRouter.use(vApiKeyMid);
+notesRouter.use(vTokenMid);
+notesRouter.use(vRoleMid(["user", "admin"]));
 
 // * ------------------ Crear notas ------------------>
 notesRouter.post('/', createNote);

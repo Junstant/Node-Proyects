@@ -7,9 +7,9 @@ import vTokenMid from "../middlewares/auth.middleware.js";
 const careerRouter = express.Router();
 
 // ^ ------------------ Controladores ------------------>
-// careerRouter.use(vApiKeyMid);
-// careerRouter.use(vTokenMid);
-// careerRouter.use(vRoleMid(["user", "admin"]));
+careerRouter.use(vApiKeyMid);
+careerRouter.use(vTokenMid);
+careerRouter.use(vRoleMid(["user", "admin"]));
 
 // * ------------------ Crear carrera ------------------>
 careerRouter.post('/', createCareer);

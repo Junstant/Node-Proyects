@@ -1,11 +1,16 @@
 import React from 'react'
 import Header from '../../components/layouts/Header'
+import { Button } from '@mui/material'
 
 const Home = () => {
   return (
     <main>
       <Header></Header>
-      Home
+      <h2>Unlock your full academic</h2>
+      <h1>potential</h1>
+      <h3>Simplify your academic life with smart tools</h3>
+      <Button variant="outlined" color="primary">About</Button>
+      <Button variant="contained" color="primary"><a href='/login'>Get started</a></Button>
     </main>
   )
 }

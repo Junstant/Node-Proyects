@@ -11,10 +11,10 @@ const registerUserController = async (req, res) => {
 //* ---> Intento de ejecutar el codigo    
   try {
     //Extraemos los datos del body
-    const { email, password } = req.body;
+    const { name ,email, password } = req.body;
 
     //! --------> Si algun campo esta vacio
-    if (!email || !password) {
+    if (!name || !email || !password) {
       //Creamos respuesta
       const response = new ResponseBuilder()
         .setOk(false)
@@ -41,7 +41,7 @@ const registerUserController = async (req, res) => {
         .setStatus(400)
         .setMessage("Bad Request")
         .setPayload({
-          detail: "[Auth.Controller.Register] - Email already registered",
+          detail: "Email already registered",
         })
         .build();
 
@@ -74,6 +74,13 @@ const registerUserController = async (req, res) => {
     // # Creamos el usuario y guardamos el usuario en la base de datos
     const user = await UserRepository.createUser(name, email, hashedPassword, verificationToken);
 
+    const userToReturn = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    }
+
     //Creamos respuesta
     const response = new ResponseBuilder()
       .setOk(true)
@@ -81,7 +88,7 @@ const registerUserController = async (req, res) => {
       .setMessage("Created")
       .setPayload({
         message: `User ${user.name} created`,
-        user: user,
+        user: userToReturn,
       })
       .build();
 
@@ -492,5 +499,50 @@ const resetPasswordController = async (req, res) => {
     }
   } 
 
+// ~ ---------------------------------------> Verificar token de usuario <---------------------------------------
+const verifyUserTokenController = async (req, res) => {
+  try{
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = await jwt.verify(token, ENVIROMENT.JWT_SECRET);
+    const user = await UserRepository.getUserByEmail(decoded.email);
 
-export {registerUserController, verifyMailController, loginUserController, forgotPasswordController, resetPasswordController};
+    //Creamos respuesta
+    const userToReturn = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    }
+
+    const response = new ResponseBuilder()
+      .setOk(true)
+      .setStatus(200)
+      .setMessage("OK")
+      .setPayload({
+        message: `Token verified for ${user.email}`,
+        user: userToReturn,
+      })
+      .build();
+
+    //? -------> Enviamos respuesta
+    console.warn(`[Auth.Controller.VerifyToken] - Token verified for ${user.email}`);
+    return res.status(200).json(response);
+  }
+  catch(error){
+    //Creamos respuesta
+    const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(500)
+      .setMessage("Internal Server Error")
+      .setPayload({
+        detail: error.message,
+      })
+      .build();
+
+    //? -------> Enviamos respuesta
+    console.error('[Auth.Controller.VerifyToken] - ' + error.message);
+    return res.status(500).json(response);
+  }
+}
+
+export {registerUserController, verifyMailController, loginUserController, forgotPasswordController, resetPasswordController, verifyUserTokenController};

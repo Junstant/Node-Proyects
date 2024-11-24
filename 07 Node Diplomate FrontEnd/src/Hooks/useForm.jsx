@@ -1,16 +1,16 @@
 import { useState } from "react";
 
-const useForm = (initialValues) => {
-    // Set the initial values
-  const [values, setValues] = useState(initialValues);
-  
-  // Handle the form change
+// Custom hook para manejar formularios
+const useForm = (initialState) => {
+  const [values, setValues] = useState(initialState);
+
+  // Maneja el cambio en los inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setValues({...values,[name]: value,});
-  }
+    setValues({ ...values, [name]: value });
+  };
 
-  return {values, handleChange};
-}
+  return { values, handleChange };
+};
 
 export default useForm;

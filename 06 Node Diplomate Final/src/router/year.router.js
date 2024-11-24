@@ -7,9 +7,9 @@ import vTokenMid from "../middlewares/auth.middleware.js";
 const yearRouter = express.Router();
 
 // ^ ------------------ Controladores ------------------>
-// yearRouter.use(vApiKeyMid);
-// yearRouter.use(vTokenMid);
-// yearRouter.use(vRoleMid(["user", "admin"]));
+yearRouter.use(vApiKeyMid);
+yearRouter.use(vTokenMid);
+yearRouter.use(vRoleMid(["user", "admin"]));
 
 // * ------------------ Crear año ------------------>
 yearRouter.post('/', createYear);
