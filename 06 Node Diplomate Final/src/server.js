@@ -27,7 +27,11 @@ const app = express();
 const PORT = ENVIROMENT.PORT || 3000;
 
 // * ------> MiddleWare CORS Config disable
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
+  allowedHeaders: ['Content-Type', 'x-api-key', 'Authorization'],
+}));
 
 // * ------> MiddleWare JSON Config
 app.use(express.json({extended: true}));

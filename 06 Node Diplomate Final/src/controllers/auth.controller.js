@@ -671,6 +671,7 @@ const deleteUserController = async (req, res) => {
   try{
     const {email, password} = req.body;
 
+    console.log(email, password)
     // ! --------> Si algun campo esta vacio
     if(!email || !password){
       const response = new ResponseBuilder()

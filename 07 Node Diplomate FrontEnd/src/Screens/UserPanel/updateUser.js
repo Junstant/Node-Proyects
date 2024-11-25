@@ -5,7 +5,7 @@ import { isRequired, isStrongPassword } from "../../utils/fieldsValidator.utils"
 import useUserStore from "../../stores/userStore";
 
 //^ --------> Function to handle the form submission
-const handleSubmitUpdate = async (e, values, setErrors) => {
+const handleSubmitUpdate = async (e, values, setErrors, user) => {
   // Prevent the default behavior of the form
   e.preventDefault();
   try {
@@ -23,7 +23,7 @@ const handleSubmitUpdate = async (e, values, setErrors) => {
     // * -----> Create the body of the first request
     const firstBody = {
       password: values.oldPassword,
-      email: values.email,
+      email: user.email,
     };
 
     // # ---> Send form data to the server for login
@@ -45,7 +45,7 @@ const handleSubmitUpdate = async (e, values, setErrors) => {
       // * -----> Create the body of the second request
       const secondBody = {
         name: values.name,
-        email: values.email,
+        email: user.email,
         password: values.newPassword,
       };
 

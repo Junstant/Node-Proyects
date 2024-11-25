@@ -26,6 +26,6 @@ authRouter.put('/update-user', vApiKeyMid ,vTokenMid, updateUserController);
 authRouter.put('/reset-password/:token', vApiKeyMid ,resetPasswordController);
 
 // * ------------------ Ruta de delete user ------------------>
-authRouter.delete('/delete-user', vApiKeyMid ,vTokenMid, deleteUserController);
+authRouter.post('/delete-user', vApiKeyMid ,vTokenMid, deleteUserController);
 
 export default authRouter;
