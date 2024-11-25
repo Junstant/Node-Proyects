@@ -2,8 +2,6 @@ import backFetch from "../../utils/fetchHTTP.utils.js";
 import customResponse from "../../utils/responseBuilder.utils.js";
 import ENVIROMENT from "../../config/enviroment.config.js";
 import { isRequired, isEmail } from "../../utils/fieldsValidator.utils.js";
-import { useNavigate } from "react-router-dom";
-
 //^ --------> Function to handle the form submission
 const handleSubmitLogin = async (e, values, setErrors, setUser, setUserTokenFunc, navigate) => {
   // Prevent the default behavior of the form

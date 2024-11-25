@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import handleSubmitLogin from "./login.js";
 import handleSubmitRegister from "./register.js";
-import { Button, Checkbox, FormControl, FormHelperText, IconButton, Input, InputAdornment, InputLabel, Alert} from "@mui/material";
-import { Eye,EyeClosed, PaperPlaneRight } from "@phosphor-icons/react";
+import { Button, Checkbox, FormControl, FormHelperText, IconButton, Input, InputAdornment, InputLabel} from "@mui/material";
+import { Eye,EyeClosed, PaperPlaneRight, Info } from "@phosphor-icons/react";
 import { usePasswordVisibility } from "../../hooks/passwordSwitch.jsx";
 import Header from "../../components/layouts/Header.jsx";
 import useUserStore from "../../stores/userStore.js";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Info } from "@phosphor-icons/react/dist/ssr";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import createHandleChange from "../../hooks/formHandlers.jsx";
+import SmoothAlert from "../../components/SmoothAlert.jsx";
 
 // ? ------------------ Login and register logic ------->
 const LoginRegister = () => {
@@ -44,7 +43,7 @@ const LoginRegister = () => {
   return (
     <div>
       <Header></Header>
-      {alertMessage && <Alert severity="error">{alertMessage}</Alert>}
+      {alertMessage && <SmoothAlert message={alertMessage} severity="error" />}
 
       {/* ------------------------------------ Login ----------------------------- */}
       <h1>Login</h1>

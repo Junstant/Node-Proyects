@@ -55,6 +55,32 @@ class UserRepository {
     return await UserRepository.saveUser(user);
   }
 
+  //^ ------------------> Update user password and name
+  static async updateUser(email, name, password) {
+    const user = await User.findOne({ email: email });
+
+    //! ---> Si el usuario no existe, lanzar un error
+    if (!user) {
+      throw new Error("[User.Repository.UpdateUser] - User not found");
+    }
+
+    user.name = name;
+    user.password = password;
+    return await UserRepository.saveUser(user);
+  }
+
+  //^ ------------------> Delete user
+  static async deleteUser(email) {
+    const user = await User.findOne({ email: email });
+
+    //! ---> Si el usuario no existe, lanzar un error
+    if (!user) {
+      throw new Error("[User.Repository.DeleteUser] - User not found");
+    }
+
+    return await User.deleteOne({ email: email });
+  }
+
   // % --------------------------------- Module related operations --------------------------------- %
 
 

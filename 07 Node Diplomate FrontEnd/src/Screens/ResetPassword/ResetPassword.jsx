@@ -3,9 +3,8 @@ import handleSubmitResetPassword from "./resetPassword.js";
 import createHandleChange from "../../hooks/formHandlers.jsx";
 import { Button, FormControl, FormHelperText, Input, InputAdornment, InputLabel, IconButton } from "@mui/material";
 import Header from "../../components/layouts/Header.jsx";
-import { Info } from "@phosphor-icons/react";
 import { useParams } from "react-router-dom";
-import { Eye, EyeClosed } from "@phosphor-icons/react";
+import { Eye, EyeClosed, Info } from "@phosphor-icons/react";
 import { usePasswordVisibility } from "../../hooks/passwordSwitch.jsx";
 
 // ? --------> Reset password component

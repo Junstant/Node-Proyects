@@ -574,4 +574,181 @@ const verifyUserTokenController = async (req, res) => {
   }
 }
 
-export {registerUserController, verifyMailController, loginUserController, forgotPasswordController, resetPasswordController, verifyUserTokenController};
+// ~ ---------------------------------------> Update user <---------------------------------------
+const updateUserController = async (req, res) => {
+  try{
+    const {name, password, email} = req.body;
+    
+    // ! --------> Si el usuario no existe
+    if(!user){
+      const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(404)
+      .setMessage("Bad Request")
+      .setPayload({
+        detail: "User not found",
+      })
+      .build();
+      console.warn("[Auth.Controller.UpdateUser] - User not found in request User update");
+      return res.status(404).json(response);
+    }
+    
+    // ! --------> Si algun campo esta vacio
+    if(!name || !password || !email){
+      const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(400)
+      .setMessage("Bad Request")
+      .setPayload({
+        detail: "Missing required fields",
+      })
+      .build();
+      console.warn("[Auth.Controller.UpdateUser] - Missing required fields in request User update");
+      return res.status(400).json(response);
+    }
+    const user = await UserRepository.getUserByEmail(email);
+    
+    // * --------> Si el usuario existe, encriptamos la contraseña y actualizamos el usuario
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const updatedUser = await UserRepository.updateUser(email, name, hashedPassword);
+
+    // ! --------> Si no se pudo actualizar el usuario
+    if(!updatedUser){
+      const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(500)
+      .setMessage("Internal Server Error")
+      .setPayload({
+        detail: "Error updating user",
+      })
+      .build();
+      console.warn("[Auth.Controller.UpdateUser] - Error updating user in request User update");
+      return res.status(500).json(response);
+    }
+
+    //Creamos respuesta
+    const userToReturn = {
+      id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      role: updatedUser.role,
+    }
+
+    //Creamos respuesta
+    const response = new ResponseBuilder()
+      .setOk(true)
+      .setStatus(200)
+      .setMessage("OK")
+      .setPayload({
+        message: `User ${user.email} updated`,
+        user: userToReturn,
+      })
+      .build();
+
+    //? -------> Enviamos respuesta
+    console.warn(`[Auth.Controller.UpdateUser] - User ${user.email} updated`);
+    return res.status(200).json(response);
+  }
+  catch(error){
+    //Creamos respuesta
+    const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(500)
+      .setMessage("Internal Server Error")
+      .setPayload({
+        detail: error.message,
+      })
+      .build();
+
+    //? -------> Enviamos respuesta
+    console.error('[Auth.Controller.UpdateUser] - ' + error.message);
+    return res.status(500).json(response);
+  }
+}
+
+// ~ ---------------------------------------> Delete user <---------------------------------------
+const deleteUserController = async (req, res) => {
+  try{
+    const {email, password} = req.body;
+
+    // ! --------> Si algun campo esta vacio
+    if(!email || !password){
+      const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(400)
+      .setMessage("Bad Request")
+      .setPayload({
+        detail: "Missing required fields",
+      })
+      .build();
+      console.warn("[Auth.Controller.DeleteUser] - Missing required fields in request User delete");
+      return res.status(400).json(response);
+    }
+    //Buscamos el usuario
+    const user = await UserRepository.getUserByEmail(email);
+
+    // ! --------> Si el usuario no existe
+    if(!user){
+      const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(404)
+      .setMessage("Bad Request")
+      .setPayload({
+        detail: "User not found",
+      })
+      .build();
+      console.warn("[Auth.Controller.DeleteUser] - User not found in request User delete");
+      return res.status(404).json(response);
+    }
+    //Comparamos las contraseñas
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    // ! --------> Si la contraseña no coincide
+    if(!passwordMatch){
+      const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(401)
+      .setMessage("Unauthorized")
+      .setPayload({
+        detail: "Incorrect password",
+      })
+      .build();
+      console.warn("[Auth.Controller.DeleteUser] - Incorrect password in request User delete");
+      return res.status(401).json(response);
+    }
+
+    // * --------> Si el usuario existe, lo eliminamos
+    await UserRepository.deleteUser(email);
+
+    //Creamos respuesta
+    const response = new ResponseBuilder()
+      .setOk(true)
+      .setStatus(200)
+      .setMessage("OK")
+      .setPayload({
+        message: `User ${user.email} deleted`,
+      })
+      .build();
+
+    //? -------> Enviamos respuesta
+    console.warn(`[Auth.Controller.DeleteUser] - User ${user.email} deleted`);
+    return res.status(200).json(response);
+  }
+  catch(error){
+    //Creamos respuesta
+    const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(500)
+      .setMessage("Internal Server Error")
+      .setPayload({
+        detail: error.message,
+      })
+      .build();
+
+    //? -------> Enviamos respuesta
+    console.error('[Auth.Controller.DeleteUser] - ' + error.message);
+    return res.status(500).json(response);
+  }
+}
+
+export {registerUserController, verifyMailController, loginUserController, forgotPasswordController, resetPasswordController, verifyUserTokenController, updateUserController, deleteUserController};

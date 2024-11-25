@@ -1,125 +1,161 @@
-import React from "react";
+import React, { useState } from "react";
 import useUserStore from "../../stores/userStore";
 import { useLocation } from "react-router-dom";
 import AppHeader from "../../components/layouts/AppHeader";
-import {Avatar, Button, Alert, FormControl, Checkbox,FormHelperText, Input, InputAdornment, InputLabel} from "@mui/material"; 
-import { Eye, EyeClosed } from "@phosphor-icons/react";
+import { Avatar, Button, Modal, FormControl, IconButton, Checkbox, FormHelperText, Input, InputAdornment, InputLabel } from "@mui/material";
+import { Eye, EyeClosed, Info, Trash } from "@phosphor-icons/react";
 import { usePasswordVisibility } from "../../hooks/passwordSwitch";
 import createHandleChange from "../../hooks/formHandlers";
-import {Info} from "@phosphor-icons/react/dist/ssr";
+import SmoothAlert from "../../components/SmoothAlert";
+import handleSubmitUpdate from "./updateUser";
 
 // ? ------------------ UserPanel Logic ------->
 const UserPanel = () => {
   const { user } = useUserStore();
 
+  // # -> Custom hook to manage password visibility
+  const { showPassword, togglePasswordVisibility, handleMouseDown, handleMouseUp } = usePasswordVisibility();
+
+  // # -> States to manage form values
+  const [valuesUpdate, setValuesUpdate] = useState({ name: user.name, email: user.email, oldPassword: "", newPassword: "" });
+
+  // # -> States to manage form errors
+  const [errorsUpdate, setErrorsUpdate] = useState({});
+
+  // # -> Function to handle changes in the update fields
+  const handleChangeUpdate = createHandleChange(setValuesUpdate);
+
   // # -> Location hook
   const location = useLocation();
   const alertMessage = location.state?.alertMessage || "";
+
+  // # -> Function to switch the modal visibility
+  const [open, setOpen] = useState(false);
 
   // ? ------------------ UserPanel Component ------->
   return (
     <div>
       <AppHeader />
       {/* Alert */}
-      {alertMessage && <Alert severity="error">{alertMessage}</Alert>}
+      {alertMessage && <SmoothAlert message={alertMessage} severity="error" />}
       <div>
         {/* Left panel */}
         <div>
           {/* Top panel */}
           <div>
-            <Avatar src="https://avatar.iran.liara.run/public/41"/>
+            <Avatar src="https://avatar.iran.liara.run/public/41" />
             <h1>{user.name}</h1>
           </div>
           {/* Down panel */}
           <div>
             <h3>My personal information</h3>
-            //form with name, lastname, email, old password, new password, update button, deleteaccount with a checkbox with an acceptance
-            <form onSubmit={(e) => handleSubmitUpdate(e, valuesUpdate, setErrorsUpdate, user, setUser, setUserTokenFunc)}>
+            <form onSubmit={(e) => handleSubmitUpdate(e, valuesUpdate, setErrorsUpdate)}>
               {/* Name */}
               <div>
                 <FormControl variant="standard">
                   <InputLabel htmlFor="update-name">Name:</InputLabel>
-                  <Input id="update-name" name="name" type="text" placeholder="John" value={valuesUpdate.name} onChange={handleChangeUpdate} required autoComplete="name"/>
+                  <Input id="update-name" name="name" type="text" placeholder="John" value={valuesUpdate.name} onChange={handleChangeUpdate} required autoComplete="name" />
                   <FormHelperText>{errorsUpdate.name && <label className="error">{errorsUpdate.name}</label>}</FormHelperText>
-                </FormControl>
-              </div>
-              {/* Lastname */}
-              <div>
-                <FormControl variant="standard">
-                  <InputLabel htmlFor="update-lastname">Lastname:</InputLabel>
-                  <Input id="update-lastname" name="lastname" type="text" placeholder="Doe" value={valuesUpdate.lastname} onChange={handleChangeUpdate} required autoComplete="lastname"/>
-                  <FormHelperText>{errorsUpdate.lastname && <label className="error">{errorsUpdate.lastname}</label>}</FormHelperText>
                 </FormControl>
               </div>
               {/* Email */}
               <div>
-                <FormControl variant="standard">
+                <FormControl variant="standard" disabled >
                   <InputLabel htmlFor="update-email">Email:</InputLabel>
-                  <Input id="update-email" name="email" type="email" placeholder="example@gmail.com" value={valuesUpdate.email} onChange={handleChangeUpdate} required autoComplete="email"/>
-                  <FormHelperText>{errorsUpdate.email && <label className="error">{errorsUpdate.email}</label>}</FormHelperText>
+                  <Input id="update-email" name="email" type="email" placeholder="example@gmail.com" value={valuesUpdate.email} onChange={handleChangeUpdate} required autoComplete="email" disabled />
                 </FormControl>
+              </div>
+              {/* Password */}
+              <div>
+              <FormControl variant="standard">
+                <InputLabel htmlFor="update-old-password">Old Password:</InputLabel>
+                <Input
+                  id="update-old-password"
+                  name="oldPassword"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Old password"
+                  value={valuesUpdate.oldPassword}
+                  onChange={handleChangeUpdate}
+                  required
+                  autoComplete="current-password"
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton aria-label="toggle password visibility" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onClick={togglePasswordVisibility}>
+                        {showPassword ? <EyeClosed /> : <Eye />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+                <FormHelperText>{errorsUpdate.oldPassword && <label className="error">{errorsUpdate.oldPassword}</label>}</FormHelperText>
+              </FormControl>
+              </div>
+
+              {/* New Password */}
+              <div>
+              <FormControl variant="standard">
+                <InputLabel htmlFor="update-new-password">New Password:</InputLabel>
+                <Input
+                  id="update-new-password"
+                  name="newPassword"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="New password"
+                  value={valuesUpdate.newPassword}
+                  onChange={handleChangeUpdate}
+                  required
+                  autoComplete="new-password"
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton aria-label="toggle password visibility" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onClick={togglePasswordVisibility}>
+                        {showPassword ? <EyeClosed /> : <Eye />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+                <FormHelperText>{errorsUpdate.newPassword && <label className="error">{errorsUpdate.newPassword}</label>}</FormHelperText>
+              </FormControl>
+              </div>
+              {/* Update button */}
+              <Button type="submit" variant="contained" startIcon={<Info />}>
+                Update
+              </Button>
+              {errorsUpdate.general && <p className="error general">{errorsUpdate.general}</p>}
+            </form>
+
+            {/* Delete account */}
+            <div>
+              <h3>Delete account</h3>
+              <Button variant="contained" startIcon={<Trash />} onClick={() => setOpen(true)}>
+                Delete account
+              </Button>
+              <Modal open={open} onClose={() => setOpen(false)}>
+                <div>
+                <form>
+                  <h2>Please enter your password to delete your account</h2>
+                  <FormControl>
+             
+                    <InputLabel htmlFor="delete-password">Password:</InputLabel>
+                    <Input
+                      id="delete-password"
+                      name="deletePassword"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Password"
+                      required
+                      autoComplete="current-password"
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton aria-label="toggle password visibility" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onClick={togglePasswordVisibility}>
+                            {showPassword ? <EyeClosed /> : <Eye />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  </FormControl>
+                  </form>
+                </div>
+              </Modal>
+            </div>
+
           </div>
-          {/* Password */}
-          <FormControl variant="standard">
-            <InputLabel htmlFor="update-old-password">Old Password:</InputLabel>
-            <Input
-              id="update-old-password"
-              name="oldPassword"
-              type={showPassword ? "text" : "password"}
-              placeholder="Old password"
-              value={valuesUpdate.oldPassword}
-              onChange={handleChangeUpdate}
-              required
-              autoComplete="current-password"
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onMouseDown={handleMouseDown}
-                    onMouseUp={handleMouseUp}
-                  >
-                    {showPassword ? <EyeClosed /> : <Eye />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-            <FormHelperText>{errorsUpdate.oldPassword && <label className="error">{errorsUpdate.oldPassword}</label>}</FormHelperText>
-          </FormControl>
-
-          {/* New Password */}
-          <FormControl variant="standard">
-            <InputLabel htmlFor="update-new-password">New Password:</InputLabel>
-            <Input
-              id="update-new-password"
-              name="newPassword"
-              type={showPassword ? "text" : "password"}
-              placeholder="New password"
-              value={valuesUpdate.newPassword}
-              onChange={handleChangeUpdate}
-              required
-              autoComplete="new-password"
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onMouseDown={handleMouseDown}
-                    onMouseUp={handleMouseUp}
-                  >
-                    {showPassword ? <EyeClosed /> : <Eye />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-            <FormHelperText>{errorsUpdate.newPassword && <label className="error">{errorsUpdate.newPassword}</label>}</FormHelperText>
-          </FormControl>    
-          {/* Update button */}
-          <Button type="submit" variant="contained" endIcon={<Info />}>
-            Update
-          </Button>
-          {errorsUpdate.general && <p className="error general">{errorsUpdate.general}</p>}
-        </form>
-        </div>
-
         </div>
         {/* Right panel */}
         <div></div>
