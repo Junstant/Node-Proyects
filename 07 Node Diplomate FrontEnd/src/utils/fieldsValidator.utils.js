@@ -1,28 +1,28 @@
 // ^ --------------------------- validatorUtils.js ------------>
-// Validación de campos requeridos
+// validation of required fields
 export const isRequired = (value) => {
     return value ? null : "This field is required.";
   };
   
-  // Validación de longitud mínima
+  // Validation of minimum length
   export const minLength = (value, length) => {
     return value && value.length >= length
       ? null
       : `It has to be at least ${length} characters length.`;
   };
   
-  // Validación de correo electrónico
+  // Validation of email
   export const isEmail = (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(value) ? null : "Invalid email address.";
   };
   
-  // Validación numérica
+  // Validation of number
   export const isNumber = (value) => {
     return !isNaN(value) ? null : "It has to be a number.";
   };
   
-  // Validación de contraseña (ejemplo)
+  // Validation of strong password
   export const isStrongPassword = (value) => {
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -31,7 +31,7 @@ export const isRequired = (value) => {
       : "At least 8 char, one letter, one number and one special character.";
   };
   
-  // Validación genérica para múltiples reglas
+  // Error message for the field
   export const validateField = (value, rules) => {
     for (let rule of rules) {
       const error = rule(value);

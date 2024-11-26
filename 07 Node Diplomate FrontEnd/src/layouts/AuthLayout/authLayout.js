@@ -5,6 +5,8 @@ import ENVIROMENT from "../../config/enviroment.config";
 // ^ --------> Function to verify the user's session
 const verifySession = async (setUser, setUserTokenFunc, token) => {
   try {
+
+    // ! -----> If there is no token, log out the user
     if (!token) {
       console.log("No token found");
       setUser(null);

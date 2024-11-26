@@ -15,7 +15,7 @@ yearRouter.use(vRoleMid(["user", "admin"]));
 yearRouter.post('/', createYear);
 
 // * ------------------ Eliminar año ------------------>
-yearRouter.delete('/', deleteYear);
+yearRouter.put('/', deleteYear);
 
 // * ------------------ Obtener todos los años ------------------>
 yearRouter.get('/', getAllYears);

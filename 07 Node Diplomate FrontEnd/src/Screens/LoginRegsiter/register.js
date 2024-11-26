@@ -12,7 +12,7 @@ const handleSubmitRegister = async (e, values, setErrors) => {
     const emailError = isRequired(values.email) || isEmail(values.email);
     const passwordError = isRequired(values.password) || isStrongPassword(values.password);
 
-    // ! -----> If there are validation errors, stop execution
+    // ! -----> If name, email or password are missing
     if (nameError || emailError || passwordError) {
       setErrors({ name: nameError, email: emailError, password: passwordError });
       return;
@@ -38,10 +38,9 @@ const handleSubmitRegister = async (e, values, setErrors) => {
 
     //* ---> Registration successful
     if(result.success){
-     //Aca podrias redirigir a otra pagina o mostrar un mensaje de exito
      setErrors({ general: "Confirmation email sent to the adress" });
-
     }
+    
     // ! ---> Registration failed
     else{
       setErrors({ general:'Error: '+ result.error.payload.detail || "Registration failed. Please check your credentials." });

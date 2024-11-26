@@ -15,7 +15,7 @@ careerRouter.use(vRoleMid(["user", "admin"]));
 careerRouter.post('/', createCareer);
 
 // * ------------------ Eliminar carrera ------------------>
-careerRouter.delete('/', deleteCareer);
+careerRouter.put('/delete', deleteCareer);
 
 // * ------------------ Actualizar carrera ------------------>
 careerRouter.put('/', updateCareer);

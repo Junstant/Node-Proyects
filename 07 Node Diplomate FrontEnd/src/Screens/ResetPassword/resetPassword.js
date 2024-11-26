@@ -3,7 +3,6 @@ import customResponse from "../../utils/responseBuilder.utils.js";
 import ENVIROMENT from "../../config/enviroment.config.js";
 import { isRequired, isStrongPassword } from "../../utils/fieldsValidator.utils.js";
 
-
 // ^ --------> Function to handle the form submission
 const handleSubmitResetPassword = async (e, values, setErrors, token) => {
   e.preventDefault();
@@ -12,13 +11,13 @@ const handleSubmitResetPassword = async (e, values, setErrors, token) => {
     const passwordError = isRequired(values.password) || isStrongPassword(values.password);
     const confirmPasswordError = isRequired(values.confirmPassword) || isStrongPassword(values.confirmPassword);
 
-    // ! -----> If there are validation errors, stop execution
+    // ! -----> If password or confirmPassword are missing
     if (passwordError || confirmPasswordError) {
       setErrors({ password: passwordError, confirmPassword: confirmPasswordError });
       return;
     }
 
-    //! -----> If the passwords do not match, stop execution
+    //! -----> If the passwords do not match
     if (values.password !== values.confirmPassword) {
       setErrors({ general: "Passwords do not match" });
       return;
@@ -43,9 +42,9 @@ const handleSubmitResetPassword = async (e, values, setErrors, token) => {
 
     //* ---> Password change successful
     if (result.success) {
-      //Aca podrias redirigir a otra pagina o mostrar un mensaje de exito
       setErrors({ general: "Password changed" });
     }
+
     // ! ---> Password change failed
     else {
       setErrors({ general: "Error: " + result.error.payload.detail || "Password change failed. Please check your credentials." });

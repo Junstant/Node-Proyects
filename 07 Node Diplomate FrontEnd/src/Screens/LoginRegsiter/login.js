@@ -12,7 +12,7 @@ const handleSubmitLogin = async (e, values, setErrors, setUser, setUserTokenFunc
     const emailError = isRequired(values.email) || isEmail(values.email);
     const passwordError = isRequired(values.password)
   
-    // ! -----> If there are validation errors, update the state and stop execution
+    // ! -----> If email or password are missing
     if (emailError || passwordError) {
       setErrors({ email: emailError, password: passwordError });
       return;

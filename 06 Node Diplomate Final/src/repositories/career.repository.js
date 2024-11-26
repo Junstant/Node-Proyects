@@ -1,6 +1,7 @@
 import Career from "../models/career.model.js";
 import { Career as CareerModel } from "../dataBase/models.js";
 import UserRepository from "./user.repository.js";
+import YearRepository from "./year.repository.js";
 
 // Clase para manejar operaciones relacionadas con carreras en la base de datos
 class CareerRepository {
@@ -54,6 +55,12 @@ class CareerRepository {
     const removed = await UserRepository.removeCareerFromUser(userId, careerToRemove._id);
     if (!removed) {
       throw new Error("[Career.Repository.Remove] - Error removing career from user");
+    }
+
+    //* ---> Elinar los años de la carrera
+    const yearsToRemove = await YearRepository.getAllYears(careerToRemove._id);
+    for (const year of yearsToRemove) {
+      await YearRepository.removeYear(year.year, careerToRemove._id);
     }
 
     //* ---> Si existe, eliminarla

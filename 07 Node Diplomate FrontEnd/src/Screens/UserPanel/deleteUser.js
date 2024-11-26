@@ -11,7 +11,7 @@ const handleSubmitDelete = async (e, values, setErrors, user, navigate) => {
     // ? -----> Validate form fields
     const passwordError = isRequired(values.deletePassword);
 
-    // ! -----> If there are validation errors, update the state and stop execution
+    // ! -----> If password is missing
     if (passwordError) {
       setErrors({ password: passwordError });
       return;
@@ -28,7 +28,7 @@ const handleSubmitDelete = async (e, values, setErrors, user, navigate) => {
     // # ---> Send form data to backend for delete
     const response = await backFetch({
       url: "http://localhost:3000/api/auth/delete-user",
-      method: 'POST',
+      method: 'PUT',
       headers: { "x-api-key": ENVIROMENT.API_INTERNAL, Authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       body: valuesBody,
     });
@@ -38,10 +38,8 @@ const handleSubmitDelete = async (e, values, setErrors, user, navigate) => {
 
     //* ---> Delete successful
     if (result.success) {
-      // Clear errors if login is successful
+      // Clear errors and navigate to the home page
       setErrors({});
-
-      // Make a redirect to the login page
       navigate("/");
     }
 

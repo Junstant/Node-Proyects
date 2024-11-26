@@ -37,7 +37,7 @@ const UpdateForm = () => {
       <div>
         <FormControl variant="standard" disabled>
           <InputLabel htmlFor="update-email">Email:</InputLabel>
-          <Input id="update-email" name="email" type="email" value={valuesUpdate.email} disabled />
+          <Input id="update-email" name="email" type="email" value={valuesUpdate.email} disabled autoComplete="email" />
         </FormControl>
       </div>
 

@@ -3,13 +3,13 @@ import customResponse from "../../../utils/responseBuilder.utils";
 import ENVIROMENT from "../../../config/enviroment.config";
 import { isRequired } from "../../../utils/fieldsValidator.utils";
 
-//^ --------> Function to handle the form submission
+//^ --------> Function to handle the creation of a new career
 const handleCreateCareer = async (setCareers, setErrors, user) => {
   try {
     // ? -----> Validate form fields
     const userId = isRequired(user.id);
 
-    // ! -----> If there are validation errors, update the state and stop execution
+    // ! -----> If userId is missing
     if (userId) {
       setErrors({ career: userId });
       return;
@@ -49,9 +49,10 @@ const handleCreateCareer = async (setCareers, setErrors, user) => {
     else {
       setErrors({ career: result.message });
     }
-}
-    // ! -----> If there is an error, update the state
-    catch (error) {
+  } 
+  
+  // ! -----> If there is an error, update the state
+  catch (error) {
     console.error("[handleCreateCareer] Error:", error);
     setErrors({ career: "An error occurred while creating the career" });
   }

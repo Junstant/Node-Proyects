@@ -13,7 +13,7 @@ const handleSubmitUpdate = async (e, values, setErrors, user) => {
     const oldPasswordError = isRequired(values.oldPassword) || isStrongPassword(values.oldPassword);
     const newPasswordError = isRequired(values.newPassword) || isStrongPassword(values.newPassword);
 
-    // ! -----> If there are validation errors, update the state and stop execution
+    // ! -----> If name, oldPassword or newPassword are missing
     if (nameError || oldPasswordError || newPasswordError) {
       setErrors({ name: nameError, oldPassword: oldPasswordError, newPassword: newPasswordError });
       return;
@@ -75,8 +75,10 @@ const handleSubmitUpdate = async (e, values, setErrors, user) => {
     else {
       setErrors({ general: "Error: " + firstResult.error.payload.detail || "Password does not match. Please check your credentials." });
     }
-  } catch (error) {
-    // ! -----> Unexpected error
+  } 
+  
+  // ! -----> Unexpected error
+  catch (error) {
     console.error("[Update] - An error occurred:", error);
     setErrors({ general: "An unexpected error occurred. Please try again later." });
   }

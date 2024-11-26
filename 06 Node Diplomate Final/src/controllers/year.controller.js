@@ -73,7 +73,7 @@ const deleteYear = async (req, res) => {
     }
 
     // ^ --------------> Enviar los datos a la función de validación
-    const Validations = modulesValidations({year});
+    const Validations = modulesValidations(year);
 
     // ^ --------------> Validar si hay errores
     if(Validations.getOk() === false){
@@ -123,7 +123,7 @@ const deleteYear = async (req, res) => {
 
 // ~ ------------------------------------> Get all years from a career <------------------------------------ ~
 const getAllYears = async (req, res) => {
-  const { careerId } = req.body;
+  const { careerId } = req.query;
 
   try {
     //! ---> Si no se envía la carrera, lanzar un error
