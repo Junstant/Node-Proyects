@@ -17,13 +17,7 @@ class YearRepository {
 
   //^ ---> Create a new year
   static async createYear(year, careerId) {
-    const yearFinded = await Year.findOne({ year: year });
-
-    //! ---> Si el año ya existe, lanzar un error
-    if (yearFinded) {
-      throw new Error("[Year.Repository.Create] - Year already exists");
-    }
-    //* ---> Si no existe lo creo
+    // Create the new year
     const newYear = new db.Year({year});
 
     // Agregar el año a la carrera
