@@ -20,7 +20,7 @@ const AppHeader = () => {
         </div>
         {/* Settings */}    
         <div>
-            <Link to="/settings"><Gear/></Link>
+            <Link to="/app/userPanel"><Gear/></Link>
         </div>
         {/* Avatar */}
         <div>

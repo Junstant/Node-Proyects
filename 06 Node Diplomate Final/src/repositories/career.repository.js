@@ -28,13 +28,7 @@ class CareerRepository {
 
   //^ ------------------> Crear una nueva carrera
   static async createCareer(userId, name) {
-    const careerFinded = await Career.findOne({ name });
-
-    //! ---> Si la carrera ya existe, lanzar un error
-    if (careerFinded) {
-      throw new Error("[Career.Repository.Create] - Career already exists");
-    }
-    //* ---> Si no existe, crearla
+    // Crear la nueva carrera
     const newCareer = new CareerModel({ userId, name });
 
     // Agregar la carrera al usuario

@@ -2,7 +2,6 @@ import backFetch from "../../utils/fetchHTTP.utils";
 import customResponse from "../../utils/responseBuilder.utils";
 import ENVIROMENT from "../../config/enviroment.config";
 import { isRequired, isStrongPassword } from "../../utils/fieldsValidator.utils";
-import useUserStore from "../../stores/userStore";
 
 //^ --------> Function to handle the form submission
 const handleSubmitUpdate = async (e, values, setErrors, user) => {

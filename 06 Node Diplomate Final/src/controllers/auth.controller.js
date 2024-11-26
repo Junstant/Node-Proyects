@@ -579,19 +579,6 @@ const updateUserController = async (req, res) => {
   try{
     const {name, password, email} = req.body;
     
-    // ! --------> Si el usuario no existe
-    if(!user){
-      const response = new ResponseBuilder()
-      .setOk(false)
-      .setStatus(404)
-      .setMessage("Bad Request")
-      .setPayload({
-        detail: "User not found",
-      })
-      .build();
-      console.warn("[Auth.Controller.UpdateUser] - User not found in request User update");
-      return res.status(404).json(response);
-    }
     
     // ! --------> Si algun campo esta vacio
     if(!name || !password || !email){
@@ -607,6 +594,20 @@ const updateUserController = async (req, res) => {
       return res.status(400).json(response);
     }
     const user = await UserRepository.getUserByEmail(email);
+    
+    // ! --------> Si el usuario no existe
+    if(!user){
+      const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(404)
+      .setMessage("Bad Request")
+      .setPayload({
+        detail: "User not found",
+      })
+      .build();
+      console.warn("[Auth.Controller.UpdateUser] - User not found in request User update");
+      return res.status(404).json(response);
+    }
     
     // * --------> Si el usuario existe, encriptamos la contraseña y actualizamos el usuario
     const hashedPassword = await bcrypt.hash(password, 10);

@@ -8,7 +8,7 @@ import Header from "../../components/layouts/Header.jsx";
 import useUserStore from "../../stores/userStore.js";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import createHandleChange from "../../hooks/formHandlers.jsx";
-import SmoothAlert from "../../components/SmoothAlert.jsx";
+import SmoothAlert from "../../components/common/SmoothAlert.jsx";
 
 // ? ------------------ Login and register logic ------->
 const LoginRegister = () => {

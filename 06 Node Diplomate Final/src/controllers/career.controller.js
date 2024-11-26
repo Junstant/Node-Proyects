@@ -188,8 +188,7 @@ const deleteCareer = async (req, res) => {
 // ~ ------------------------------------> Get all careers from a user <------------------------------------ ~
 const getAllCareers = async (req, res) => {
   // Extraer datos del body
-  const { userId } = req.body;
-
+  const { userId } = req.query;
   try {
     //! ---> Validar si los campos requeridos están presentes
     if (!userId) {
@@ -197,6 +196,7 @@ const getAllCareers = async (req, res) => {
         .setOk(false)
         .setStatus(400)
         .setMessage("Missing required fields")
+        .setPayload({ userId })
         .build();
 
       console.error("[Career.Controller.GetAll] - Missing required fields (userId)");
