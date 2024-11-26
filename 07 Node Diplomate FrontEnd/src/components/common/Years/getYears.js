@@ -5,14 +5,14 @@ import { isRequired } from "../../../utils/fieldsValidator.utils";
 import { getOrdinalSuffix } from "../../../utils/careerHelper.utils";
 
 //^ --------> Function to handle the retrieval of years
-const handleGetYears = async (careerId, setErrors) => {
+const handleGetYears = async (careerId) => {
   try {
     // ? -----> Validate careerId
     const id = isRequired(careerId);
 
     // ! -----> If careerId is missing
     if (id) {
-      setErrors({ career: id });
+      console.error("[handleGetYears] Error: Career ID is missing");
       return [];
     }
 
@@ -42,15 +42,14 @@ const handleGetYears = async (careerId, setErrors) => {
     
     // ! -----> Year retrieval failed
     else {
-      setErrors({ career: result.message });
+      console.error("[handleGetYears] Error:", result.error.payload.detail);
       return [];
     }
 
   } 
   // ! -----> If there is an error, update the state
   catch (error) {
-    console.error("[handleGetYears] Error:", error);
-    setErrors({ career: "An error occurred while retrieving the years" });
+    console.error("[handleGetYears] - An error occurred:", error);
     return [];
   }
 };

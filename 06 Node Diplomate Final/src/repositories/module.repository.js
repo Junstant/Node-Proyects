@@ -32,7 +32,7 @@ class ModuleRepository {
     const updateData = {};
 
     // Asignar directamente campos que no son arrays o no requieren push
-    const directFields = ["name", "location", "professor", "dependencies", "state", "period"];
+    const directFields = ["name", "location", "professor", "dependencies", "state", "period", "color"];
     for (const field of directFields) {
       if (data[field] !== undefined) {
         updateData[field] = data[field];

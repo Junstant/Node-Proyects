@@ -5,16 +5,19 @@ import verifySession from "./authLayout";
 
 // ? ------------------ Auth layout logic ------->
 const AuthLayout = () => {
-  const { userToken, setUser, setUserTokenFunc, user } = useUserStore();
+  const {userToken, setCareers, setUser, setUserTokenFunc, user, careers } = useUserStore();
   const location = useLocation();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const verify = async () => {
       if (userToken) {
+        // * -----> Verify the session
         try {
-          await verifySession(setUser, setUserTokenFunc, userToken);
-        } catch (error) {
+          await verifySession(setCareers ,setUser, setUserTokenFunc, userToken, user);
+        } 
+        // ! -----> If there is an error, log out the user
+        catch (error) {
           console.error("Error verifying session:", error);
           setUser(null);
           setUserTokenFunc(null);
@@ -38,6 +41,7 @@ const AuthLayout = () => {
   return (
     <div>
       <h1>Authenticated Layout</h1>
+      <p>{user.name}</p>
       <Outlet />
     </div>
   );

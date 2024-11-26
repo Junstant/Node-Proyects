@@ -151,6 +151,19 @@ const validationSchema = {
     },
   },
 
+  //^ ----> Validación de color
+  color: {
+    required: false,
+    type: "string",
+    errorMsg: "Color must be a valid hexadecimal color code",
+    customValidator: (color, resHelp) => {
+      const hexColorPattern = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+      if (!hexColorPattern.test(color)) {
+        resHelp("color", "Invalid color format. Must be a valid hexadecimal code (e.g., #FFF or #123456)");
+      }
+    },
+  },
+
 
   //^ ----> Validación de año tiene que ser un número entre 1 y 20
   year: {

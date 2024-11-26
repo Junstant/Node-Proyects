@@ -7,48 +7,53 @@ import Home from "./Screens/Home/Home.jsx";
 import LoginRegister from "./Screens/LoginRegsiter/LoginRegister.jsx";
 import ForgotPassword from "./Screens/ForgotPassword/ForgotPassword.jsx";
 import ResetPassword from "./Screens/ResetPassword/ResetPassword.jsx";
+import Modules from "./Screens/Modules/Modules.jsx";
 
 // ^ ------------------ Router ------------>
 const router = createBrowserRouter([
   {
     // ? ------------------ Auth routes ------------>
     path: "/app",
-    element: <AuthLayout />,
+    element: <AuthLayout/>,
     children: [
       {
         path: "",
-        element: <Dashboard />,
+        element: <Dashboard/>,
       },
       {
         path: "userPanel", 
-        element: <UserPanel />,
+        element: <UserPanel/>,
       },
+      {
+        path: "modules",
+        element: <Modules/>,
+      }
     ],
   },
   {
     // ? ------------------ No Auth routes ------------>
     path: "/",
-    element: <NoAuthLayout />,
+    element: <NoAuthLayout/>,
     children: [
       {
         path: "",
-        element: <Home />,
+        element: <Home/>,
       },
       {
         path: "login",
-        element: <LoginRegister />,
+        element: <LoginRegister/>,
       },
       {
         path: "register",
-        element: <LoginRegister />,
+        element: <LoginRegister/>,
       },
       {
         path: "forgot-password", 
-        element: <ForgotPassword />,
+        element: <ForgotPassword/>,
       },
       {
         path: "reset-password/:token", // Relative path
-        element: <ResetPassword />,
+        element: <ResetPassword/>,
       },
     ],
   },

@@ -5,14 +5,14 @@ import { isRequired } from "../../../utils/fieldsValidator.utils";
 import handleGetYears from "../Years/getYears";
 
 //^ --------> Function to handle the get careers
-const getCareers = async (setCareers, setErrors, user) => {
+const getCareers = async (setCareers, user) => {
   try {
     // ? -----> Validate user ID
     const userId = isRequired(user.id);
 
     // ! -----> If userId is missing
     if (userId) {
-      setErrors({ career: userId });
+      console.error("[getCareers] Error: User ID is missing");
       return;
     }
 
@@ -34,7 +34,7 @@ const getCareers = async (setCareers, setErrors, user) => {
       // Fetch years for each career
       const careers = await Promise.all(
         result.data.payload.careers.map(async (career) => {
-          const years = await handleGetYears(career._id, setErrors); // Fetch years for each career
+          const years = await handleGetYears(career._id); // Fetch years for each career
           return {
             id: career._id,
             name: career.name,
@@ -44,19 +44,19 @@ const getCareers = async (setCareers, setErrors, user) => {
       );
       // Update the state with the careers
       setCareers(careers);
-      setErrors({});
     } 
     
     // ! -----> Careers loading failed
     else {
-      setErrors({ career: result.message });
+      console.error("[getCareers] Error:", result.error.payload.detail);
+      setCareers([]);
     }
   } 
   
   //! -----> If there is an error, update the state
   catch (error) {
-    console.error("[getCareers] Error:", error);
-    setErrors({ career: "An error occurred while loading the careers" });
+    console.error("[getCareers] - An error occurred:", error);
+    setCareers([]);
   }
 };
 

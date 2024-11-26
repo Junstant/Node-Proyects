@@ -4,7 +4,9 @@ const TOKEN_KEY = "TOKEN";
 // ^ --------------> Token key for local storage
 const useUserStore = create((set) => ({
   user: null,
+  careers: [],
   userToken: window.localStorage.getItem(TOKEN_KEY) || null,
+  setCareers: (careers) => set({ careers }),
   setUser: (user) => set({ user }),
   setUserTokenFunc: (token) => {
     try {

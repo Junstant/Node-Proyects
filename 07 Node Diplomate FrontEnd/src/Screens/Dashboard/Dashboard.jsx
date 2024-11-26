@@ -12,10 +12,10 @@ const Dashboard = () => {
     return <Navigate to="/login" state={{ from: location, alertMessage: "You must log in to access the dashboard" }} replace />;
   }
 
-  // ! ---> If career elements are 0, redirect them to the user panel
-  if (user.career.length === 0) {
-    return <Navigate to="/app/userPanel" state={{ from: location, alertMessage: "You must add a career to access the dashboard" }} replace />;
-  }
+  // // ! ---> If career elements are 0, redirect them to the user panel
+  // if (user.career.length === 0) {
+  //   return <Navigate to="/app/userPanel" state={{ from: location, alertMessage: "You must add a career to access the dashboard" }} replace />;
+  // }
 
   return (
     <div>

@@ -49,7 +49,6 @@ const UserPanel = () => {
             <div>
               <h3>Career</h3>
               <CareerManager />
-
             </div>
           </div>
         </section>

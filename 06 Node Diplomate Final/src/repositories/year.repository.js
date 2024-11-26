@@ -31,7 +31,16 @@ class YearRepository {
 
   //^ ---> Remove year
   static async removeYear(year, careerId) {
-    const yearToRemove = await db.Year.findOne({ year });
+    // Get the year list
+    const yearList = await this.getAllYears(careerId);
+
+    if (!yearList) {
+      throw new Error("[Year.Repository.Remove] - Error getting year list");
+    }
+
+    // Find the year to remove
+    const yearToRemove = yearList.find((y) => y.year === year);
+
     
     //! ---> Si el año no existe, lanzar un error
     if (!yearToRemove) {

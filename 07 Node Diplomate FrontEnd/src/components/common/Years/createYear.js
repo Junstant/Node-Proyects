@@ -5,7 +5,7 @@ import { isRequired } from "../../../utils/fieldsValidator.utils";
 import { addYearToCareer, getNextYear } from "../../../utils/careerHelper.utils";
 
 //^ --------> Function to handle the creation of a new year
-const handleCreateYear = async (setCareers, setErrors, careerId, career) => {
+const handleCreateYear = async (setCareers, setErrors, careerId, career, oldCareers) => {
   try {
 
     // ? -----> Validate form fields
@@ -51,7 +51,8 @@ const handleCreateYear = async (setCareers, setErrors, careerId, career) => {
     if (result.success) {
       // Add the new year to the career
       setErrors({});
-      setCareers((prev) => prev.map((career) => (career.id === careerId ? addYearToCareer(career, result.data.payload.year.year) : career)));
+      const careers = oldCareers.map((career) => (career.id === careerId ? addYearToCareer(career, result.data.payload.year) : career));
+      setCareers(careers);
     }
 
     // ! -----> Year creation failed

@@ -4,7 +4,7 @@ import ENVIROMENT from "../../../config/enviroment.config";
 import { isRequired } from "../../../utils/fieldsValidator.utils";
 
 //^ --------> Function to handle the creation of a new career
-const handleCreateCareer = async (setCareers, setErrors, user) => {
+const handleCreateCareer = async (setCareers, setErrors, user, oldCareers) => {
   try {
     // ? -----> Validate form fields
     const userId = isRequired(user.id);
@@ -42,7 +42,8 @@ const handleCreateCareer = async (setCareers, setErrors, user) => {
         years: [],
       };
       // Add the new career to the state
-      setCareers((prev) => [...prev, newCareer]);
+      const careers = [...oldCareers, newCareer];
+      setCareers(careers);
     }
 
     // ! -----> Career creation failed

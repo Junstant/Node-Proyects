@@ -49,6 +49,10 @@ class ResponseBuilderModules{
                 name: "year", //10 --> Año de la materia
                 messages: []
             },
+            {
+                name: "color", //11 --> Color de la materia
+                messages: []
+            }
         ],
         payload: {}
     }

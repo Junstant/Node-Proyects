@@ -4,7 +4,7 @@ import ENVIROMENT from "../../../config/enviroment.config";
 import { isRequired } from "../../../utils/fieldsValidator.utils";
 
 //^ --------> Function to handle the update of a career
-const handleUpdateCareer = async (setCareers, setErrors, careerId, newName) => {
+const handleUpdateCareer = async (setCareers, setErrors, careerId, newName, oldCareers) => {
   try {
     // ? -----> Validate form fields
     const id = isRequired(careerId);
@@ -42,9 +42,10 @@ const handleUpdateCareer = async (setCareers, setErrors, careerId, newName) => {
 
     // * -----> Career updated successfully
     if (result.success) {
-      setErrors({});
       // Update the career in the state
-      setCareers((prev) => prev.map((career) => (career.id === careerId ? { ...career, name: newName } : career)));
+      setErrors({});
+      const careers = oldCareers.map((career) => (career.id === careerId ? { ...career, name: newName } : career));
+      setCareers(careers);
     }
 
     // ! -----> Career update failed

@@ -61,7 +61,7 @@ const LoginRegister = () => {
         <div>
           <FormControl variant="standard">
             <InputLabel htmlFor="login-password">Password:</InputLabel>
-            <Input id="login-password" name="password"  type={showPassword ? 'text' : 'password'} label="Password" placeholder="Password..." value={valuesLogin.password} onChange={handleChangeLogin} required endAdornment={
+            <Input id="login-password" name="password" autoComplete="login-password"  type={showPassword ? 'text' : 'password'} label="Password" placeholder="Password..." value={valuesLogin.password} onChange={handleChangeLogin} required endAdornment={
               <InputAdornment position="end">
                 <IconButton
                   aria-label={showPassword ? 'hide the password' : 'display the password'}
@@ -109,7 +109,7 @@ const LoginRegister = () => {
         <div>
           <FormControl variant="standard">
             <InputLabel htmlFor="register-password">Password:</InputLabel>
-            <Input id="register-password" name="password" type={showPassword ? 'text' : 'password'} placeholder="Password..." value={valuesRegister.password} onChange={handleChangeRegister} required endAdornment={
+            <Input id="register-password" name="password" autoComplete="register-password" type={showPassword ? 'text' : 'password'} placeholder="Password..." value={valuesRegister.password} onChange={handleChangeRegister} required endAdornment={
               <InputAdornment position="end">
                 <IconButton
                   aria-label={showPassword ? 'hide the password' : 'display the password'}

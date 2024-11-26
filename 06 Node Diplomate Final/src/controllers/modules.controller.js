@@ -55,11 +55,11 @@ const createModule = async (req, res) => {
   // ~ ------------------------------------> Update module <------------------------------------ ~
   const updateModule = async (req, res) => {
     // Extraer datos del body
-    const {moduleId, name, scheduleId, location, proffesor, dependencies, state, absentsId, period, notesId, homeworksId} = req.body;
+    const {moduleId, name, scheduleId, location, proffesor, dependencies, state, absentsId, period, notesId, homeworksId, color} = req.body;
 
     try {
       // ^ --------------> Enviar los datos a la función de validación
-      const Validations = modulesValidations({name, location, proffesor, dependencies, state, period});
+      const Validations = modulesValidations({name, location, proffesor, dependencies, state, period, color});
 
       // ^ --------------> Validar si hay errores
       if(Validations.getOk() === false){
@@ -68,7 +68,7 @@ const createModule = async (req, res) => {
       }
 
       // ^ --------------> Actualizar el módulo
-      const dataToUpdate = {name, scheduleId, location, proffesor, dependencies, state, absentsId, period, notesId, homeworksId};
+      const dataToUpdate = {name, scheduleId, location, proffesor, dependencies, state, absentsId, period, notesId, homeworksId, color};
       
       // ^ --------------> Enviar los datos a la función de actualización
       const updatedModule = await ModuleRepository.updateModule(moduleId, dataToUpdate);

@@ -1,14 +1,14 @@
 import backFetch from "../../utils/fetchHTTP.utils";
 import customResponse from "../../utils/responseBuilder.utils";
 import ENVIROMENT from "../../config/enviroment.config";
+import getCareers from "../../components/common/Careers/getCareers";
 
 // ^ --------> Function to verify the user's session
-const verifySession = async (setUser, setUserTokenFunc, token) => {
+const verifySession = async (setCareers, setUser, setUserTokenFunc, token, user) => {
   try {
-
     // ! -----> If there is no token, log out the user
     if (!token) {
-      console.log("No token found");
+      console.log("[VerifySession] - No token found. Logging out user");
       setUser(null);
       setUserTokenFunc(null);
       return;
@@ -30,6 +30,7 @@ const verifySession = async (setUser, setUserTokenFunc, token) => {
     // * ---> If the session is verified, update the user's information
     if (result.success) {
       setUser(result.data.payload.user);
+      getCareers(setCareers, result.data.payload.user);
     }
     // ! ---> If the session is not verified, log out the user
     else {

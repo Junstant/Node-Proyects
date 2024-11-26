@@ -55,7 +55,13 @@ const moduleSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: Homework, // Nombre del modelo de la tarea
         default: []
-    }]
+    }],
+    'color': {
+    type: String,
+    required: false,
+    default: '#43A4FF',
+    match: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
+    },
 });
 
 // * ---------> Exportamos el modelo

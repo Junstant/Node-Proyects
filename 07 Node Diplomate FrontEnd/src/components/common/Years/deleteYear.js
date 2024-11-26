@@ -5,7 +5,7 @@ import { isRequired } from "../../../utils/fieldsValidator.utils";
 import { deleteYearFromCareer } from "../../../utils/careerHelper.utils";
 
 //^ --------> Function to handle the deletion of a year
-const handleDeleteYear = async (setCareers, setErrors, careerId, yearId) => {
+const handleDeleteYear = async (setCareers, setErrors, careerId, yearId, oldCareers) => {
   try {
     // ? -----> Validate form fields
     const id = isRequired(careerId);
@@ -33,12 +33,13 @@ const handleDeleteYear = async (setCareers, setErrors, careerId, yearId) => {
 
     // Create a custom response
     const result = await customResponse(response, "Year deleted successfully", "Year deletion failed");
-
+    
     // * -----> Year deleted successfully
     if (result.success) {
       // Remove the year from the career and update the state
       setErrors({});
-      setCareers((prev) => prev.map((career) => (career.id === careerId ? deleteYearFromCareer(career, yearId) : career)));
+      const careers = oldCareers.map((career) => (career.id === careerId ? deleteYearFromCareer(career, yearId) : career));
+      setCareers(careers);
     }
 
     // ! -----> Year deletion failed
