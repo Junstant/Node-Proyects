@@ -5,20 +5,25 @@ import ModuleRepository from "../repositories/module.repository.js";
 // ~ ------------------------------------> Create module <------------------------------------ ~
 const createModule = async (req, res) => {
   // Extraer datos del body
-  const { year } = req.body;
+  const { yearId } = req.body;
 
   try {
-    // ^ --------------> Enviar los datos a la función de validación
-    const Validations = modulesValidations({year});
+    //! ----> Si no se envía el id del año
+    if(!yearId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Year Id is required")
+        .setPayload({ detail: "Year Id is required" })
+        .build();
 
-    // ^ --------------> Validar si hay errores
-    if(Validations.getOk() === false){
-      console.error('[Modules.Controller.Create] - Validation error');
-      return res.status(400).json(Validations.response);
+      // Enviar respuesta de error
+      console.error('[Modules.Controller.Create] - Year Id is required');
+      return res.status(400).json(response);
     }
 
     // ^ --------------> Crear el módulo
-    const newModule = await ModuleRepository.createModule(year);
+    const newModule = await ModuleRepository.createModule(yearId);
     
     // Crear respuesta
     const response = new ResponseBuilder()
@@ -108,7 +113,7 @@ const createModule = async (req, res) => {
 // ~ ------------------------------------> Delete module <------------------------------------ ~
 const deleteModule = async (req, res) => {
   // Extraer datos del body
-  const { year, moduleId } = req.body;
+  const { yearId, moduleId } = req.body;
 
   try {
     //! ----> Si no se envía el id del módulo
@@ -125,16 +130,22 @@ const deleteModule = async (req, res) => {
       return res.status(400).json(response);
     }
 
-    // ^ --------------> Enviar los datos a la función de validación
-    const Validations = modulesValidations(year);
+    //! ----> Si no se envía el id del año
+    if(!yearId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Year Id is required")
+        .setPayload({ detail: "Year Id is required" })
+        .build();
 
-    if(Validations.setOk === false){
-      console.error('[Modules.Controller.Delete] - Validation error');
-      return res.status(400).json(Validations.response);
+      // Enviar respuesta de error
+      console.error('[Modules.Controller.Delete] - Year Id is required');
+      return res.status(400).json(response);
     }
 
     // ^ --------------> Eliminar el módulo
-    const deletedModule = await ModuleRepository.deleteModule(year, moduleId);
+    const deletedModule = await ModuleRepository.deleteModule(yearId, moduleId);
 
     // Crear respuesta
     const response = new ResponseBuilder()
@@ -171,19 +182,26 @@ const deleteModule = async (req, res) => {
 // ~ ------------------------------------> Get all moudules of a year<------------------------------------ ~
 const getAllModules = async (req, res) => {
   // Extraer datos del body
-  const { year } = req.query;
+  const { yearId } = req.query;
 
   try {
-    // ^ --------------> Enviar los datos a la función de validación
-    const Validations = modulesValidations(year);
+    
+    //! ----> Si no se envía el id del año
+    if(!yearId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Year Id is required")
+        .setPayload({ detail: "Year Id is required" })
+        .build();
 
-    if(Validations.setOk === false){
-      console.error('[Modules.Controller.Delete] - Validation error');
-      return res.status(400).json(Validations.response);
+      // Enviar respuesta de error
+      console.error('[Modules.Controller.GetAll] - Year Id is required');
+      return res.status(400).json(response);
     }
 
     // ^ --------------> Obtener todos los módulos
-    const modules = await ModuleRepository.getAllModules(year);
+    const modules = await ModuleRepository.getAllModules(yearId);
 
     // Crear respuesta
     const response = new ResponseBuilder()

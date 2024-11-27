@@ -4,7 +4,7 @@ const daySchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    enum: ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'], // Enum opcional para limitar los días
+    enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
   },
   fromHr: {
     type: String,

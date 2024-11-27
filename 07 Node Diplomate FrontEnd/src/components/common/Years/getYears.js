@@ -36,6 +36,7 @@ const handleGetYears = async (careerId) => {
         id: year._id,
         name: `${year.year}${getOrdinalSuffix(year.year)} year`, // Generate the name
         number: year.year,
+        modules: year.modules || [],
       }));
       return years; // Return the array of years
     } 

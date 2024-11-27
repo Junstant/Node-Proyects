@@ -5,7 +5,7 @@ import verifySession from "./authLayout";
 
 // ? ------------------ Auth layout logic ------->
 const AuthLayout = () => {
-  const {userToken, setCareers, setUser, setUserTokenFunc, user} = useUserStore();
+  const {userToken, setCareers, setUser, setUserTokenFunc, user, setActiveYear, setModules} = useUserStore();
   const location = useLocation();
   const [loading, setLoading] = useState(true);
 
@@ -27,7 +27,7 @@ const AuthLayout = () => {
     };
 
     verify();
-  }, [userToken, setUser, setUserTokenFunc]);
+  }, [userToken, setUser, setUserTokenFunc, setCareers, setModules, setActiveYear]);
 
   // Evitar renderizar componentes si estamos cargando o no hay usuario
   if (loading) {

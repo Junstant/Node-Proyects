@@ -4,10 +4,10 @@ import ENVIROMENT from "../../../config/enviroment.config";
 import { isRequired } from "../../../utils/fieldsValidator.utils";
 
 //^ --------> Function to handle the module creation
-const handleCreateModule = async (setModules, setErrors, year, oldModules) => {
+const handleCreateModule = async (setModules, setErrors, ActiveYear, oldModules, setActiveYear) => {
     try {
         // ? -----> Validate year ID
-        const yearNum = isRequired(year.id);
+        const yearNum = isRequired(ActiveYear.id);
     
         // ! -----> If year number is missing
         if (yearNum) {
@@ -17,13 +17,12 @@ const handleCreateModule = async (setModules, setErrors, year, oldModules) => {
     
         // * -----> Create the body of the request
         const body = {
-        name: "New module",
-        year: year.number
+        yearId: ActiveYear.id
         };
     
         // # ---> Send form data to the server for login
         const response = await backFetch({
-        url: "http://localhost:3000/api/module",
+        url: "http://localhost:3000/api/modules",
         method: "POST",
         headers: { "x-api-key": ENVIROMENT.API_INTERNAL, Authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
         body,
@@ -37,9 +36,9 @@ const handleCreateModule = async (setModules, setErrors, year, oldModules) => {
         setErrors({});
         // Create the module
         const newModule = {
-            id: result.data.payload.module._id,
+            _id: result.data.payload.module._id,
             name: result.data.payload.module.name,
-            shedule: [],
+            schedule: [],
             location: result.data.payload.module.location,
             professor: result.data.payload.module.professor,
             dependencies: [],
@@ -54,8 +53,16 @@ const handleCreateModule = async (setModules, setErrors, year, oldModules) => {
             color: result.data.payload.module.color,
         };
         // Add the new module to the state
-        const modules = [...oldModules, newModule];
+        const modules = [...(oldModules || []), newModule];
         setModules(modules);
+
+        // Update the active year
+        const newYear = {
+            ...ActiveYear,
+            modules: [...ActiveYear.modules, newModule._id],
+        }
+        setActiveYear(newYear);
+
         } 
         // ! -----> Module creation failed
         else {
@@ -69,3 +76,5 @@ const handleCreateModule = async (setModules, setErrors, year, oldModules) => {
         setErrors({ module: "An error occurred while creating the module" });
     }
 }
+
+export default handleCreateModule;

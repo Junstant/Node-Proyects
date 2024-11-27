@@ -15,11 +15,11 @@ class ModuleRepository {
   }
 
   //^ --------------------> Create a new module
-  static async createModule(year) {
+  static async createModule(yearId) {
     const newModule = new db.Module({});
 
     //! ---> Si el año no existe, lanzar un error
-    const moduleAdded = await YearRepository.addModuleToYear(year, newModule._id);
+    const moduleAdded = await YearRepository.addModuleToYear(yearId, newModule._id);
     if (!moduleAdded) {
       throw new Error("[Module.Repository.CreateModule] - Error adding module to year");
     }
@@ -48,15 +48,15 @@ class ModuleRepository {
   }
 
   //^ ---> Delete module
-  static async deleteModule(year, id) {
+  static async deleteModule(yearId, id) {
     //! ---> Si el año no existe, lanzar un error
-    const yearFinded = await YearRepository.getYearByNumber(year);
+    const yearFinded = await YearRepository.getYearById(yearId);
     if (!yearFinded) {
       throw new Error("[Module.Repository.DeleteModule] - Year not found");
     }
 
     //* ---> Eliminar el módulo del año
-    const yearRemoved = await YearRepository.removeModuleFromYear(year, id);
+    const yearRemoved = await YearRepository.removeModuleFromYear(yearId, id);
     if (!yearRemoved) {
       throw new Error("[Module.Repository.DeleteModule] - Error removing module from year");
     }
@@ -69,8 +69,8 @@ class ModuleRepository {
   }
 
   //^ ---> Get all modules
-  static async getAllModules(yearNumber) {
-    const year = await YearRepository.getYearByNumber(yearNumber);
+  static async getAllModules(yearId) {
+    const year = await YearRepository.getYearById(yearId);
     //! ---> Si el año no existe, lanzar un error
     if (!year) {
       throw new Error("[Module.Repository.GetAllModules] - Year not found");

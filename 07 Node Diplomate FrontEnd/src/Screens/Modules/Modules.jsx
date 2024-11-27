@@ -6,41 +6,55 @@ import { Avatar } from "@mui/material";
 import CareerSwitcher from "../../components/common/careerSwitcher";
 import CurrentTime from "../../components/common/ActualDate";
 import ModulesManager from "../../components/common/Modules/ModulesManager.jsx";
+import ModulePanel from "../../components/common/Modules/ModulePanel.jsx";
 
 // ? ------------------ Modules Logic ------->
 const Modules = () => {
-  const { user, careers, activeYear, activeCareer } = useUserStore();
-
-  console.log(activeYear);
+  const { activeYear, activeCareer } = useUserStore();
 
   // ? ------------------ Modules Component ------->
   return (
     <div>
       <AppHeader />
-      {/* Top header */}
+      {/* Left panel */}
       <section>
-        <div>
-          <CirclesFour /> Modules
-        </div>
-        <div>
-          <Avatar alt="Avatar" src="https://picsum.photos/202" />
-          <CareerSwitcher />
-        </div>
-        <div>
+        {/* Top panel */}
+        <section>
           <div>
-            <CurrentTime />
+            <CirclesFour /> Modules
           </div>
-        </div>
-      </section>
-      {/* Modules */}
-      <section>
+          <div>
+            <Avatar alt="Avatar" src="https://picsum.photos/202" />
+            <CareerSwitcher />
+          </div>
+          <div>
+            <div>
+              <CurrentTime />
+            </div>
+          </div>
+        </section>
+        {/* Modules */}
+        <section>
+          {!activeYear || !activeCareer ? (
+            <div>Choose a career and year to see the modules</div>
+          ) : (
+            <div>
+              <ModulesManager />
+            </div>
+          )}
+        </section>
+
+        {/* Right panel */}
+        <div>
         {!activeYear || !activeCareer ? (
-          <div>Choose a career and year to see the modules</div>
-        ) : (
-          <div>
-            <ModulesManager />
-          </div>
-        )}
+            <div>Choose a career and year to see the module</div>
+          ) : (
+            <div>
+              <ModulePanel />
+            </div>
+          )}
+        </div>
+
       </section>
     </div>
   );

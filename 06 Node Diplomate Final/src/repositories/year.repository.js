@@ -4,13 +4,12 @@ import CareerRepository from "./career.repository.js";
 
 //Class to handle year related operations in the database
 class YearRepository {
-  //^ ---> Get year by number
-  static async getYearByNumber(year) {
-    const yearFinded = await Year.findOne({ year: year });
-
+  // ^ ---> Get year by id
+  static async getYearById(id) {
+    const yearFinded = await Year.findOne({ _id: id });
     //! ---> Si el año no existe, lanzar un error
     if (!yearFinded) {
-      throw new Error("[Year.Repository.GetYearByNumber] - Year not found");
+      throw new Error("[Year.Repository.GetYearById] - Year not found");
     }
     return yearFinded;
   }
@@ -71,8 +70,8 @@ class YearRepository {
   // % --------------------------------- Module related operations --------------------------------- %
   
   //$$ ---> Add module to year
-  static async addModuleToYear(yearNumber, moduleId) {
-    const yearToUpdate = await Year.findOne({ year: yearNumber });
+  static async addModuleToYear(yearId, moduleId) {
+    const yearToUpdate = await Year.findOne({ _id: yearId });
   
     //! ---> Si el año no existe, lanzar un error
     if (!yearToUpdate) {
@@ -86,8 +85,8 @@ class YearRepository {
   }
 
   //$$ ---> Remove module from year
-  static async removeModuleFromYear(yearNumber, moduleId) {
-    const yearToUpdate = await Year.findOne({ year: yearNumber });
+  static async removeModuleFromYear(yearId, moduleId) {
+    const yearToUpdate = await Year.findOne({ _id: yearId });
 
     //! ---> Si el año no existe, lanzar un error
     if (!yearToUpdate) {

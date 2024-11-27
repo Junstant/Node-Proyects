@@ -18,7 +18,7 @@ modulesRouter.post('/', createModule);
 modulesRouter.put('/', updateModule);
 
 // * ------------------ Eliminar materia ------------------>
-modulesRouter.delete('/', deleteModule);
+modulesRouter.put('/delete', deleteModule);
 
 // * ------------------ Obtener todas las materias ------------------>
 modulesRouter.get('/', getAllModules);

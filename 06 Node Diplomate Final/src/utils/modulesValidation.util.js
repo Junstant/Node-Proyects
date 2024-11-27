@@ -19,7 +19,7 @@ const validationSchema = {
         resHelp("schedule", "Schedule must be of type arrays");
         return;
       }
-      const validDays = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
+      const validDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
       const timePattern = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
 
       schedule.forEach((day, index) => {

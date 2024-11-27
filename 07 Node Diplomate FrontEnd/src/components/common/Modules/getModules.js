@@ -8,7 +8,7 @@ const getModules = async (setModules, year) => {
     try {
         // ? -----> Validate year ID
         const yearId = isRequired(year.id);
-    
+
         // ! -----> If yearId is missing
         if (yearId) {
         console.error("[getModules] Error: Year ID is missing");
@@ -17,7 +17,7 @@ const getModules = async (setModules, year) => {
     
         // # ---> Send request to fetch modules
         const response = await backFetch({
-        url: `http://localhost:3000/api/module?year=${year.id}`,
+        url: `http://localhost:3000/api/modules?yearId=${year.id}`,
         method: "GET",
         headers: {
             "x-api-key": ENVIROMENT.API_INTERNAL,
