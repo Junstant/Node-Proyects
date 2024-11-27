@@ -29,8 +29,9 @@ const verifySession = async (setCareers, setUser, setUserTokenFunc, token, user)
 
     // * ---> If the session is verified, update the user's information
     if (result.success) {
-      setUser(result.data.payload.user);
-      getCareers(setCareers, result.data.payload.user);
+      const user = result.data.payload.user;
+      setUser(user);
+      getCareers(setCareers, user);
     }
     // ! ---> If the session is not verified, log out the user
     else {

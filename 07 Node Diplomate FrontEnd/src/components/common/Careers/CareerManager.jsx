@@ -13,7 +13,7 @@ import SmoothAlert from "../SmoothAlert";
 // ? ------------------ CareerManager Logic ------->
 const CareerManager = () => {
   //# --> Get user
-  const { user, careers, setCareers } = useUserStore();
+  const { user, careers, setCareers, setActiveCareer } = useUserStore();
 
   //# --> Error states
   const [errorsCareer, setErrorsCareer] = useState({});
@@ -34,7 +34,7 @@ const CareerManager = () => {
   // ^ -----> Edit career
   const handleEditCareer = async () => {
     if (newCareerName.trim()) {
-      await handleUpdateCareer(setCareers, setErrorsCareer, currentCareer.id, newCareerName.trim(), careers);
+      await handleUpdateCareer(setCareers, setErrorsCareer, currentCareer.id, newCareerName.trim(), careers, setActiveCareer);
       setModalOpen(false);
     } else {
       setErrorsCareer({ edit: "Please provide a valid career name." });

@@ -1,13 +1,55 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 const TOKEN_KEY = "TOKEN";
-// ^ --------------> Token key for local storage
+const CAREER_KEY = "ACTIVE_CAREER";
+
+// ^ --------------> Token key and active career key for local storage
 const useUserStore = create((set) => ({
   user: null,
   careers: [],
+  modules: [],
+  activeCareer: JSON.parse(window.localStorage.getItem(CAREER_KEY)) || null,
+  activeYear: null,
   userToken: window.localStorage.getItem(TOKEN_KEY) || null,
-  setCareers: (careers) => set({ careers }),
+  
+  // # -> Set the user
   setUser: (user) => set({ user }),
+
+  // # -> Set the list of careers
+  setCareers: (careers) => set({ careers }),
+
+  // # -> Set the list of modules
+  setModules: (modules) => set({ modules }),
+
+  // # -> Set the active career and persist it to localStorage
+  setActiveCareer: (activeCareer) => {
+    try {
+      if (activeCareer) {
+        window.localStorage.setItem(CAREER_KEY, JSON.stringify(activeCareer));
+      } else {
+        window.localStorage.removeItem(CAREER_KEY);
+      }
+      set({ activeCareer });
+    } catch (error) {
+      console.error("Error accessing localStorage:", error);
+    }
+  },
+
+  // # -> Set the active year
+  setActiveYear: (activeYear) => {
+    try {
+      if (activeYear) {
+        window.localStorage.setItem("ACTIVE_YEAR", JSON.stringify(activeYear));
+      } else {
+        window.localStorage.removeItem("ACTIVE_YEAR");
+      }
+      set({ activeYear });
+    } catch (error) {
+      console.error("Error accessing localStorage:", error);
+    }
+  },
+
+  // # -> Manage the user token
   setUserTokenFunc: (token) => {
     try {
       const currentToken = window.localStorage.getItem(TOKEN_KEY);

@@ -44,8 +44,6 @@ const handleDeleteCareer = async (setCareers, setErrors, careerId, user, oldCare
       // Delete the career from the state
       setErrors({});
       const careers = oldCareers.filter((career) => career.id !== careerId);
-      console.log("Careers: --------");
-      console.log(careers);
       setCareers(careers);
     }
 

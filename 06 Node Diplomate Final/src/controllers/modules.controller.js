@@ -171,7 +171,7 @@ const deleteModule = async (req, res) => {
 // ~ ------------------------------------> Get all moudules of a year<------------------------------------ ~
 const getAllModules = async (req, res) => {
   // Extraer datos del body
-  const { year } = req.body;
+  const { year } = req.query;
 
   try {
     // ^ --------------> Enviar los datos a la función de validación

@@ -14,8 +14,8 @@ const AppHeader = () => {
             <ul>
                 <li><Link to="/search"><MagnifyingGlass/></Link></li>
                 <li><Link to="/app"><HouseLine/></Link></li>
-                <li><Link to="/modules"><CirclesFour/></Link></li>
-                <li><Link to="/homeworks"><CheckCircle/></Link></li>
+                <li><Link to="/app/modules"><CirclesFour/></Link></li>
+                <li><Link to="/app/homeworks"><CheckCircle/></Link></li>
             </ul>
         </div>
         {/* Settings */}    
