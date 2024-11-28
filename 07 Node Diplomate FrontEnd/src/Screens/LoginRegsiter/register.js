@@ -27,7 +27,7 @@ const handleSubmitRegister = async (e, values, setErrors) => {
 
     // # ---> Send form data to the server for registration
     const response = await backFetch({
-      url: "http://localhost:3000/api/auth/register",
+      url: `${ENVIROMENT.BACK_DIR}/api/auth/register`,
       method: "POST",
       headers: { "x-api-key": ENVIROMENT.API_INTERNAL },
       body: valuesBody,

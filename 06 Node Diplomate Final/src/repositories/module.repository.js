@@ -38,6 +38,7 @@ class ModuleRepository {
         updateData[field] = data[field];
       }
     }
+    console.log(id);
     const moduleToUpdate = await Module.findById(id);
     //! ---> Si el módulo no existe, lanzar un error
     if (!moduleToUpdate) {

@@ -23,7 +23,7 @@ const handleCreateCareer = async (setCareers, setErrors, user, oldCareers) => {
 
     // # ---> Send form data to the server for login
     const response = await backFetch({
-      url: "http://localhost:3000/api/career",
+      url: `${ENVIROMENT.BACK_DIR}/api/career`,
       method: "POST",
       headers: { "x-api-key": ENVIROMENT.API_INTERNAL, Authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       body,

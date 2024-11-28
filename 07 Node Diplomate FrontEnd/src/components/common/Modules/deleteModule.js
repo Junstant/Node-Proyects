@@ -23,7 +23,7 @@ const handleDeleteModule = async (setModules, setErrors, moduleId, year, oldModu
 
     // # ---> Send form data to the server for login
     const response = await backFetch({
-      url: `http://localhost:3000/api/modules/delete`,
+      url: `${ENVIROMENT.BACK_DIR}/api/modules/delete`,
       method: "PUT",
       headers: { "x-api-key": ENVIROMENT.API_INTERNAL, Authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       body,

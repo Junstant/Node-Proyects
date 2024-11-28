@@ -69,7 +69,7 @@ const createSchedule = async (req, res) => {
 
 // ~ ------------------------------------> Get all schedules <------------------------------------ ~
 const getAllSchedules = async (req, res) => {
-    const {moduleId} = req.body;
+    const {moduleId} = req.query;
   try {
     //! ---> Si no se envía el id, lanzar un error
     if(!moduleId){

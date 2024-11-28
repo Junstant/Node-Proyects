@@ -2,6 +2,7 @@ import backFetch from "../../utils/fetchHTTP.utils";
 import customResponse from "../../utils/responseBuilder.utils";
 import ENVIROMENT from "../../config/enviroment.config";
 import getCareers from "../../components/common/Careers/getCareers";
+import getSchedules from "../../components/common/Modules/Schedules/getSchedules";
 
 // ^ --------> Function to verify the user's session
 const verifySession = async (setCareers, setUser, setUserTokenFunc, token, user) => {
@@ -16,7 +17,7 @@ const verifySession = async (setCareers, setUser, setUserTokenFunc, token, user)
 
     // # ---> Send a request to the server to verify the user's session
     const response = await backFetch({
-      url: "http://localhost:3000/api/auth/verify-token",
+      url: `${ENVIROMENT.BACK_DIR}/api/auth/verify-token`,
       method: "GET",
       headers: {
         "x-api-key": ENVIROMENT.API_INTERNAL,

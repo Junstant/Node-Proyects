@@ -20,9 +20,9 @@ const handleCreateModule = async (setModules, setErrors, ActiveYear, oldModules,
         yearId: ActiveYear.id
         };
     
-        // # ---> Send form data to the server for login
+        // # ---> Send form data to the server
         const response = await backFetch({
-        url: "http://localhost:3000/api/modules",
+        url: `${ENVIROMENT.BACK_DIR}/api/modules`,
         method: "POST",
         headers: { "x-api-key": ENVIROMENT.API_INTERNAL, Authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
         body,

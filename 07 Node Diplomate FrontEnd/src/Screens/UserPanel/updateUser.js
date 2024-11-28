@@ -27,7 +27,7 @@ const handleSubmitUpdate = async (e, values, setErrors, user) => {
 
     // # ---> Send form data to the server for login
     const firstResponse = await backFetch({
-      url: "http://localhost:3000/api/auth/login",
+      url: `${ENVIROMENT.BACK_DIR}/api/auth/login`,
       method: "POST",
       headers: { "x-api-key": ENVIROMENT.API_INTERNAL },
       body: firstBody,

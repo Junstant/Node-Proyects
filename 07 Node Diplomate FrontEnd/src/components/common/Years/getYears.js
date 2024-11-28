@@ -18,7 +18,7 @@ const handleGetYears = async (careerId) => {
 
     // # ---> Send the request to fetch years
     const response = await backFetch({
-      url: `http://localhost:3000/api/year?careerId=${careerId}`,
+      url: `${ENVIROMENT.BACK_DIR}/api/year?careerId=${careerId}`,
       method: "GET",
       headers: { 
         "x-api-key": ENVIROMENT.API_INTERNAL, 

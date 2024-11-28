@@ -31,7 +31,7 @@ const handleUpdateCareer = async (setCareers, setErrors, careerId, newName, oldC
 
     // # ---> Send form data to the server for login
     const response = await backFetch({
-      url: `http://localhost:3000/api/career/`,
+      url: `${ENVIROMENT.BACK_DIR}/api/career/`,
       method: "PUT",
       headers: { "x-api-key": ENVIROMENT.API_INTERNAL, Authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       body,
@@ -50,7 +50,7 @@ const handleUpdateCareer = async (setCareers, setErrors, careerId, newName, oldC
       // Update the career in the local storage
       const activeCareer = JSON.parse(localStorage.getItem("ACTIVE_CAREER"));
       if (activeCareer.id === careerId) {
-        setActiveCareer({ id: careerId, name: newName });
+        setActiveCareer({ id: careerId, name: newName, years: [] });
       }
     }
 

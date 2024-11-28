@@ -77,12 +77,6 @@ class CareerRepository {
       throw new Error("[Career.Repository.Update] - Career not found");
     }
 
-    //! ---> Si la nueva carrera ya existe, lanzar un error
-    const careerFinded = await CareerModel.findOne({ name: newName });
-    if (careerFinded) {
-      throw new Error("[Career.Repository.Update] - Career already exists, please choose another name");
-    }
-
     //* ---> Si existe, actualizarla
     careerToUpdate.name = newName;
     const updatedCareer = await careerToUpdate.save();

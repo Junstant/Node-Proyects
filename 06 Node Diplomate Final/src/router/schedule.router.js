@@ -18,7 +18,7 @@ scheduleRouter.post('/', createSchedule);
 scheduleRouter.put('/', updateSchedule);
 
 // * ------------------ Eliminar horario ------------------>
-scheduleRouter.delete('/', deleteSchedule);
+scheduleRouter.put('/delete', deleteSchedule);
 
 // * ------------------ Obtener todos los horarios ------------------>
 scheduleRouter.get('/', getAllSchedules);

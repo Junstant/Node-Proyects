@@ -31,7 +31,7 @@ const handleSubmitResetPassword = async (e, values, setErrors, token) => {
 
     // # ---> Send form data to the server for password recovery
     const response = await backFetch({
-      url: "http://localhost:3000/api/auth/reset-password/" + token,
+      url: `${ENVIROMENT.BACK_DIR}/api/auth/reset-password/` + token,
       method: "PUT",
       headers: { "x-api-key": ENVIROMENT.API_INTERNAL },
       body: valuesBody,

@@ -27,7 +27,7 @@ const handleSubmitDelete = async (e, values, setErrors, user, navigate) => {
 
     // # ---> Send form data to backend for delete
     const response = await backFetch({
-      url: "http://localhost:3000/api/auth/delete-user",
+      url: `${ENVIROMENT.BACK_DIR}/auth/delete-user`,
       method: 'PUT',
       headers: { "x-api-key": ENVIROMENT.API_INTERNAL, Authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       body: valuesBody,

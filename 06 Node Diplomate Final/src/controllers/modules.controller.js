@@ -63,6 +63,23 @@ const createModule = async (req, res) => {
     const {moduleId, name, scheduleId, location, proffesor, dependencies, state, absentsId, period, notesId, homeworksId, color} = req.body;
 
     try {
+
+      //! ----> Si no se envía el id del módulo
+      console.log(moduleId);
+
+      if(!moduleId){
+        const response = new ResponseBuilder()
+          .setOk(false)
+          .setStatus(400)
+          .setMessage("Module Id is required")
+          .setPayload({ detail: "Module Id is required" })
+          .build();
+
+        // Enviar respuesta de error
+        console.error('[Modules.Controller.Update] - Module Id is required');
+        return res.status(400).json(response);
+      }
+
       // ^ --------------> Enviar los datos a la función de validación
       const Validations = modulesValidations({name, location, proffesor, dependencies, state, period, color});
 

@@ -18,7 +18,7 @@ const getCareers = async (setCareers, user) => {
 
     // # ---> Send request to fetch careers
     const response = await backFetch({
-      url: `http://localhost:3000/api/career?userId=${user.id}`,
+      url: `${ENVIROMENT.BACK_DIR}/api/career?userId=${user.id}`,
       method: "GET",
       headers: {
         "x-api-key": ENVIROMENT.API_INTERNAL,
