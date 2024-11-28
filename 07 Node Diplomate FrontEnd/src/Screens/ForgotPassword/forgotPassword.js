@@ -40,6 +40,7 @@ const handleSubmitForgotPassword = async (e, values, setErrors) => {
     }
     // ! ---> Password recovery failed
     else {
+      console.error("[ForgotPassword] - An error occurred:", result.error.payload.detail);
       setErrors({ general: "Error: " + result.error.payload.detail || "Password recovery failed. Please check your credentials." });
     }
   }

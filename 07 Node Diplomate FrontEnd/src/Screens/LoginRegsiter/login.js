@@ -49,6 +49,7 @@ const handleSubmitLogin = async (e, values, setErrors, setUser, setUserTokenFunc
     
     // ! ---> Login failed
     else {
+      console.error("[Login] - An error occurred:", result.error.payload.detail);
       setErrors({ general:'Error: '+ result.error.payload.detail || "Login failed. Please check your credentials." });
     }
   } 

@@ -78,6 +78,7 @@ const handleUpdateModule = async (setModules, setErrors, setActiveModule, oldMod
 
     // ! -----> Module update failed
     else {
+      console.error("[handleUpdateModule] - An error occurred:", result.error.payload.detail);
       setErrors({ module: result.error.payload.detail });
     }
   } catch (error) {

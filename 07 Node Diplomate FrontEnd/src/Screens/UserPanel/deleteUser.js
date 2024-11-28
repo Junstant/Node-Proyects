@@ -45,6 +45,7 @@ const handleSubmitDelete = async (e, values, setErrors, user, navigate) => {
 
     // ! ---> Delete failed
     else {
+      console.error("[Delete] - An error occurred:", result.error.payload.detail);
       setErrors({ general: "Error: " + result.error.payload.detail || "Delete failed. Please check your credentials." });
     }
   }

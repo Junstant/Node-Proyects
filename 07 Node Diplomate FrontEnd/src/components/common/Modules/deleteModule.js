@@ -50,6 +50,7 @@ const handleDeleteModule = async (setModules, setErrors, moduleId, year, oldModu
     // ! -----> Module deletion failed
     else {
       setErrors({ module: result.message });
+      console.error("[handleDeleteModule] Error:", result.message);
     }
   } catch (error) {
     // ! -----> Error handling

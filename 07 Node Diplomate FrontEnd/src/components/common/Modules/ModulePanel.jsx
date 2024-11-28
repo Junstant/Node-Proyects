@@ -38,20 +38,19 @@ const ModulePanel = () => {
   const handleCloseNameModal = () => nameModalOpen(false);
   const handleOpenNameModal = () => nameModalOpen(true);
 
-  // # -> Modal states
-  const [scheduleModal, setScheduleModal] = useState(false);
-  const [selectedScheduleId, setSelectedScheduleId] = useState(null);
+  // # -> Schedule modal
+  const [scheduleId, setScheduleId] = useState(null);
+  const [triggerModal, setTriggerModal] = useState(false);
 
-  //# -> Handle the modal close and open
-  const handleModalOpen = (id) => {
-    setSelectedScheduleId(id);
-    setScheduleModal(true);
+  // # -> Handle the modal close and open
+  const handleOpenModal = (id) => {
+    setScheduleId(id);
+    setTriggerModal(true);
   };
 
-  //# -> Handle the modal close and open
-  const handleModalClose = () => {
-    setSelectedScheduleId(null);
-    setScheduleModal(false);
+  // # -> Handle the modal close and open
+  const handleCloseModal = () => {
+    setTriggerModal(false);
   };
 
   console.log(modules);
@@ -178,9 +177,9 @@ const ModulePanel = () => {
                       {activeModule.schedule.map((sch, i) =>
                         sch.days.map((day, j) => (
                           <Box key={`${sch._id}`}>
-                            <Button variant="outlined" onClick={() => handleModalOpen(sch._id)}>{day.fromHr}</Button> TO 
-                            <Button variant="outlined" onClick={() => handleModalOpen(sch._id)}>{day.toHr}</Button> 
-                            <Button onClick={() => handleModalOpen(sch._id)}>{day.name.substring(0, 3)}</Button>
+                            <Button variant="outlined" onClick={() => handleOpenModal(sch._id)}>{day.fromHr}</Button> TO 
+                            <Button variant="outlined" onClick={() => handleOpenModal(sch._id)}>{day.toHr}</Button> 
+                            <Button onClick={() => handleOpenModal(sch._id)}>{day.name.substring(0, 3)}</Button>
                           </Box>
                         ))
                       )}
@@ -213,7 +212,7 @@ const ModulePanel = () => {
       {activeModule && <ModalName open={nameModal} handleClose={handleCloseNameModal} />}
 
       {/* Schedule modal */}
-      {activeModule && <ModalSchedule open={scheduleModal} handleClose={handleModalClose} scheduleId={selectedScheduleId} />}
+      {activeModule && <ModalSchedule scheduleId={scheduleId} setTriggerModal={setTriggerModal} triggerModal={triggerModal}/>}
     </Box>
   );
 };

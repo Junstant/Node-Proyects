@@ -57,6 +57,7 @@ const handleCreateYear = async (setCareers, setErrors, careerId, career, oldCare
 
     // ! -----> Year creation failed
     else {
+      console.error("[handleCreateYear] Error:", result.message);
       setErrors({ career: result.message });
     }
   } catch (error) {

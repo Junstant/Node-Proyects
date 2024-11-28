@@ -55,6 +55,7 @@ const handleCreateSchedule = async (setModules, setErrors, setActiveModule, oldM
 
         // ! -----> Schedule creation failed
         else {
+            console.error("[handleCreateSchedule] - An error occurred:", result.error.payload.detail);
             setErrors({ module: result.error.payload.detail });
         }
     }

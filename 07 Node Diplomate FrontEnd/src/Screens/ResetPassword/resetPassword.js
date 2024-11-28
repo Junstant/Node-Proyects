@@ -47,6 +47,7 @@ const handleSubmitResetPassword = async (e, values, setErrors, token) => {
 
     // ! ---> Password change failed
     else {
+      console.error("[ResetPassword] - An error occurred:", result.error.payload.detail);
       setErrors({ general: "Error: " + result.error.payload.detail || "Password change failed. Please check your credentials." });
     }
   }

@@ -56,6 +56,7 @@ const handleUpdateCareer = async (setCareers, setErrors, careerId, newName, oldC
 
     // ! -----> Career update failed
     else {
+      console.error("[handleUpdateCareer] Error:", result.message);
       setErrors({ career: result.message });
     }
   } 

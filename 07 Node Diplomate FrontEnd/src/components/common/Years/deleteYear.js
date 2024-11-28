@@ -44,6 +44,7 @@ const handleDeleteYear = async (setCareers, setErrors, careerId, yearId, oldCare
 
     // ! -----> Year deletion failed
     else {
+      console.error("[handleDeleteYear] Error:", result.message);
       setErrors({ career: result.message });
     }
   } catch (error) {

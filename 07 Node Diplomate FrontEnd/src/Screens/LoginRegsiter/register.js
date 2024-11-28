@@ -43,6 +43,7 @@ const handleSubmitRegister = async (e, values, setErrors) => {
     
     // ! ---> Registration failed
     else{
+      console.error("[Register] - An error occurred:", result.error.payload.detail);
       setErrors({ general:'Error: '+ result.error.payload.detail || "Registration failed. Please check your credentials." });
     }
   } 

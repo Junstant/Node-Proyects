@@ -48,6 +48,7 @@ const handleCreateCareer = async (setCareers, setErrors, user, oldCareers) => {
 
     // ! -----> Career creation failed
     else {
+      console.error("[handleCreateCareer] Error:", result.message);
       setErrors({ career: result.message });
     }
   } 

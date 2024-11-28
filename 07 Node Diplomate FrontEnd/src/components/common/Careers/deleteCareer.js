@@ -49,6 +49,7 @@ const handleDeleteCareer = async (setCareers, setErrors, careerId, user, oldCare
 
     // ! -----> Career deletion failed
     else {
+      console.error("[handleDeleteCareer] Error:", result.message);
       setErrors({ career: result.message });
     }
   } catch (error) {

@@ -67,12 +67,14 @@ const handleSubmitUpdate = async (e, values, setErrors, user) => {
 
       // ! ---> Update failed
       else {
+        console.error("[Update] - An error occurred:", secondResult.error.payload.detail);
         setErrors({ general: "Error: " + secondResult.error.payload.detail || "User update failed. Please check your credentials." });
       }
     }
 
     // ! ---> Password does not match
     else {
+      console.error("[Update] - An error occurred:", firstResult.error.payload.detail);
       setErrors({ general: "Error: " + firstResult.error.payload.detail || "Password does not match. Please check your credentials." });
     }
   } 

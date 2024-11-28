@@ -67,6 +67,7 @@ const handleCreateModule = async (setModules, setErrors, ActiveYear, oldModules,
         // ! -----> Module creation failed
         else {
         setErrors({ module: result.message });
+        console.error("[handleCreateModule] Error:", result.message);
         }
     } 
     
