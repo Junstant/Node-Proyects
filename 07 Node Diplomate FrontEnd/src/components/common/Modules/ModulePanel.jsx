@@ -126,7 +126,6 @@ const ModulePanel = () => {
     }
   }, [activeModule, activeYear]);
 
-  console.log(modules);
 
   // ? ------------------ Module panel Component ------->
   return (

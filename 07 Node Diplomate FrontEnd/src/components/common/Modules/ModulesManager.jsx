@@ -118,7 +118,7 @@ const ModulesManager = () => {
                   </Box>
                 ) : (
                   <Typography variant="body2" color="#fff">
-                    No hay dependencias
+                    There are no dependencies
                   </Typography>
                 )}
               </Box>
@@ -136,7 +136,7 @@ const ModulesManager = () => {
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   <CalendarX size={24} color="#fff" />
                   <Typography variant="body2" color="#fff">
-                    Faltas: {module.absents.length || 0}
+                    Absents: {module.absents.length || 0}
                   </Typography>
                 </Box>
                 <Box sx={{ display: "flex", gap: 1 }}>
