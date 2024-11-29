@@ -86,8 +86,8 @@ const ModuleAbsents = () => {
     <Box>
       {/* ------------ Absent title ------------ */}
       <Stack direction="row" justifyContent="space-between">
-        <Stack direction="row" gap={2} alignItems="center">
-          <CalendarX size={20} />
+        <Stack direction="row" gap={1} alignItems="center">
+          <CalendarX size={30} />
           <Typography variant="h6">Absents</Typography>
         </Stack>
         <Button variant="outlined" sx={{ minWidth: "30px", height: "30px", padding: 0 }} onClick={handleModalOpen}>
@@ -113,7 +113,6 @@ const ModuleAbsents = () => {
         </DialogActions>
       </Dialog>
 
-      {/* ------------ Absents list ------------ */}
       {/* ------------ Absents list ------------ */}
       <Box display="flex" flexWrap="wrap" gap={2} marginTop={2} padding={2} sx={{ border: 1, borderColor: activeModule.color, borderRadius: 2 }}>
         {activeModule?.absents.length > 0 ? (

@@ -59,7 +59,7 @@ const Dependencies = () => {
       {/* Error alerts */}
       <Stack direction="row" spacing={1} alignItems={"center"} justifyContent={"space-between"}>
         <Stack direction="row" spacing={1} alignItems={"center"}>
-          <FlowArrow />
+          <FlowArrow size={30} />
           <Typography variant="h6">Dependencies:</Typography>
         </Stack>
         <Button

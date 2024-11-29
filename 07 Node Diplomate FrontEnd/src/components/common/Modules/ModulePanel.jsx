@@ -4,7 +4,7 @@ import handleDeleteModule from "./deleteModule";
 import handleCreateSchedule from "./Schedules/createSchedule";
 import handleDeleteSchedule from "./Schedules/deleteSchedule";
 import { Button, Card, CardContent, Typography, Box, IconButton, Stack, Chip } from "@mui/material";
-import { Trash, Medal, NotePencil, X, Plus, Clock, MapPin, GraduationCap, ChartDonut } from "@phosphor-icons/react";
+import { Trash, Medal, NotePencil, X, Plus, Clock, MapPin, GraduationCap, ChartDonut, CalendarDots } from "@phosphor-icons/react";
 import ModalPopUp from "../ModalPopUp";
 import ModalName from "./Modals/ModalName";
 import ModalSchedule from "./Modals/ModalSchedule";
@@ -198,7 +198,7 @@ const ModulePanel = () => {
               <Stack direction="row" alignItems={"center"} justifyContent={"space-between"}>
                 <Box>
                   <Stack direction="row" spacing={1} alignItems={"center"}>
-                    <MapPin />
+                    <MapPin size={30} />
                     <Typography variant="h6">Location:</Typography>
                     <Typography variant="body2" onClick={handleOpenLocationModal}>
                       {activeModule.location}
@@ -217,7 +217,7 @@ const ModulePanel = () => {
             <div>
               <Stack direction="row" alignItems={"center"} justifyContent={"space-between"}>
                 <Stack direction="row" spacing={1} alignItems={"center"}>
-                  <GraduationCap />
+                  <GraduationCap size={30} />
                   <Typography variant="h6">Professor:</Typography>
                   <Typography variant="body2" onClick={handleOpenProfessorModal}>
                     {activeModule.professor}
@@ -225,7 +225,7 @@ const ModulePanel = () => {
                 </Stack>
                 <Box alignItems="center">
                   <IconButton sx={{ minWidth: "30px", height: "30px", padding: 0, margin: 0 }} onClick={handleOpenProfessorModal}>
-                    <NotePencil />
+                    <NotePencil/>
                   </IconButton>
                 </Box>
               </Stack>
@@ -242,7 +242,7 @@ const ModulePanel = () => {
             <div>
               <Box>
                 <Stack direction="row" spacing={1} alignItems={"center"}>
-                  <ChartDonut />
+                  <ChartDonut size={30}/>
                   <Typography variant="h6">State:</Typography>
                   <ModuleState />
                 </Stack>
@@ -259,7 +259,11 @@ const ModulePanel = () => {
             {/* Period */}
             <div>
               <Box>
+                <Stack direction="row" spacing={1} alignItems={"center"} marginTop={2}>
+                  <CalendarDots size={30}/>
+                  <Typography variant="h6">Period:</Typography> 
                 <ModuleDetailsSelector />
+                </Stack>
               </Box>
             </div>
           </CardContent>

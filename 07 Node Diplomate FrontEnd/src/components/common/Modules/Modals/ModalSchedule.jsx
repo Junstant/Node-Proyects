@@ -83,7 +83,7 @@ const ScheduleManager = () => {
       <Box>
         <Stack direction="row" spacing={1} alignItems={"center"} justifyContent={"space-between"}>
           <Stack direction="row" spacing={1} alignItems={"center"}>
-            <Clock />
+            <Clock size={30} />
             <Typography variant="h6">Schedule:</Typography>
           </Stack>
           <Button variant="outlined" sx={{ minWidth: "30px", height: "30px", padding: 0 }} onClick={createSchedule}>
@@ -97,14 +97,14 @@ const ScheduleManager = () => {
             sch.days.map((day, j) => (
               <Stack key={`${sch._id}-${j}`} direction="row" alignItems={"center"}>
                 <Stack direction="row" alignItems="center" spacing={1}>
-                  <Button variant="outlined" onClick={() => handleOpenModal(sch._id)}>
+                  <Button variant="outlined" sx={{borderColor: activeModule.color, color: activeModule.color}} onClick={() => handleOpenModal(sch._id)}>
                     {day.fromHr}
                   </Button>
                   <Typography>TO</Typography>
-                  <Button variant="outlined" onClick={() => handleOpenModal(sch._id)}>
+                  <Button variant="outlined" sx={{borderColor: activeModule.color, color: activeModule.color}} onClick={() => handleOpenModal(sch._id)}>
                     {day.toHr}
                   </Button>
-                  <Button onClick={() => handleOpenModal(sch._id)} sx={{ color: activeModule.color }}>
+                  <Button onClick={() => handleOpenModal(sch._id)} sx={{ color: activeModule.color}}>
                     {day.name.substring(0, 3)}
                   </Button>
                 </Stack>

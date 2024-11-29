@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Chip, Menu, MenuItem, Box, FormHelperText } from "@mui/material";
+import { Chip, Menu, MenuItem, Box, FormHelperText, Stack } from "@mui/material";
 import useUserStore from "../../../../stores/userStore";
 import handleUpdateModule from "../updateModule";
 
@@ -67,20 +67,22 @@ const ModuleDetailsSelector = () => {
       {errors.period && <FormHelperText error>{errors.period}</FormHelperText>}
 
       {/* Chip for Semester */}
-      <Chip
-        label={activeModule.period?.semester || "No Semester"}
-        onClick={handleSemesterMenuOpen}
-        variant="outlined"
-        sx={{ borderColor: activeModule.color, color: activeModule.color, cursor: "pointer" }}
-      />
+      <Stack direction="row" spacing={1}>
+        <Chip
+          label={activeModule.period?.semester || "No Semester"}
+          onClick={handleSemesterMenuOpen}
+          variant="outlined"
+          sx={{ borderColor: activeModule.color, color: activeModule.color, cursor: "pointer" }}
+        />
 
-      {/* Chip for Period */}
-      <Chip
-        label={activeModule.period?.year || "No Period"}
-        onClick={handlePeriodMenuOpen}
-        variant="outlined"
-        sx={{ borderColor: activeModule.color, color: activeModule.color, cursor: "pointer" }}
-      />
+        {/* Chip for Period */}
+        <Chip
+          label={activeModule.period?.year || "No Period"}
+          onClick={handlePeriodMenuOpen}
+          variant="outlined"
+          sx={{ borderColor: activeModule.color, color: activeModule.color, cursor: "pointer" }}
+        />
+      </Stack>
 
       {/* Menu for selecting Semester */}
       <Menu anchorEl={semesterAnchorEl} open={Boolean(semesterAnchorEl)} onClose={handleSemesterMenuClose}>
