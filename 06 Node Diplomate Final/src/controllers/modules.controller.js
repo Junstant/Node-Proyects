@@ -60,12 +60,12 @@ const createModule = async (req, res) => {
   // ~ ------------------------------------> Update module <------------------------------------ ~
   const updateModule = async (req, res) => {
     // Extraer datos del body
-    const {moduleId, name, scheduleId, location, proffesor, dependencies, state, absentsId, period, notesId, homeworksId, color} = req.body;
+    const {moduleId, name, scheduleId, location, professor, dependencies, state, absentsId, period, notesId, homeworksId, color} = req.body;
 
     try {
 
       //! ----> Si no se envía el id del módulo
-      console.log(moduleId);
+      console.log(dependencies);
 
       if(!moduleId){
         const response = new ResponseBuilder()
@@ -81,7 +81,7 @@ const createModule = async (req, res) => {
       }
 
       // ^ --------------> Enviar los datos a la función de validación
-      const Validations = modulesValidations({name, location, proffesor, dependencies, state, period, color});
+      const Validations = modulesValidations({name, location, professor, dependencies, state, period, color});
 
       // ^ --------------> Validar si hay errores
       if(Validations.getOk() === false){
@@ -90,7 +90,7 @@ const createModule = async (req, res) => {
       }
 
       // ^ --------------> Actualizar el módulo
-      const dataToUpdate = {name, scheduleId, location, proffesor, dependencies, state, absentsId, period, notesId, homeworksId, color};
+      const dataToUpdate = {name, scheduleId, location, professor, dependencies, state, absentsId, period, notesId, homeworksId, color};
       
       // ^ --------------> Enviar los datos a la función de actualización
       const updatedModule = await ModuleRepository.updateModule(moduleId, dataToUpdate);
@@ -252,4 +252,60 @@ const getAllModules = async (req, res) => {
   }
 };
 
-export { createModule, updateModule, deleteModule, getAllModules };
+// ~ ------------------------------------> Get all the dependencies of a module <------------------------------------ ~
+const getDependencies = async (req, res) => {
+  // Extraer datos del body
+  const { moduleId } = req.query;
+
+  try {
+    
+    //! ----> Si no se envía el id del módulo
+    if(!moduleId){
+      const response = new ResponseBuilder()
+        .setOk(false)
+        .setStatus(400)
+        .setMessage("Module Id is required")
+        .setPayload({ detail: "Module Id is required" })
+        .build();
+
+      // Enviar respuesta de error
+      console.error('[Modules.Controller.GetDependencies] - Module Id is required');
+      return res.status(400).json(response);
+    }
+
+    // ^ --------------> Obtener todas las dependencias
+    const dependencies = await ModuleRepository.getDependencies(moduleId);
+
+    // Crear respuesta
+    const response = new ResponseBuilder()
+      .setOk(true)
+      .setStatus(200)
+      .setMessage("Dependencies retrieved successfully")
+      .setPayload({
+        dependencies,
+      })
+      .build();
+
+    // Enviar respuesta
+    console.warn('[Modules.Controller.GetDependencies] - Dependencies retrieved successfully');
+    return res.status(200).json(response);
+  } 
+
+  //! ----> Si hay un error en el proceso
+  catch (error) {
+    const response = new ResponseBuilder()
+      .setOk(false)
+      .setStatus(500)
+      .setMessage("Internal Server Error")
+      .setPayload({
+        detail: error.message,
+      })
+      .build();
+
+    // Enviar respuesta de error
+    console.error('[Modules.Controller.GetDependencies] - ' + error.message);
+    return res.status(500).json(response);
+  }
+};
+
+export { createModule, updateModule, deleteModule, getAllModules, getDependencies };

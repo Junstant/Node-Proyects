@@ -2,11 +2,19 @@ import React, { useState, useEffect } from "react";
 import useUserStore from "../../../stores/userStore";
 import handleDeleteModule from "./deleteModule";
 import handleCreateSchedule from "./Schedules/createSchedule";
-import { Button, Card, CardContent, Typography, Box, IconButton, FormControl, FormHelperText, Input, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
-import { Trash, Medal, NotePencil, X, Plus, Clock } from "@phosphor-icons/react";
+import handleDeleteSchedule from "./Schedules/deleteSchedule";
+import { Button, Card, CardContent, Typography, Box, IconButton, Stack, Chip } from "@mui/material";
+import { Trash, Medal, NotePencil, X, Plus, Clock, MapPin, GraduationCap, ChartDonut } from "@phosphor-icons/react";
 import ModalPopUp from "../ModalPopUp";
 import ModalName from "./Modals/ModalName";
 import ModalSchedule from "./Modals/ModalSchedule";
+import ModalLocation from "./Modals/ModalLocation";
+import ModalProfessor from "./Modals/ModalProfessor";
+import Dependencies from "./Components/Dependencies";
+import ModuleState from "./Components/ModuleState";
+import ModuleAbsents from "./Components/ModuleAbsents";
+import ModuleDetailsSelector from "./Components/ModulePeriod";
+import ScheduleManager from "./Modals/ModalSchedule";
 
 // ? ------------------ ModulePanel Logic ------->
 const ModulePanel = () => {
@@ -44,16 +52,24 @@ const ModulePanel = () => {
 
   // # -> Handle the modal close and open
   const handleOpenModal = (id) => {
+    console.log(id);
     setScheduleId(id);
     setTriggerModal(true);
   };
 
-  // # -> Handle the modal close and open
-  const handleCloseModal = () => {
-    setTriggerModal(false);
-  };
+  // # -> Location modal
+  const [locationModal, setLocationModal] = useState(false);
 
-  console.log(modules);
+  // # -> Handle the modal close and open
+  const handleCloseLocationModal = () => setLocationModal(false);
+  const handleOpenLocationModal = () => setLocationModal(true);
+
+  // # -> Professor modal
+  const [professorModal, setProfessorModal] = useState(false);
+
+  // # -> Handle the modal close and open
+  const handleCloseProfessorModal = () => setProfessorModal(false);
+  const handleOpenProfessorModal = () => setProfessorModal(true);
 
   // ? ------------------------------------- Functions -------------------------------------
 
@@ -110,14 +126,7 @@ const ModulePanel = () => {
     }
   }, [activeModule, activeYear]);
 
-  // ^ -----> Create schedule
-  const createSchedule = async () => {
-    if (activeModule) {
-      await handleCreateSchedule(setModules, setErrorsModule, setActiveModule, modules, activeModule);
-    } else {
-      setErrorsModule({ edit: "Please select a module to create a schedule." });
-    }
-  };
+  console.log(modules);
 
   // ? ------------------ Module panel Component ------->
   return (
@@ -127,67 +136,130 @@ const ModulePanel = () => {
 
       {/* --------------- Display Module ----------- */}
       {activeModule && activeYear && (
-        <Card sx={{ border: `2px solid ${activeModule?.color || "#43A4FF"}`, borderRadius: "8px", padding: 2 }}>
-          <CardContent>
+        <Card sx={{ border: 2, borderColor: activeModule.color, borderRadius: "8px", padding: 2 }}>
+          <CardContent sx={{ spacing: 5, minHeight: 600, justifyContent: "space-around", display: "flex", flexDirection: "column" }}>
             {/* Top part */}
             <div>
-              {/* year and semester */}
-              <div>
-                <Box>{activeModule.period.year}</Box>
-                <Box>{activeModule.period.semester}</Box>
-              </div>
+              <Stack direction="row" spacing={1} alignItems={"center"} justifyContent={"space-between"}>
+                {/* year and semester */}
+                <div>
+                  <Stack direction="row" spacing={1} alignItems={"center"}>
+                    <Chip sx={{ background: activeModule.color }} label={activeModule.period.year} />
+                    <Chip sx={{ background: activeModule.color }} label={activeModule.period.semester} />
+                  </Stack>
+                </div>
 
-              {/* Average */}
-              <div>
-                <Box>
-                  {activeModule.notes && calculateAverage(activeModule.notes)}
-                  <Medal />
-                </Box>
-                {/* Delete module */}
-                <Box>
-                  <Button onClick={confirmDelete}>
-                    <Trash />
-                  </Button>
-                </Box>
-              </div>
+                {/* Average */}
+                <div>
+                  <Stack direction="row" spacing={1} alignItems={"center"}>
+                    <Box>
+                      {activeModule.notes && calculateAverage(activeModule.notes)}
+                      <Medal />
+                    </Box>
+                    {/* Delete module */}
+                    <Box>
+                      <Button variant="outlined" sx={{ minWidth: "30px", height: "30px", padding: 0 }} onClick={confirmDelete}>
+                        <Trash />
+                      </Button>
+                    </Box>
+                  </Stack>
+                </div>
+              </Stack>
             </div>
 
             {/* Module name */}
             <div>
-              <Box>
-                <Typography variant="h4">{activeModule.index}</Typography>
-                <Typography variant="h4">{activeModule.name}</Typography>
-              </Box>
-              <IconButton onClick={confirmEditName}>
-                <NotePencil />
-              </IconButton>
+              <Stack direction="row" alignItems={"center"} justifyContent={"space-between"}>
+                <Box>
+                  <Stack direction="row" spacing={1} alignItems={"center"}>
+                    <Typography sx={{ padding: 1, border: 2, borderColor: activeModule.color, borderRadius: 2, color: activeModule.color }} variant="h4">
+                      {activeModule.index}
+                    </Typography>
+                    <Typography color={activeModule.color} variant="h4" onClick={confirmEditName}>
+                      {activeModule.name}
+                    </Typography>
+                  </Stack>
+                </Box>
+                <IconButton sx={{ minWidth: "30px", height: "30px", padding: 0, margin: 0 }} onClick={confirmEditName}>
+                  <NotePencil />
+                </IconButton>
+              </Stack>
             </div>
 
             {/* Schedule */}
             <div>
               <Box>
-                <Clock />
-                <Typography variant="h6">Schedule:</Typography>
-                <IconButton onClick={() => createSchedule()}>
-                  <Plus />
-                </IconButton>
+                <ScheduleManager />
+              </Box>
+            </div>
+
+            {/* Location */}
+            <div>
+              <Stack direction="row" alignItems={"center"} justifyContent={"space-between"}>
                 <Box>
-                  {activeModule.schedule.length > 0 ? (
-                    <Box>
-                      {activeModule.schedule.map((sch, i) =>
-                        sch.days.map((day, j) => (
-                          <Box key={`${sch._id}`}>
-                            <Button variant="outlined" onClick={() => handleOpenModal(sch._id)}>{day.fromHr}</Button> TO 
-                            <Button variant="outlined" onClick={() => handleOpenModal(sch._id)}>{day.toHr}</Button> 
-                            <Button onClick={() => handleOpenModal(sch._id)}>{day.name.substring(0, 3)}</Button>
-                          </Box>
-                        ))
-                      )}
-                    </Box>
-                  ) : (
-                    <Typography variant="body2">No schedule</Typography>
-                  )}
+                  <Stack direction="row" spacing={1} alignItems={"center"}>
+                    <MapPin />
+                    <Typography variant="h6">Location:</Typography>
+                    <Typography variant="body2" onClick={handleOpenLocationModal}>
+                      {activeModule.location}
+                    </Typography>
+                  </Stack>
                 </Box>
+                <Box>
+                  <IconButton sx={{ minWidth: "30px", height: "30px", padding: 0, margin: 0 }} onClick={handleOpenLocationModal}>
+                    <NotePencil />
+                  </IconButton>
+                </Box>
+              </Stack>
+            </div>
+
+            {/* professor */}
+            <div>
+              <Stack direction="row" alignItems={"center"} justifyContent={"space-between"}>
+                <Stack direction="row" spacing={1} alignItems={"center"}>
+                  <GraduationCap />
+                  <Typography variant="h6">Professor:</Typography>
+                  <Typography variant="body2" onClick={handleOpenProfessorModal}>
+                    {activeModule.professor}
+                  </Typography>
+                </Stack>
+                <Box alignItems="center">
+                  <IconButton sx={{ minWidth: "30px", height: "30px", padding: 0, margin: 0 }} onClick={handleOpenProfessorModal}>
+                    <NotePencil />
+                  </IconButton>
+                </Box>
+              </Stack>
+            </div>
+
+            {/* Dependencies */}
+            <div>
+              <Box>
+                <Dependencies />
+              </Box>
+            </div>
+
+            {/* State */}
+            <div>
+              <Box>
+                <Stack direction="row" spacing={1} alignItems={"center"}>
+                  <ChartDonut />
+                  <Typography variant="h6">State:</Typography>
+                  <ModuleState />
+                </Stack>
+              </Box>
+            </div>
+
+            {/* Absences */}
+            <div>
+              <Box>
+                <ModuleAbsents />
+              </Box>
+            </div>
+
+            {/* Period */}
+            <div>
+              <Box>
+                <ModuleDetailsSelector />
               </Box>
             </div>
           </CardContent>
@@ -211,8 +283,11 @@ const ModulePanel = () => {
       {/* Name modal */}
       {activeModule && <ModalName open={nameModal} handleClose={handleCloseNameModal} />}
 
-      {/* Schedule modal */}
-      {activeModule && <ModalSchedule scheduleId={scheduleId} setTriggerModal={setTriggerModal} triggerModal={triggerModal}/>}
+      {/* Location modal */}
+      {activeModule && <ModalLocation open={locationModal} handleClose={handleCloseLocationModal} />}
+
+      {/* Professor modal */}
+      {activeModule && <ModalProfessor open={professorModal} handleClose={handleCloseProfessorModal} />}
     </Box>
   );
 };

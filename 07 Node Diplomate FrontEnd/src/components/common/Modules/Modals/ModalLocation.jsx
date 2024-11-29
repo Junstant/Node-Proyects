@@ -1,43 +1,42 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import { Button, FormHelperText, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import { NotePencil, X } from "@phosphor-icons/react";
 import createHandleChange from "../../../../hooks/formHandlers";
 import useUserStore from "../../../../stores/userStore";
 import handleUpdateModule from "../updateModule";
 
-// ? ------------------ Moodal Name Logic ------->
-const ModalName = ({ open, handleClose }) => {
+// ? ------------------ Modal Location Logic ------->
+const ModalLocation = ({ open, handleClose }) => {
   //# -> Get the active module and year
   const { modules, activeModule, setModules, setActiveModule } = useUserStore();
 
-  //# -> Name state
-  const [name, setName] = useState({ name: activeModule.name || "" });
+  //# -> Location state
+  const [location, setLocation] = useState({ location: activeModule.location || "" });
 
   //# -> Error states
   const [errorsModule, setErrorsModule] = useState({});
 
   //# -> Handle change
-  const handleChange = createHandleChange(setName);
+  const handleChange = createHandleChange(setLocation);
 
   // ^ -----> Edit module
   const handleEditModule = async () => {
-    if (name.name.trim()) {
+    if (location.location.trim()) {
       // # -> Create the new module object
-      const newInfoModule = { name: name.name.trim() };
+      const newInfoModule = { location: location.location.trim() };
       // # -> Update the module
       await handleUpdateModule(setModules, setErrorsModule, setActiveModule, modules, activeModule, newInfoModule);
       handleClose();
     } else {
-      setErrorsModule({ edit: "Please provide a valid module name." });
+      setErrorsModule({ edit: "Please provide a valid location." });
     }
   };
-
-  // ? ------------------ ModulePanel Component ------->
+  // ? ------------------ ModalLocation Component ------->
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Edit module name</DialogTitle>
+      <DialogTitle>Edit module location</DialogTitle>
       <DialogContent>
-        <TextField name="name" label="Name" variant="outlined" fullWidth margin="normal" value={name.name} onChange={handleChange} />
+        <TextField name="location" label="Location" variant="outlined" fullWidth margin="normal" value={location.location} onChange={handleChange} />
         {errorsModule.edit && <FormHelperText error>{errorsModule.edit}</FormHelperText>}
       </DialogContent>
       <DialogActions>
@@ -52,4 +51,4 @@ const ModalName = ({ open, handleClose }) => {
   );
 };
 
-export default ModalName;
+export default ModalLocation;

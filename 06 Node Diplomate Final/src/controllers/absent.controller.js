@@ -68,7 +68,7 @@ const createAbsent = async (req, res) => {
 
 // ~ ------------------------------------> Get all absents <------------------------------------ ~
 const getAllAbsents = async (req, res) => {
-    const {moduleId} = req.body;
+    const {moduleId} = req.query;
   try {
     //! ---> Si no se envía el id, lanzar un error
     if(!moduleId){
@@ -127,7 +127,8 @@ const getAllAbsents = async (req, res) => {
 const updateAbsent = async (req, res) => {
   // Extraer datos del body
   const { absent, id } = req.body;
-
+  console.log(absent);
+  console.log(id);
   try {
     //! ---> Si no se envía el id, lanzar un error
     if(!id){

@@ -113,7 +113,7 @@ const ModulesManager = () => {
                 {module.dependencies.length > 0 ? (
                   <Box sx={{ display: "flex", gap: 1 }}>
                     {module.dependencies.map((dep, i) => (
-                      <Chip key={i} label={dep} color="primary" size="small" />
+                      <Chip key={dep._id} label={dep.name} variant="outlined" size="small" sx={{border: 2, borderColor: dep.color, color: dep.color}} />
                     ))}
                   </Box>
                 ) : (

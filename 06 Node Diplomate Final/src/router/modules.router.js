@@ -1,7 +1,7 @@
 import express from "express";
 import vRoleMid from "../middlewares/role.middleware.js";
 import vApiKeyMid from "../middlewares/apiKey.middleware.js";
-import {createModule, updateModule, deleteModule, getAllModules} from "../controllers/modules.controller.js";
+import {createModule, updateModule, deleteModule, getAllModules, getDependencies} from "../controllers/modules.controller.js";
 import vTokenMid from "../middlewares/auth.middleware.js";
 
 const modulesRouter = express.Router();
@@ -22,5 +22,8 @@ modulesRouter.put('/delete', deleteModule);
 
 // * ------------------ Obtener todas las materias ------------------>
 modulesRouter.get('/', getAllModules);
+
+// * ------------------ Obtener dependencias por id ------------------>
+modulesRouter.get('/dependencies', getDependencies);
 
 export default modulesRouter;

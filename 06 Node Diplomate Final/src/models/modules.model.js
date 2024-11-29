@@ -43,7 +43,7 @@ const moduleSchema = new mongoose.Schema({
         default: []
     }],
     'period': { // # Año y semestre de la materia
-        year: { type: Number, required: false, default: new Date().getFullYear()},
+        year: { type: String, required: false, default: 'First Year', enum: ['First Year','Second Year','Third Year','Fourth Year','Fifth Year','Sixth Year','Seventh Year','Eighth Year','Ninth Year','Tenth Year'] },
         semester: { type: String, required: false, enum: ['Bimonthly','Quarterly','Four-monthly','Annual'], default: 'Annual'},
       },
     'notes': [{ //:: Array de referencias con las notas de la materia

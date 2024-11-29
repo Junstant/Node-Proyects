@@ -5,39 +5,37 @@ import createHandleChange from "../../../../hooks/formHandlers";
 import useUserStore from "../../../../stores/userStore";
 import handleUpdateModule from "../updateModule";
 
-// ? ------------------ Moodal Name Logic ------->
-const ModalName = ({ open, handleClose }) => {
+// ? ------------------ Modal Professor Logic ------->
+const ModalProfessor = ({ open, handleClose }) => {
   //# -> Get the active module and year
   const { modules, activeModule, setModules, setActiveModule } = useUserStore();
 
-  //# -> Name state
-  const [name, setName] = useState({ name: activeModule.name || "" });
+  //# -> Professor state
+  const [professor, setProfessor] = useState({ professor: activeModule.professor || "" });
 
   //# -> Error states
   const [errorsModule, setErrorsModule] = useState({});
 
   //# -> Handle change
-  const handleChange = createHandleChange(setName);
+  const handleChange = createHandleChange(setProfessor);
 
   // ^ -----> Edit module
   const handleEditModule = async () => {
-    if (name.name.trim()) {
-      // # -> Create the new module object
-      const newInfoModule = { name: name.name.trim() };
-      // # -> Update the module
+    if (professor.professor.trim()) {
+      const newInfoModule = { professor: professor.professor.trim() };
       await handleUpdateModule(setModules, setErrorsModule, setActiveModule, modules, activeModule, newInfoModule);
       handleClose();
     } else {
-      setErrorsModule({ edit: "Please provide a valid module name." });
+      setErrorsModule({ edit: "Please provide a valid professor." });
     }
   };
 
-  // ? ------------------ ModulePanel Component ------->
+  // ? ------------------ ModalProfessor Component ------->
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Edit module name</DialogTitle>
+      <DialogTitle>Edit module professor</DialogTitle>
       <DialogContent>
-        <TextField name="name" label="Name" variant="outlined" fullWidth margin="normal" value={name.name} onChange={handleChange} />
+        <TextField name="professor" label="Professor" variant="outlined" fullWidth margin="normal" value={professor.professor} onChange={handleChange} />
         {errorsModule.edit && <FormHelperText error>{errorsModule.edit}</FormHelperText>}
       </DialogContent>
       <DialogActions>
@@ -52,4 +50,4 @@ const ModalName = ({ open, handleClose }) => {
   );
 };
 
-export default ModalName;
+export default ModalProfessor;

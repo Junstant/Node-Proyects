@@ -3,6 +3,8 @@ import customResponse from "../../../utils/responseBuilder.utils";
 import ENVIROMENT from "../../../config/enviroment.config";
 import { isRequired } from "../../../utils/fieldsValidator.utils";
 import getSchedules from "./Schedules/getSchedules";
+import getDependencies from "./getDependencies";
+import getAbsents from "./Absents/getAbsents";
 
 //^ --------> Function to handle the get modules
 const getModules = async (setModules, year) => {
@@ -35,8 +37,8 @@ const getModules = async (setModules, year) => {
       const modules = await Promise.all(
         result.data.payload.modules.map(async (module) => {
           const schedules = await getSchedules(module._id);
-          const dependencies = [];
-        //   const absents = await getAbsents(module._id);
+          const dependencies = await getDependencies(module._id);
+          const absents = await getAbsents(module._id);
         //   const homeworks = await getHomeworks(module._id);
         //   const notes = await getNotes(module._id);
           return {
@@ -45,9 +47,9 @@ const getModules = async (setModules, year) => {
             schedule: schedules,
             location: module.location,
             professor: module.professor,
-            dependencies: module.dependencies || [],
+            dependencies: dependencies || [],
             state: module.state,
-            absents: module.absents || [],
+            absents: absents || [],
             period: {
               year: module.period.year,
               semester: module.period.semester,

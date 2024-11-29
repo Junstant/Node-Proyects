@@ -18,7 +18,7 @@ absentRouter.post('/', createAbsent);
 absentRouter.put('/', updateAbsent);
 
 // * ------------------ Eliminar ausencia ------------------>
-absentRouter.delete('/', deleteAbsent);
+absentRouter.put('/delete', deleteAbsent);
 
 // * ------------------ Obtener todos las ausencias ------------------>
 absentRouter.get('/', getAllAbsents);

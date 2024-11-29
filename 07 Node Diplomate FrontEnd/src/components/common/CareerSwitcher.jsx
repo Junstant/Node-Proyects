@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useUserStore from "../../stores/userStore";
-import { Menu, MenuItem, Button, Box } from "@mui/material";
+import { Menu, MenuItem, Button, Box, Typography } from "@mui/material";
 import { ArrowsLeftRight, CaretDown } from "@phosphor-icons/react";
 
 // ? ------------------ CareerSwitcher Component ------->
@@ -21,12 +21,10 @@ const CareerSwitcher = () => {
   // # -> Set the active career
   const handleSelectCareer = (career) => {
     setActiveCareer(career);
-    localStorage.setItem("user-store", JSON.stringify({ activeCareer: career })); // Guardar carrera seleccionada
 
     // Reset active year if it doesn't exist in the new career
     if (career && career.years && !career.years.some((year) => year.id === activeYear?.id)) {
       setActiveYear(null);
-      localStorage.setItem("user-store", JSON.stringify({ activeYear: null })); // Guardar null para el año
     }
     handleCareerMenuClose();
   };
@@ -34,7 +32,6 @@ const CareerSwitcher = () => {
   // # -> Set the active year
   const handleSelectYear = (year) => {
     setActiveYear(year);
-    localStorage.setItem("user-store", JSON.stringify({ activeYear: year })); // Guardar año seleccionado
     handleYearMenuClose();
   };
 
@@ -68,7 +65,7 @@ const CareerSwitcher = () => {
       {/* Career */}
       <Box display="flex" alignItems="center" gap={1}>
         <Box>
-          <h1>{getActiveCareerName()}</h1>
+          <Typography>{getActiveCareerName()}</Typography>
           <Button variant="outlined" onClick={handleCareerMenuOpen}>
             <ArrowsLeftRight />
           </Button>
@@ -84,7 +81,7 @@ const CareerSwitcher = () => {
 
         {/* Year */}
         <Box>
-          <h1>{getActiveYearName()}</h1>
+          <Typography>{getActiveYearName()}</Typography>
           <Button variant="outlined" onClick={handleYearMenuOpen} disabled={!activeCareer || activeCareer.years.length === 0}>
             <CaretDown />
           </Button>

@@ -1,6 +1,7 @@
 import Module from "../models/modules.model.js";
 import * as db from "../dataBase/models.js";
 import YearRepository from "./year.repository.js";
+import scheduleModule from "./schedule.repository.js";
 
 //Class to handle module related operations in the database
 class ModuleRepository {
@@ -38,7 +39,6 @@ class ModuleRepository {
         updateData[field] = data[field];
       }
     }
-    console.log(id);
     const moduleToUpdate = await Module.findById(id);
     //! ---> Si el módulo no existe, lanzar un error
     if (!moduleToUpdate) {
@@ -54,6 +54,12 @@ class ModuleRepository {
     const yearFinded = await YearRepository.getYearById(yearId);
     if (!yearFinded) {
       throw new Error("[Module.Repository.DeleteModule] - Year not found");
+    }
+
+    // * ---> Eliminar los horarios del módulo
+    const schedules = await scheduleModule.getAllSchedules(id);
+    for (const schedule of schedules) {
+      await scheduleModule.removeSchedule(schedule._id, id);
     }
 
     //* ---> Eliminar el módulo del año
@@ -77,6 +83,16 @@ class ModuleRepository {
       throw new Error("[Module.Repository.GetAllModules] - Year not found");
     }
     return await Module.find({ _id: { $in: year.modules } });
+  }
+
+  //^ ---> Get all dependencies from a module
+  static async getDependencies(moduleId) {
+    const moduleFinded = await Module.findById(moduleId);
+    //! ---> Si el módulo no existe, lanzar un error
+    if (!moduleFinded) {
+      throw new Error("[Module.Repository.GetDependencies] - Module not found");
+    }
+    return await Module.find({ _id: { $in: moduleFinded.dependencies } });
   }
 
   // % --------------------------------- Module related operations --------------------------------- %

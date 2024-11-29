@@ -90,8 +90,9 @@ const validationSchema = {
     required: false,
     type: "object",
     customValidator: (period, resHelp) => {
-      if (typeof period.year !== "number") {
-        resHelp("period", "Year must be a number");
+      const validYears = ["First Year", "Second Year", "Third Year", "Fourth Year", "Fifth Year", "Sixth Year", "Seventh Year", "Eighth Year", "Ninth Year", "Tenth Year"];
+      if (!validYears.includes(period.year)) {
+        resHelp("period", "Year must be a valid option");
       }
       const validSemesters = ["Bimonthly", "Quarterly", "Four-monthly", "Annual"];
       if (!validSemesters.includes(period.semester)) {

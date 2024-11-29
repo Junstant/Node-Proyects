@@ -3,6 +3,8 @@ import customResponse from "../../../utils/responseBuilder.utils";
 import ENVIROMENT from "../../../config/enviroment.config";
 import { isRequired } from "../../../utils/fieldsValidator.utils";
 import getSchedules from "./Schedules/getSchedules";
+import getDependencies from "./getDependencies";
+import getAbsents from "./Absents/getAbsents";
 
 //^ --------> Function to handle the module update
 const handleUpdateModule = async (setModules, setErrors, setActiveModule, oldModules, activeModule, newInfoModule) => {
@@ -21,6 +23,7 @@ const handleUpdateModule = async (setModules, setErrors, setActiveModule, oldMod
       moduleId: activeModule._id,
       name: newInfoModule.name || activeModule.name,
       location: newInfoModule.location || activeModule.location,
+      dependencies: newInfoModule.dependencies || activeModule.dependencies,
       professor: newInfoModule.professor || activeModule.professor,
       state: newInfoModule.state || activeModule.state,
       period: {
@@ -46,17 +49,21 @@ const handleUpdateModule = async (setModules, setErrors, setActiveModule, oldMod
       setErrors({});
       // Fetch the schedules for the module
       const schedules = await getSchedules(activeModule._id);
+      const dependencies = await getDependencies(activeModule._id);
+      const absents = await getAbsents(activeModule._id);
+
 
       // Update the module
       const newModule = {
+        ...activeModule,
         _id: response.data.payload.module._id,
         name: response.data.payload.module.name,
-        schedule: schedules,
+        schedule: schedules || [],
         location: response.data.payload.module.location,
         professor: response.data.payload.module.professor,
-        dependencies: response.data.payload.module.dependencies || [],
+        dependencies: dependencies || [],
         state: response.data.payload.module.state,
-        absents: response.data.payload.module.absents || [],
+        absents: absents || [],
         period: {
           year: response.data.payload.module.period.year,
           semester: response.data.payload.module.period.semester,
