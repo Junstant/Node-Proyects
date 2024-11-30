@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
 import useUserStore from "../../../stores/userStore";
 import handleDeleteModule from "./deleteModule";
-import handleCreateSchedule from "./Schedules/createSchedule";
-import handleDeleteSchedule from "./Schedules/deleteSchedule";
 import { Button, Card, CardContent, Typography, Box, IconButton, Stack, Chip } from "@mui/material";
-import { Trash, Medal, NotePencil, X, Plus, Clock, MapPin, GraduationCap, ChartDonut, CalendarDots } from "@phosphor-icons/react";
+import { Trash, Medal, NotePencil, X, MapPin, GraduationCap, ChartDonut, CalendarDots, Timer } from "@phosphor-icons/react";
 import ModalPopUp from "../ModalPopUp";
 import ModalName from "./Modals/ModalName";
-import ModalSchedule from "./Modals/ModalSchedule";
 import ModalLocation from "./Modals/ModalLocation";
 import ModalProfessor from "./Modals/ModalProfessor";
 import Dependencies from "./Components/Dependencies";
@@ -15,6 +12,7 @@ import ModuleState from "./Components/ModuleState";
 import ModuleAbsents from "./Components/ModuleAbsents";
 import ModuleDetailsSelector from "./Components/ModulePeriod";
 import ScheduleManager from "./Modals/ModalSchedule";
+import ModuleTimeBlock from "./Components/ModuleTimeBlock";
 
 // ? ------------------ ModulePanel Logic ------->
 const ModulePanel = () => {
@@ -265,6 +263,21 @@ const ModulePanel = () => {
                 </Stack>
               </Box>
             </div>
+
+
+            {/* Time block */}
+            <div>
+              <Box>
+                <Stack direction="row" spacing={1} alignItems={"center"}>
+                  <Timer size={30}/>
+                  <Typography variant="h6">Time Block:</Typography>
+                </Stack>
+                <ModuleTimeBlock/>
+              </Box>
+            </div>
+
+
+
           </CardContent>
         </Card>
       )}

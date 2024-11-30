@@ -114,10 +114,10 @@ const ModuleAbsents = () => {
       </Dialog>
 
       {/* ------------ Absents list ------------ */}
-      <Box display="flex" flexWrap="wrap" gap={2} marginTop={2} padding={2} sx={{ border: 1, borderColor: activeModule.color, borderRadius: 2 }}>
+      <Box display="flex" flexWrap="wrap" gap={2} marginTop={2} padding={2} sx={{ border: 1, borderColor: activeModule.color, borderRadius: 4 }}>
         {activeModule?.absents.length > 0 ? (
           activeModule.absents.map((absent) => (
-            <Card key={absent._id} sx={{ padding: 1, width: 120, height: 120, border: 1, borderColor: activeModule.color, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+            <Card key={absent._id} sx={{ padding: 1, width: 120, height: 120, border: 1, borderRadius:4, borderColor: activeModule.color, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
               {/* -------- Absent year and edit ----- */}
               <CardContent sx={{ padding: 0 }}>
                 <Box display="flex" alignItems="center" justifyContent="space-between">

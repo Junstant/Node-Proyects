@@ -91,7 +91,7 @@ const ScheduleManager = () => {
           </Button>
         </Stack>
       </Box>
-      <Box sx={{ border: 1, borderColor: activeModule.color, padding: 2, marginTop: 1, borderRadius: 2 }}>
+      <Box sx={{ border: 1, borderColor: activeModule.color, padding: 2, marginTop: 1, borderRadius: 5 }}>
         {activeModule.schedule.length > 0 ? (
           activeModule.schedule.map((sch) =>
             sch.days.map((day, j) => (
