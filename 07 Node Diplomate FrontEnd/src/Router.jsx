@@ -52,9 +52,13 @@ const router = createBrowserRouter([
         element: <ForgotPassword/>,
       },
       {
-        path: "reset-password/:token", // Relative path
+        path: "reset-password/:token",
         element: <ResetPassword/>,
       },
+      {
+        path: "*",
+        element: <h1>Error 404</h1>,
+      }
     ],
   },
 ]);

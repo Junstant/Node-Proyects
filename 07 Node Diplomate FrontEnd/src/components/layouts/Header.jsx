@@ -1,11 +1,14 @@
 import React from 'react'
 import { Button } from '@mui/material'
 import { Link } from 'react-router-dom'
+import logo from '../../assets/images/logo.svg';
+import '../../assets/styles/global.css'
+import '../../assets/styles/header.css'
 
 const Header = () => {
   return (
-    <div>
-        <div><Link to="/"><img src="" alt="Logo"/>Studemio</Link></div>
+    <div className='header'>
+        <div className='flex flex-row items-center gap-3'><Link to="/"><img src={logo} alt="Logo"/></Link>Studemio</div>
         <div>
             <ul>
                 <li>Product</li>

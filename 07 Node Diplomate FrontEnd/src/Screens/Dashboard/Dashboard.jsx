@@ -18,7 +18,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
+    <div className='fatherCon'>
       <AppHeader />
       Dashboard
     </div>

@@ -1,6 +1,8 @@
 import React from 'react'
 import Header from '../../components/layouts/Header'
 import { Button } from '@mui/material'
+import '../../assets/styles/global.css'
+import '../../assets/styles/home.css'
 
 const Home = () => {
   return (

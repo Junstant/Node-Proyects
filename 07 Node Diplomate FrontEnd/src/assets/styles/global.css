@@ -1,0 +1,25 @@
+/* google font inter */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base{
+    :root{
+        --color-primary: #43A4FF;
+        --color-secondary: #23293F;
+        --color-tertiary: #3F4767;
+        --color-quaternary: #6D7AAD;
+        --color-white: #FFFFFF;
+        --color-background: #0A0A15;
+        --color-stroke: #3F4767;
+    }
+
+    body{
+        font-family: 'Inter', sans-serif;
+        background-color: var(--color-background);
+        color: var(--color-white);
+    }
+}
