@@ -15,11 +15,39 @@
         --color-white: #FFFFFF;
         --color-background: #0A0A15;
         --color-stroke: #3F4767;
+        --shadowBlue: 0px 109.112px 30.1798px rgba(67, 164, 255, 0.01), 0px 69.6458px 27.8583px rgba(67, 164, 255, 0.04), 0px 39.4659px 23.2153px rgba(67, 164, 255, 0.15),
+        0px 17.7984px 17.7984px rgba(67, 164, 255, 0.26), 0px 4.64305px 9.2861px rgba(67, 164, 255, 0.29); 
+    }
+    
+    *{
+        cursor: none !important;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
 
     body{
         font-family: 'Inter', sans-serif;
         background-color: var(--color-background);
+        background-image: url('../images/bgk-pattern.svg');
         color: var(--color-white);
+    }
+
+    ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: var(--color-background);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--color-primary);
+        border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #6fbaff;
     }
 }

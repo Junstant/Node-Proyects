@@ -1,0 +1,260 @@
+/* ^----------------- Lights & Decor -----------------^ */
+
+/* ---> Blue left top */
+.lightOne {
+  @apply absolute top-0 left-0;
+}
+/* ---> Big Blue right bottom */
+.lightTwo {
+  @apply absolute bottom-0 right-0;
+}
+/* ---> Orange left bottom */
+.lightThree {
+  @apply absolute bottom-0 left-0;
+}
+/* ---> Purple right top */
+.lightFour {
+  @apply absolute top-0 left-44;
+}
+
+/* ---> Green left bottom */
+.lightFive {
+  @apply absolute bottom-0 left-32;
+}
+
+/* ---> Tiny blue center */
+.lightSix {
+  @apply absolute top-0 left-96;
+}
+
+/*  ---> Line */
+.lightOne,
+.lightTwo,
+.lightThree,
+.lightFour,
+.lightFive,
+.lightSix {
+  pointer-events: none;
+}
+
+/*  ---> Line */
+.lineDecor {
+  filter: drop-shadow(0px 0px 20px rgb(0, 153, 255));
+  @apply absolute top-0 right-0 -z-30;
+}
+
+/* -----> Panels */
+.panelsOne {
+  left: 39rem;
+  @apply absolute top-20 -z-20;
+}
+.panelsTwo {
+  @apply absolute bottom-32 left-0 -z-20;
+}
+
+.panelsThree {
+  @apply absolute bottom-5 left-36;
+}
+
+/* ^----------------- Main section -----------------^ */
+.hero {
+  @apply w-full flex flex-row items-center justify-center;
+}
+
+.leftContainer {
+  @apply w-full flex flex-col items-center justify-center;
+}
+
+.leftContainer h1 {
+  font-size: 10rem;
+  font-weight: 600;
+  line-height: 1.2;
+  animation-delay: 5ms;
+}
+
+/*  ------- Buttons Down -------- */
+.aboutButton,
+.getStarted {
+  color: white !important;
+  border-radius: 10px !important;
+  border: 1px solid var(--color-primary) !important;
+  transition: all 0.3s !important;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(3px);
+}
+
+.aboutButton:hover,
+.getStarted:hover {
+  transform: translateY(-3px) !important;
+}
+
+.aboutButton:hover {
+  background-color: var(--color-primary) !important;
+  color: #181c2e;
+  box-shadow: var(--shadowBlue) !important;
+}
+
+.getStarted {
+  background: #43a4ff !important;
+  box-shadow: var(--shadowBlue) !important;
+}
+
+/*  ------- Lights -------- */
+.lights {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -50;
+  overflow-x: hidden;
+}
+
+/* ^----------------- Illustration -----------------^ */
+
+.illustration {
+  @apply w-full flex items-center justify-center;
+}
+.tilt-image {
+  transition: transform 0.2s ease-out;
+  will-change: transform;
+}
+
+/* ^----------------- Animations -----------------^ */
+@keyframes lightUp {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpMask {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes revealHeight {
+  0% {
+    height: 0px;
+  }
+  99% {
+    height: 180px;
+  }
+  100% {
+    height: fit-content;
+  }
+}
+
+.lightOne {
+  animation: lightUp 1.5s ease-in-out 0.5s infinite;
+}
+.lightTwo {
+  animation: lightUp 1.7s ease-in-out 1s infinite;
+}
+.lightThree {
+  animation: lightUp 1.9s ease-in-out 1.5s infinite;
+}
+.lightFour {
+  animation: lightUp 2.1s ease-in-out 2s infinite;
+}
+.lightFive {
+  animation: lightUp 2.3s ease-in-out 2.5s infinite;
+}
+.lightSix {
+  animation: lightUp 2.5s ease-in-out 3s infinite;
+}
+
+.slideUpText {
+  display: flex;
+  transform: translateY(100%);
+  animation: slideUpMask 1s ease-out forwards;
+}
+
+.slideUpText:nth-child(1) {
+  animation-delay: 0.5s;
+}
+.slideUpText:nth-child(2) {
+  animation-delay: 0.7s;
+}
+.slideUpText:nth-child(3) {
+  animation-delay: 0.9s;
+}
+
+/* ^----------------- Media Queries -----------------^ */
+
+/* Tablet 1279 px */
+@media (max-width: 1279px) {
+  .hero {
+    @apply flex-col mt-10;
+  }
+  .leftContainer h1 {
+    font-size: 6rem;
+  }
+  .lineDecor {
+    top: calc(-10rem);
+    left: calc(+50rem);
+  }
+  .panelsOne {
+    left: 65%;
+    top: 25%;
+  }
+  .panelsTwo {
+    left: 0;
+    top: 25%;
+  }
+  .panelsThree {
+    left: 10%;
+    top: 47%;
+    z-index: -50;
+  }
+}
+
+/* Mobile 767px */
+@media (max-width: 767px) {
+  .hero {
+    @apply flex-col mt-10;
+  }
+
+  .leftContainer h1 {
+    font-size: 6rem;
+  }
+  .leftContainer h2 {
+    font-size: 2rem;
+  }
+
+  .lineDecor {
+    top: calc(-10rem);
+    left: calc(+50rem);
+  }
+  .panelsOne,
+  .panelsTwo,
+  .panelsThree {
+    display: none;
+  }
+  .illustration img {
+    z-index: -80;
+  }
+}
+
+/* Smaill Mobile 330px */
+@media (max-width: 330px) {
+  .leftContainer h1 {
+    font-size: 4rem;
+  }
+  .leftContainer h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0px;
+  }
+  .leftContainer h3 {
+    font-size: 1rem;
+  }
+}

@@ -1,14 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import handleSubmitLogin from "./login.js";
 import handleSubmitRegister from "./register.js";
-import { Button, Checkbox, FormControl, FormHelperText, IconButton, Input, InputAdornment, InputLabel} from "@mui/material";
-import { Eye,EyeClosed, PaperPlaneRight, Info } from "@phosphor-icons/react";
+import { Button, Checkbox, FormControl, FormHelperText, IconButton, Input, InputAdornment, InputLabel, Stack, Typography } from "@mui/material";
+import { Eye, EyeClosed, PaperPlaneRight, Info } from "@phosphor-icons/react";
 import { usePasswordVisibility } from "../../hooks/passwordSwitch.jsx";
 import Header from "../../components/layouts/Header.jsx";
 import useUserStore from "../../stores/userStore.js";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import createHandleChange from "../../hooks/formHandlers.jsx";
 import SmoothAlert from "../../components/common/SmoothAlert.jsx";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import lightOne from "../../assets/images/lights/loginRegister/Vector.png";
+import lightTwo from "../../assets/images/lights/loginRegister/Vector-1.png";
+import lightThree from "../../assets/images/lights/loginRegister/Vector-2.png";
+import lightFour from "../../assets/images/lights/loginRegister/Vector-3.png";
+import lightFive from "../../assets/images/lights/loginRegister/Vector-4.png";
+import lightSix from "../../assets/images/lights/loginRegister/Vector-5.png";
+import lineDecor from "../../assets/images/lineDecor.svg";
+import userPanel from "../../assets/images/userPanel.png";
+import panelsOne from "../../assets/images/panelsOne.svg";
+import panelsTwo from "../../assets/images/panelsTwo.png";
+import panelsThree from "../../assets/images/panelsThree.png";
+import "../../assets/styles/global.css";
+import "../../assets/styles/loginRegister.css";
 
 // ? ------------------ Login and register logic ------->
 const LoginRegister = () => {
@@ -33,11 +47,43 @@ const LoginRegister = () => {
   const handleChangeRegister = createHandleChange(setValuesRegister);
 
   // # -> Custom hook to manage the user state
-  const { setUserTokenFunc, setUser } = useUserStore();  
+  const { setUserTokenFunc, setUser } = useUserStore();
 
   // # -> Location hook
   const location = useLocation();
   const alertMessage = location.state?.alertMessage || "";
+
+  // Theme for the close button
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#43AFFF",
+      },
+    },
+  });
+
+  // # -> Ref for the user panel image
+  const imageRef = useRef(null);
+
+  // # -> Function to handle mouse move on the user panel
+  const handleMouseMove = (e) => {
+    const rect = imageRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * 10;
+    const rotateY = ((x - centerX) / centerX) * -10;
+
+    imageRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  };
+
+  const handleMouseLeave = () => {
+    imageRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
+  };
+
+  // # -> State to manage login or register
+  const [loginOrRegister, setLoginOrRegister] = useState("login");
 
   // ? ------------------ Login and register component ------->
   return (
@@ -45,95 +91,163 @@ const LoginRegister = () => {
       <Header></Header>
       {alertMessage && <SmoothAlert message={alertMessage} severity="error" />}
 
-      {/* ------------------------------------ Login ----------------------------- */}
-      <h1>Login</h1>
-      <form onSubmit={(e) => handleSubmitLogin(e, valuesLogin, setErrorsLogin, setUser, setUserTokenFunc,navigate)}>
-        {/* Email */}
-        <div>
-          <FormControl variant="standard">
-            <InputLabel htmlFor="login-email">Email:</InputLabel>
-            <Input id="login-email" name="email" type="email" placeholder="example@gmail.com" value={valuesLogin.email} onChange={handleChangeLogin} required autoComplete="email"/>
-            <FormHelperText>{errorsLogin.email && <label className="error">{errorsLogin.email}</label>}</FormHelperText>
-          </FormControl>
-        </div>
+      {/* ---------------------- Change login or register ---------------- */}
+      <section className="hero">
+        <div className="leftContainer">
+          <Stack direction="row" spacing={5}>
+            <button style={{ color: loginOrRegister === "login" ? "white" : "#3F4767" }} onClick={() => setLoginOrRegister("login")}>
+              <h2 className="font-medium text-6xl">Login</h2>
+            </button>
+            <h2 className="font-medium text-6xl separator">/</h2>
+            <button style={{ color: loginOrRegister === "register" ? "white" : "#3F4767" }} onClick={() => setLoginOrRegister("register")}>
+            <h2 className="font-medium text-6xl">Register</h2>
+            </button>
+          </Stack>
 
-        {/* Password */}
-        <div>
-          <FormControl variant="standard">
-            <InputLabel htmlFor="login-password">Password:</InputLabel>
-            <Input id="login-password" name="password" autoComplete="login-password"  type={showPassword ? 'text' : 'password'} label="Password" placeholder="Password..." value={valuesLogin.password} onChange={handleChangeLogin} required endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label={showPassword ? 'hide the password' : 'display the password'}
-                  onClick={togglePasswordVisibility}
-                  onMouseDown={handleMouseDown}
-                  onMouseUp={handleMouseUp}
-                  edge="end">
-                  {showPassword ? <Eye/> : <EyeClosed/>}
-                </IconButton>
-              </InputAdornment>
-            }/>
-            <FormHelperText> {errorsLogin.password && <label className="error">{errorsLogin.password}</label>}</FormHelperText>
-          </FormControl>
-        </div>
+          {/* ------------------------------------ Login ----------------------------- */}
+          {loginOrRegister === "login" ? (
+            <div className="loginContainer">
+              <form onSubmit={(e) => handleSubmitLogin(e, valuesLogin, setErrorsLogin, setUser, setUserTokenFunc, navigate)}>
+                {/* Email */}
+                <div>
+                  <FormControl variant="standard">
+                    <InputLabel htmlFor="login-email">Email:</InputLabel>
+                    <Input id="login-email" name="email" type="email" placeholder="example@gmail.com" value={valuesLogin.email} onChange={handleChangeLogin} required autoComplete="email" />
+                    <FormHelperText>{errorsLogin.email && <label className="error">{errorsLogin.email}</label>}</FormHelperText>
+                  </FormControl>
+                </div>
 
-        {/* Submit button */}
-        <Button type="submit" variant="contained" endIcon={<PaperPlaneRight/>}> Login </Button>
-        {errorsLogin.general && <p className="error general">{errorsLogin.general}</p>}
-      </form>
-      <Link to="/register">Don't have an account? Click here</Link>
-      <Link to="/forgot-password">Forgot password?</Link>
+                {/* Password */}
+                <div>
+                  <FormControl variant="standard">
+                    <InputLabel htmlFor="login-password">Password:</InputLabel>
+                    <Input
+                      id="login-password"
+                      name="password"
+                      autoComplete="login-password"
+                      type={showPassword ? "text" : "password"}
+                      label="Password"
+                      placeholder="Password..."
+                      value={valuesLogin.password}
+                      onChange={handleChangeLogin}
+                      required
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label={showPassword ? "hide the password" : "display the password"}
+                            onClick={togglePasswordVisibility}
+                            onMouseDown={handleMouseDown}
+                            onMouseUp={handleMouseUp}
+                            edge="end"
+                          >
+                            {showPassword ? <Eye /> : <EyeClosed />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                    <FormHelperText> {errorsLogin.password && <label className="error">{errorsLogin.password}</label>}</FormHelperText>
+                  </FormControl>
+                </div>
 
-      {/* ------------------------------------ Register ----------------------------- */}
-      <h1>Register</h1>
-      <form onSubmit={(e) => handleSubmitRegister(e, valuesRegister, setErrorsRegister)}>
-        {/* Name */}
-        <div>
-          <FormControl variant="standard">
-            <InputLabel htmlFor="register-name">Name:</InputLabel>
-            <Input id="register-name" name="name" type="text" placeholder="Name..." value={valuesRegister.name} onChange={handleChangeRegister} required autoComplete="name" />
-            <FormHelperText>{errorsRegister.name && <label className="error">{errorsRegister.name}</label>}</FormHelperText>
-          </FormControl>
-        </div>
+                {/* Submit button */}
+                <Button type="submit" variant="contained" endIcon={<PaperPlaneRight />}>
+                  {" "}
+                  Login{" "}
+                </Button>
+                {errorsLogin.general && <p className="error general">{errorsLogin.general}</p>}
+              </form>
+              <Link to="/register">Don't have an account? Click here</Link>
+              <Link to="/forgot-password">Forgot password?</Link>
+            </div>
+          ) : (
+            // ------------------------------------ Register ----------------------------->
+            <div className="registerContainer">
+              <form onSubmit={(e) => handleSubmitRegister(e, valuesRegister, setErrorsRegister)}>
+                {/* Name */}
+                <div>
+                  <FormControl variant="standard">
+                    <InputLabel htmlFor="register-name">Name:</InputLabel>
+                    <Input id="register-name" name="name" type="text" placeholder="Name..." value={valuesRegister.name} onChange={handleChangeRegister} required autoComplete="name" />
+                    <FormHelperText>{errorsRegister.name && <label className="error">{errorsRegister.name}</label>}</FormHelperText>
+                  </FormControl>
+                </div>
 
-        {/* Email */}
-        <div>
-          <FormControl variant="standard">
-            <InputLabel htmlFor="register-email">Email:</InputLabel>
-            <Input id="register-email" name="email" type="email" placeholder="example@gmail.com" value={valuesRegister.email} onChange={handleChangeRegister} required autoComplete="email"/>
-            <FormHelperText>{errorsRegister.email && <label className="error">{errorsRegister.email}</label>}</FormHelperText>
-          </FormControl>
-        </div>
+                {/* Email */}
+                <div>
+                  <FormControl variant="standard">
+                    <InputLabel htmlFor="register-email">Email:</InputLabel>
+                    <Input id="register-email" name="email" type="email" placeholder="example@gmail.com" value={valuesRegister.email} onChange={handleChangeRegister} required autoComplete="email" />
+                    <FormHelperText>{errorsRegister.email && <label className="error">{errorsRegister.email}</label>}</FormHelperText>
+                  </FormControl>
+                </div>
 
-        {/* Password */}
-        <div>
-          <FormControl variant="standard">
-            <InputLabel htmlFor="register-password">Password:</InputLabel>
-            <Input id="register-password" name="password" autoComplete="register-password" type={showPassword ? 'text' : 'password'} placeholder="Password..." value={valuesRegister.password} onChange={handleChangeRegister} required endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label={showPassword ? 'hide the password' : 'display the password'}
-                  onClick={togglePasswordVisibility}
-                  onMouseDown={handleMouseDown}
-                  onMouseUp={handleMouseUp}
-                  edge="end">
-                  {showPassword ? <Eye/> : <EyeClosed/>}
-                </IconButton>
-              </InputAdornment>
-            }/>
-            <FormHelperText>{errorsRegister.password && <label className="error">{errorsRegister.password}</label>}</FormHelperText>
-          </FormControl>
-        </div>
-        <div>
-          <Checkbox id="terms" name="terms" required />
-          <label htmlFor="terms">Accept terms and conditions:</label>
-        </div>
+                {/* Password */}
+                <div>
+                  <FormControl variant="standard">
+                    <InputLabel htmlFor="register-password">Password:</InputLabel>
+                    <Input
+                      id="register-password"
+                      name="password"
+                      autoComplete="register-password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Password..."
+                      value={valuesRegister.password}
+                      onChange={handleChangeRegister}
+                      required
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label={showPassword ? "hide the password" : "display the password"}
+                            onClick={togglePasswordVisibility}
+                            onMouseDown={handleMouseDown}
+                            onMouseUp={handleMouseUp}
+                            edge="end"
+                          >
+                            {showPassword ? <Eye /> : <EyeClosed />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                    <FormHelperText>{errorsRegister.password && <label className="error">{errorsRegister.password}</label>}</FormHelperText>
+                  </FormControl>
+                </div>
+                <div>
+                  <Checkbox id="terms" name="terms" required />
+                  <label htmlFor="terms">Accept terms and conditions:</label>
+                </div>
 
-        {/* Submit button */}
-        <Button type="submit" variant="contained" endIcon={<PaperPlaneRight/>}> Register </Button>
-        {errorsRegister.general && <p className="error general"><Info/>{errorsRegister.general}</p>}
-      </form>
-      <Link to="/login">Already have an account? Click here</Link>
+                {/* Submit button */}
+                <Button type="submit" variant="contained" endIcon={<PaperPlaneRight />}>
+                  {" "}
+                  Register{" "}
+                </Button>
+                {errorsRegister.general && (
+                  <p className="error general">
+                    <Info />
+                    {errorsRegister.general}
+                  </p>
+                )}
+              </form>
+              <Link to="/login">Already have an account? Click here</Link>
+            </div>
+          )}
+        </div>
+        <div className="illustration overflow-hidden p-11" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+          <img src={userPanel} alt="userPanel" className="-z-20 tilt-image" ref={imageRef} />
+        </div>
+        <div className="lights overflow-hidden">
+          <img src={lightOne} alt="lightOne" className="lightOne" />
+          <img src={lightTwo} alt="lightTwo" className="lightTwo" />
+          <img src={lightThree} alt="lightThree" className="lightThree" />
+          <img src={lightFour} alt="lightFour" className="lightFour" />
+          <img src={lightFive} alt="lightFive" className="lightFive" />
+          <img src={lightSix} alt="lightSix" className="lightSix" />
+          <img src={lineDecor} alt="lineDecor" className="lineDecor" />
+          <img src={panelsOne} alt="panelsOne" className="panelsOne" />
+          <img src={panelsTwo} alt="panelsTwo" className="panelsTwo" />
+          <img src={panelsThree} alt="panelsThree" className="panelsThree" />
+        </div>
+      </section>
     </div>
   );
 };
