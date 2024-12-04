@@ -49,7 +49,7 @@ const Home = () => {
   return (
     <main>
       <Header></Header>
-      <section className="hero">
+      <section className="heroHome">
         {/* Left Container */}
         <div className="leftContainer text-center">
           <h2 className="text-5xl font-light tracking-widest -mb-5">Unlock your full academic</h2>
@@ -57,10 +57,10 @@ const Home = () => {
           <h3 className="text-xl mt-10 mb-10 font-light">Simplify your academic life with smart tools</h3>
           <div className="flex flex-row gap-3">
             <ThemeProvider theme={theme}>
-              <Button className="aboutButton" sx={{ px: 4, py: 1, textTransform: "capitalize", fontWeight: 400 }} variant="outlined" color="primary">
+              <Button className="btn-outlined-custom" sx={{ px: 4, py: 1, textTransform: "capitalize", fontWeight: 400 }} variant="outlined" color="primary">
                 About
               </Button>
-              <Button className="getStarted" sx={{ px: 3, py: 1, textTransform: "capitalize", fontWeight: 400 }} variant="contained" color="primary">
+              <Button className="btn-filled-custom" sx={{ px: 3, py: 1, textTransform: "capitalize", fontWeight: 400 }} variant="contained" color="primary">
                 <a href="/login">Get started</a>
               </Button>
             </ThemeProvider>

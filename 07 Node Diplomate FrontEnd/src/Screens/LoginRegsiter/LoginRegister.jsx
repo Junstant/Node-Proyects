@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import handleSubmitLogin from "./login.js";
 import handleSubmitRegister from "./register.js";
-import { Button, Checkbox, FormControl, FormHelperText, IconButton, Input, InputAdornment, InputLabel, Stack, Typography } from "@mui/material";
+import { Button, Checkbox, FormControl, FormHelperText, IconButton, Input, InputAdornment, InputLabel, Stack, TextField, Typography } from "@mui/material";
 import { Eye, EyeClosed, PaperPlaneRight, Info } from "@phosphor-icons/react";
 import { usePasswordVisibility } from "../../hooks/passwordSwitch.jsx";
 import Header from "../../components/layouts/Header.jsx";
@@ -23,6 +23,7 @@ import panelsTwo from "../../assets/images/panelsTwo.png";
 import panelsThree from "../../assets/images/panelsThree.png";
 import "../../assets/styles/global.css";
 import "../../assets/styles/loginRegister.css";
+import newTheme from "../../assets/styles/theme.jsx";
 
 // ? ------------------ Login and register logic ------->
 const LoginRegister = () => {
@@ -53,15 +54,6 @@ const LoginRegister = () => {
   const location = useLocation();
   const alertMessage = location.state?.alertMessage || "";
 
-  // Theme for the close button
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: "#43AFFF",
-      },
-    },
-  });
-
   // # -> Ref for the user panel image
   const imageRef = useRef(null);
 
@@ -87,12 +79,12 @@ const LoginRegister = () => {
 
   // ? ------------------ Login and register component ------->
   return (
-    <div>
+    <main>
       <Header></Header>
       {alertMessage && <SmoothAlert message={alertMessage} severity="error" />}
 
-      {/* ---------------------- Change login or register ---------------- */}
-      <section className="hero">
+      <section className="heroLoginRegister">
+        {/* ---------------------- Change login or register ---------------- */}
         <div className="leftContainer">
           <Stack direction="row" spacing={5}>
             <button style={{ color: loginOrRegister === "login" ? "white" : "#3F4767" }} onClick={() => setLoginOrRegister("login")}>
@@ -100,64 +92,82 @@ const LoginRegister = () => {
             </button>
             <h2 className="font-medium text-6xl separator">/</h2>
             <button style={{ color: loginOrRegister === "register" ? "white" : "#3F4767" }} onClick={() => setLoginOrRegister("register")}>
-            <h2 className="font-medium text-6xl">Register</h2>
+              <h2 className="font-medium text-6xl">Register</h2>
             </button>
           </Stack>
 
           {/* ------------------------------------ Login ----------------------------- */}
           {loginOrRegister === "login" ? (
-            <div className="loginContainer">
-              <form onSubmit={(e) => handleSubmitLogin(e, valuesLogin, setErrorsLogin, setUser, setUserTokenFunc, navigate)}>
-                {/* Email */}
-                <div>
-                  <FormControl variant="standard">
-                    <InputLabel htmlFor="login-email">Email:</InputLabel>
-                    <Input id="login-email" name="email" type="email" placeholder="example@gmail.com" value={valuesLogin.email} onChange={handleChangeLogin} required autoComplete="email" />
-                    <FormHelperText>{errorsLogin.email && <label className="error">{errorsLogin.email}</label>}</FormHelperText>
-                  </FormControl>
-                </div>
+            <div className="loginContainer w-full">
+              <ThemeProvider theme={newTheme}>
+                <form className="w-full flex flex-col gap-6" onSubmit={(e) => handleSubmitLogin(e, valuesLogin, setErrorsLogin, setUser, setUserTokenFunc, navigate)}>
+                  {/* Email */}
+                  <div className="w-1/2">
+                    <FormControl variant="standard" className="w-full">
+                      <TextField
+                        error={errorsLogin.email ? true : false}
+                        autoFocus={true}
+                        className="input-custom-outlined"
+                        label="Email"
+                        id="login-email"
+                        name="email"
+                        type="email"
+                        required
+                        placeholder="example@gmail.com"
+                        value={valuesLogin.email}
+                        onChange={handleChangeLogin}
+                        autoComplete="email"
+                      />
+                      <FormHelperText>{errorsLogin.email && <label className="text-red-500">{errorsLogin.email}</label>}</FormHelperText>
+                    </FormControl>
+                  </div>
 
-                {/* Password */}
-                <div>
-                  <FormControl variant="standard">
-                    <InputLabel htmlFor="login-password">Password:</InputLabel>
-                    <Input
-                      id="login-password"
-                      name="password"
-                      autoComplete="login-password"
-                      type={showPassword ? "text" : "password"}
-                      label="Password"
-                      placeholder="Password..."
-                      value={valuesLogin.password}
-                      onChange={handleChangeLogin}
-                      required
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label={showPassword ? "hide the password" : "display the password"}
-                            onClick={togglePasswordVisibility}
-                            onMouseDown={handleMouseDown}
-                            onMouseUp={handleMouseUp}
-                            edge="end"
-                          >
-                            {showPassword ? <Eye /> : <EyeClosed />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                    />
-                    <FormHelperText> {errorsLogin.password && <label className="error">{errorsLogin.password}</label>}</FormHelperText>
-                  </FormControl>
-                </div>
+                  {/* Password */}
+                  <div className="w-1/2">
+                    <FormControl variant="standard" className="w-full">
+                      <TextField
+                        error={errorsLogin.password ? true : false}
+                        label="Password"
+                        className="input-custom-outlined"
+                        id="login-password"
+                        name="password"
+                        autoComplete="login-password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Password..."
+                        value={valuesLogin.password}
+                        onChange={handleChangeLogin}
+                        required
+                        slotProps={{
+                          input: {
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  aria-label={showPassword ? "hide the password" : "display the password"}
+                                  onClick={togglePasswordVisibility}
+                                  onMouseDown={handleMouseDown}
+                                  onMouseUp={handleMouseUp}
+                                  edge="end"
+                                >
+                                  {showPassword ? <Eye color="#3F4767"/> : <EyeClosed color="#3F4767"/>}
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          },
+                        }}
+                      />
+                      <FormHelperText> {errorsLogin.password && <label className="text-red-500">{errorsLogin.password}</label>}</FormHelperText>
+                    </FormControl>
+                  </div>
 
-                {/* Submit button */}
-                <Button type="submit" variant="contained" endIcon={<PaperPlaneRight />}>
-                  {" "}
-                  Login{" "}
-                </Button>
-                {errorsLogin.general && <p className="error general">{errorsLogin.general}</p>}
-              </form>
-              <Link to="/register">Don't have an account? Click here</Link>
-              <Link to="/forgot-password">Forgot password?</Link>
+                  {/* Submit button */}
+                  <p onClick={() => setLoginOrRegister("register")} className="text-quaternary w-fit cursor-pointer" >Don't have an account? <span className="text-primary">Click here</span></p>
+                  <Link to="/forgot-password" className="text-quaternary w-fit">Forgot password? <span className="text-primary">Click here</span></Link>
+                  <Button type="submit" sx={{ padding: 2 }} className="btn-filled-custom w-full" variant="contained" startIcon={<PaperPlaneRight />}>
+                    Login
+                  </Button>
+                  {errorsLogin.general && <p className="errorBadge">{errorsLogin.general}</p>}
+                </form>
+              </ThemeProvider>
             </div>
           ) : (
             // ------------------------------------ Register ----------------------------->
@@ -248,7 +258,7 @@ const LoginRegister = () => {
           <img src={panelsThree} alt="panelsThree" className="panelsThree" />
         </div>
       </section>
-    </div>
+    </main>
   );
 };
 

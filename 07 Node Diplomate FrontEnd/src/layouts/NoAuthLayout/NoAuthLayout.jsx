@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import useUserStore from "../../stores/userStore";
 import { Navigate, Outlet } from "react-router-dom";
 import "../../assets/styles/global.css";
-import Cursor from "../../components/layouts/Cursor";
+// import Cursor from "../../components/layouts/Cursor";
 
 // ? ------------------ NoAuth layout logic ------->
 const NoAuthLayout = () => {
@@ -20,7 +20,7 @@ const NoAuthLayout = () => {
   // ? ------------------ NoAuth layout component ------->
   return (
     <div>
-      <Cursor />
+      {/* <Cursor /> */}
       <Outlet />
     </div>
   );

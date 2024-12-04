@@ -1,19 +1,13 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-.header {
+.headerHero {
   display: flex;
   @apply justify-between 
     items-center
-    py-3
-    px-12;
-}
+    py-6
+    px-16;
 
-/*  ^----------------- Logo container -----------------^*/
-.logoCon {
-  @apply 
-  flex 
+  /*  ^----------------- Logo container -----------------^*/
+  .logoCon {
+    @apply flex 
   flex-row 
   items-center 
   gap-4 
@@ -21,26 +15,26 @@
   transition-all 
   duration-300 
   hover:text-primary;
-}
+  }
 
-.logoCon img {
-  transition: all 0.3s;
-}
-.logoCon img:hover {
-  transform: scale(1.1);
-  transition: all 0.3s;
-  filter: brightness(1.2);
-}
+  .logoCon img {
+    transition: all 0.3s;
+  }
+  .logoCon img:hover {
+    transform: scale(1.1);
+    transition: all 0.3s;
+    filter: brightness(1.2);
+  }
 
-/*  ^----------------- Middle container -----------------^*/
-.middleCon {
-  display: flex;
-  background: rgba(10, 10, 21, 0.1);
-  border-color: rgba(67, 164, 255, 0.2);
-  border-radius: 100px;
-  font-weight: 300;
-  backdrop-filter: blur(3px);
-  @apply items-center
+  /*  ^----------------- Middle container -----------------^*/
+  .middleCon {
+    display: flex;
+    background: rgba(10, 10, 21, 0.1);
+    border-color: rgba(67, 164, 255, 0.2);
+    border-radius: 100px;
+    font-weight: 300;
+    backdrop-filter: blur(3px);
+    @apply items-center
     justify-around
     gap-10
     py-5
@@ -49,114 +43,86 @@
     transition-all
     duration-300
     hover:border-primary;
+  }
+
+  .middleCon:hover li:hover {
+    color: var(--color-primary);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  /*  ^----------------- Hamburger Button -----------------^*/
+  .hamburgerButton {
+    border: 2px solid var(--color-primary);
+    padding: 7px;
+    border-radius: 10px;
+    transition: all 0.3s;
+  }
+  .hamburgerButton:hover {
+    background-color: var(--color-primary);
+    color: #181c2e;
+    box-shadow: var(--shadowBlue);
+  }
+
+  /*  ^----------------- Fullscreen menu -----------------^*/
+  .closeMenu:hover {
+    color: #181c2e;
+    background: var(--color-primary);
+    box-shadow: var(--shadowBlue);
+  }
+
+  .fullscreen-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(10, 10, 21, 0.6);
+    backdrop-filter: blur(3px);
+    color: white;
+    z-index: 99;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .closeMenu {
+    top: 20px;
+    right: 20px;
+    color: white;
+    cursor: pointer;
+  }
+
+  /*  ^----------------- Menu Content -----------------^*/
+  .menu-content ul {
+    list-style: none;
+    text-align: center;
+  }
+
+  .menu-content ul li {
+    margin: 20px 0;
+    font-size: 1.5rem;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .menu-content ul li:hover {
+    color: var(--color-primary);
+    transition: all 0.3s;
+    transform: translateY(-3px);
+    text-shadow: var(--shadowBlue);
+  }
 }
 
-.middleCon:hover li:hover {
-  color: var(--color-primary);
-  transition: all 0.3s;
-  cursor: pointer;
-}
-
-/*  ^----------------- Buttons Down -----------------^*/
-.loginButton,
-.getButton {
-  color: white !important;
-  border-radius: 10px !important;
-  border: 1px solid var(--color-primary) !important;
-  transition: all 0.3s !important;
-  background-color: rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(3px);
-}
-
-.loginButton:hover,
-.getButton:hover {
-  transform: translateY(-3px) !important;
-}
-
-.loginButton:hover {
-  background-color: var(--color-primary) !important;
-  color: #181c2e;
-  box-shadow: var(--shadowBlue) !important;
-}
-
-.getButton {
-  background: #43a4ff !important;
-  box-shadow: var(--shadowBlue) !important;
-}
-
-/*  ^----------------- Hamburger Button -----------------^*/
-.hamburgerButton {
-  border: 2px solid var(--color-primary);
-  padding: 7px;
-  border-radius: 10px;
-  transition: all 0.3s;
-}
-.hamburgerButton:hover {
-  background-color: var(--color-primary);
-  color: #181c2e;
-  box-shadow: var(--shadowBlue);
-}
-
-/*  ^----------------- Fullscreen menu -----------------^*/
-.closeMenu:hover {
-  color: #181c2e;
-  background: var(--color-primary);
-  box-shadow: var(--shadowBlue);
-}
-
-.fullscreen-menu {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(10, 10, 21, 0.6);
-  backdrop-filter: blur(3px);
-  color: white;
-  z-index: 99;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.closeMenu {
-  top: 20px;
-  right: 20px;
-  color: white;
-  cursor: pointer;
-}
-
-/*  ^----------------- Menu Content -----------------^*/
-.menu-content ul {
-  list-style: none;
-  text-align: center;
-}
-
-.menu-content ul li {
-  margin: 20px 0;
-  font-size: 1.5rem;
-  transition: all 0.3s;
-  cursor: pointer;
-}
-.menu-content ul li:hover {
-  color: var(--color-primary);
-  transition: all 0.3s;
-  transform: translateY(-3px);
-  text-shadow: var(--shadowBlue);
-}
-
-
-  /* ^----------------- Media Queries -----------------^ */
+/* ^----------------- Media Queries -----------------^ */
 /* Tablet 1279 px */
 @media (max-width: 1279px) {
-  .header {
-    @apply py-2 px-4;
-  }
+  .headerHero {
+    @apply py-6 px-5;
 
-  .middleCon {
-    @apply py-4 px-8;
+    .middleCon {
+      @apply py-4 px-8;
+    }
   }
 }
-
 /* Mobile 767px */

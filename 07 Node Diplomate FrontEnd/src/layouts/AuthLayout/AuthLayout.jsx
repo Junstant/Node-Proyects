@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import useUserStore from "../../stores/userStore";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import verifySession from "./authLayout";
-import Cursor from "../../components/layouts/Cursor";
+// import Cursor from "../../components/layouts/Cursor";
 
 // ? ------------------ Auth layout logic ------->
 const AuthLayout = () => {
@@ -41,7 +41,7 @@ const AuthLayout = () => {
 
   return (
     <div>
-      <Cursor />
+      {/* <Cursor /> */}
       <h1>Authenticated Layout</h1>
       <p>{user.name}</p>
       <Outlet />

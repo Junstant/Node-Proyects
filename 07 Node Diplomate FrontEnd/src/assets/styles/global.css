@@ -1,53 +1,91 @@
 /* google font inter */
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --color-primary: #43a4ff;
+    --color-secondary: #23293f;
+    --color-tertiary: #3f4767;
+    --color-quaternary: #6d7aad;
+    --color-white: #ffffff;
+    --color-background: #0a0a15;
+    --color-stroke: #3f4767;
+    --shadowBlue: 0px 109.112px 30.1798px rgba(67, 164, 255, 0.01), 0px 69.6458px 27.8583px rgba(67, 164, 255, 0.04), 0px 39.4659px 23.2153px rgba(67, 164, 255, 0.15),
+      0px 17.7984px 17.7984px rgba(67, 164, 255, 0.26), 0px 4.64305px 9.2861px rgba(67, 164, 255, 0.29);
+  }
 
-@layer base{
-    :root{
-        --color-primary: #43A4FF;
-        --color-secondary: #23293F;
-        --color-tertiary: #3F4767;
-        --color-quaternary: #6D7AAD;
-        --color-white: #FFFFFF;
-        --color-background: #0A0A15;
-        --color-stroke: #3F4767;
-        --shadowBlue: 0px 109.112px 30.1798px rgba(67, 164, 255, 0.01), 0px 69.6458px 27.8583px rgba(67, 164, 255, 0.04), 0px 39.4659px 23.2153px rgba(67, 164, 255, 0.15),
-        0px 17.7984px 17.7984px rgba(67, 164, 255, 0.26), 0px 4.64305px 9.2861px rgba(67, 164, 255, 0.29); 
-    }
-    
-    *{
-        cursor: none !important;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+  * {
+    /* cursor: none !important; */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-    body{
-        font-family: 'Inter', sans-serif;
-        background-color: var(--color-background);
-        background-image: url('../images/bgk-pattern.svg');
-        color: var(--color-white);
-    }
+  body {
+    font-family: "Inter", sans-serif;
+    background-color: var(--color-background);
+    background-image: url("../images/bgk-pattern.svg");
+    color: var(--color-white);
+  }
 
-    ::-webkit-scrollbar {
-        width: 5px;
-        height: 5px;
-    }
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
 
-    ::-webkit-scrollbar-track {
-        background: var(--color-background);
-    }
+  ::-webkit-scrollbar-track {
+    background: var(--color-background);
+  }
 
-    ::-webkit-scrollbar-thumb {
-        background: var(--color-primary);
-        border-radius: 3px;
-    }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 3px;
+  }
 
-    ::-webkit-scrollbar-thumb:hover {
-        background: #6fbaff;
-    }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6fbaff;
+  }
+}
+
+/* %----------- Outlined & Filled Button */
+.btn-outlined-custom,
+.btn-filled-custom {
+  color: white !important;
+  border-radius: 10px !important;
+  border: 1px solid var(--color-primary) !important;
+  transition: all 0.3s !important;
+  background-color: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(3px);
+}
+
+.btn-outlined-custom:hover,
+.btn-filled-custom:hover {
+  transform: translateY(-3px) !important;
+}
+
+.btn-outlined-custom:hover {
+  background-color: var(--color-primary) !important;
+  color: #181c2e;
+  box-shadow: var(--shadowBlue) !important;
+}
+
+.btn-filled-custom {
+  background: #43a4ff !important;
+  box-shadow: var(--shadowBlue) !important;
+}
+
+/* %----------- errorBadge */
+.errorBadge {
+  color: #0a0a15;
+  font-size: 0.8rem;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
+  padding: 10px 20px;
+  background-color: #ff4d4d;
+  border-radius: 10px;
 }

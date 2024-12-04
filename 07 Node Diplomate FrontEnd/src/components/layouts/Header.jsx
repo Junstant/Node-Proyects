@@ -20,7 +20,7 @@ const Header = () => {
   });
 
   return (
-    <div className="header">
+    <div className="headerHero">
       {/* Principal menu */}
       <div className="hidden md:flex justify-between items-center w-full">
         {/* Logo */}
@@ -41,12 +41,12 @@ const Header = () => {
         </ul>
         <div className="flex flex-row gap-3">
           <Link to="/Login">
-            <Button className="loginButton" sx={{ px: 4, py: 1, textTransform: "capitalize", fontWeight: 400 }} variant="outlined">
+            <Button className="btn-outlined-custom" sx={{ px: 4, py: 1, textTransform: "capitalize", fontWeight: 400 }} variant="outlined">
               Login
             </Button>
           </Link>
           <Link to="/Register">
-            <Button className="getButton" sx={{ px: 3, py: 1, textTransform: "capitalize", fontWeight: 400 }} variant="contained">
+            <Button className="btn-filled-custom" sx={{ px: 3, py: 1, textTransform: "capitalize", fontWeight: 400 }} variant="contained">
               Get Studemio
             </Button>
           </Link>
@@ -98,10 +98,10 @@ const Header = () => {
               </li>
             </ul>
             <div className="flex flex-col gap-4 mt-8">
-              <Button onClick={() => setIsMenuOpen(false)} className="loginButton" sx={{ px: 4, py: 1, textTransform: "capitalize", fontWeight: 400 }} variant="outlined">
+              <Button onClick={() => setIsMenuOpen(false)} className="btn-outlined-custom" sx={{ px: 4, py: 1, textTransform: "capitalize", fontWeight: 400 }} variant="outlined">
                 <Link to="/Login">Login</Link>
               </Button>
-              <Button onClick={() => setIsMenuOpen(false)} className="getButton" sx={{ px: 3, py: 1, textTransform: "capitalize", fontWeight: 400 }} variant="contained">
+              <Button onClick={() => setIsMenuOpen(false)} className="btn-filled-custom" sx={{ px: 3, py: 1, textTransform: "capitalize", fontWeight: 400 }} variant="contained">
                 <Link to="/Register">Get Studemio</Link>
               </Button>
             </div>
