@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    --color-primary: #43a4ff;
+    --color-primary: #43afff;
     --color-secondary: #23293f;
     --color-tertiary: #3f4767;
     --color-quaternary: #6d7aad;
@@ -80,12 +80,16 @@
 
 /* %----------- errorBadge */
 .errorBadge {
-  color: #0a0a15;
-  font-size: 0.8rem;
+  color: #ff43c0;
   font-weight: 600;
   width: 100%;
+  border-bottom: 2px solid #ff43c0;
   text-align: center;
-  padding: 10px 20px;
-  background-color: #ff4d4d;
-  border-radius: 10px;
+  padding: 10px 0px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: start;
+  filter: drop-shadow(0px 00px 10px rgb(255, 67, 192));
 }
+

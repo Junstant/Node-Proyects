@@ -8,12 +8,15 @@ const themeNew = createTheme({
     },
   },
   components: {
+
+    // ^ ----------- TextField ------------>
     MuiTextField: {
       styleOverrides: {
         root: {
           "& .MuiOutlinedInput-root": {
             "& fieldset": {
               borderColor: "#3F4767", // Default border color
+              borderRadius: "10px", // Rounded border
             },
             "&:hover fieldset": {
               borderColor: "#43A4FF", // Border color on hover
@@ -42,10 +45,35 @@ const themeNew = createTheme({
           },
         },
       },
+
+      // ^ ----------- Button ------------>
       MuiButton: {
         styleOverrides: {
           root: {
-            color: "white", // Texto blanco en botones por defecto
+            color: "white", // Button text color
+          },
+          "& .MuiIconButton-root": {
+            background: "#6D7AAD", // Button text color
+          },
+        },
+      },
+    },
+
+    // ^ ----------- Icon Button ------------>
+    MuiIconButton : {
+      styleOverrides: {
+        root: {
+          color: "#6D7AAD", // Button text color
+        },
+      },
+    },
+
+    // ^ ----------- Input Adornment ------------>
+    MuiInputAdornment: {
+      styleOverrides: {
+        root: {
+          "& .MuiIconButton-root": {
+            color: "#43A4FF", // Color inicial del icono
           },
         },
       },

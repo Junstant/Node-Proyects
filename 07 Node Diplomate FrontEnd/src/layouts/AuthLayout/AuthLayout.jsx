@@ -42,8 +42,6 @@ const AuthLayout = () => {
   return (
     <div>
       {/* <Cursor /> */}
-      <h1>Authenticated Layout</h1>
-      <p>{user.name}</p>
       <Outlet />
     </div>
   );

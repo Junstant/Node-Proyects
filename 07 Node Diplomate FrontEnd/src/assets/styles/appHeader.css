@@ -1,0 +1,107 @@
+.heroAppHeader {
+  min-height: calc(100vh - 2.5rem);
+  max-width: 90px;
+  min-width: 90px;
+  background: rgba(35, 41, 63, 0.4);
+  @apply flex flex-col items-center h-full justify-between py-8 px-4 my-5 ml-3 rounded-2xl border border-strokeT;
+
+  /* ^ ---------------- Logo Container ---------------- ^ */
+  .logoCon a {
+    width: 50px;
+    height: 50px;
+    transition: all 0.3s;
+    @apply flex flex-row items-center justify-center mb-12 border border-primary rounded-2xl p-1;
+  }
+  .logoCon img {
+    width: 70%;
+    transition: all 0.3s;
+    pointer-events: none;
+  }
+
+  .logoCon a:hover {
+    background: var(--color-primary);
+    box-shadow: var(--shadowBlue);
+    transform: translateY(-3px);
+  }
+  .logoCon a:hover img {
+    filter: brightness(0.2);
+  }
+
+  /* ^ ---------------- Icons Container ---------------- ^ */
+  .iconsButton {
+    @apply gap-7 flex flex-col;
+  }
+  .iconsButton li {
+    padding: 0px 5px;
+  }
+
+  .iconsButton li:not(.disabled):hover {
+    color: var(--color-primary);
+    transition: all 0.3s;
+    cursor: pointer;
+    filter: drop-shadow(0px 0px 5px var(--color-primary)) drop-shadow(0px 0px 10px var(--color-primary));
+  }
+
+  .iconsButton .active {
+    color: var(--color-primary);
+    transition: all 0.3s;
+    cursor: pointer;
+    border-left: 2px solid var(--color-primary);
+    padding-left: 5px;
+    filter: drop-shadow(0px 0px 5px var(--color-primary)) drop-shadow(0px 0px 10px var(--color-primary)) drop-shadow(0px 0px 20px var(--color-primary));
+  }
+
+  .disabled {
+    color: var(--color-tertiary);
+    pointer-events: none;
+  }
+
+  .disabled:hover {
+    cursor: not-allowed !important;
+    filter: none !important;
+  }
+
+  /* ^ ---------------- Bottom section ---------------- ^ */
+  .bottomSection{
+    @apply flex flex-col items-center gap-2;
+  }
+  .lineSeparator{
+    @apply border-t border-strokeT w-6 my-5;
+  }
+  .userPanelIcon:hover{
+    color: var(--color-primary);
+    transition: all 0.3s;
+    cursor: pointer;
+    filter: drop-shadow(0px 0px 5px var(--color-primary)) drop-shadow(0px 0px 10px var(--color-primary));
+  }
+  .bottomSection .active {
+    color: var(--color-primary);
+    transition: all 0.3s;
+    cursor: pointer;
+    border-left: 2px solid var(--color-primary);
+    padding-left: 5px;
+    filter: drop-shadow(0px 0px 5px var(--color-primary)) drop-shadow(0px 0px 10px var(--color-primary)) drop-shadow(0px 0px 20px var(--color-primary));
+  }
+
+}
+
+/* ^ ---------------- Media Queries ---------------- ^ */
+/* Tablet 1279px */
+@media (max-width: 1279px) {
+  .heroAppHeader {
+    min-height: 50px;
+    max-height: 50px;
+    max-width: 100%;
+    width: 100%;
+    @apply flex flex-row items-center justify-between;  
+
+    .topSection{
+        @apply flex flex-row items-center justify-between w-full;
+    }
+    .logoCon img {
+      width: 60%;
+    }
+  }
+}
+
+/* Mobile 767px */

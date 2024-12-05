@@ -58,7 +58,7 @@ const registerUserController = async (req, res) => {
     const verificationToken = jwt.sign({email: email}, ENVIROMENT.JWT_SECRET, {expiresIn: "1d"});
     
     //Creamos la url de verificacion
-    const url_verification = `http://localhost:${ENVIROMENT.PORT}/api/auth/verify/${verificationToken}`;
+    const url_verification = `${ENVIROMENT.FRONTEND_URL}/verify/${verificationToken}`;
 
     //Enviamos el correo de verificacion
     await sendEmail({

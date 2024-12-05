@@ -8,6 +8,7 @@ import LoginRegister from "./Screens/LoginRegsiter/LoginRegister.jsx";
 import ForgotPassword from "./Screens/ForgotPassword/ForgotPassword.jsx";
 import ResetPassword from "./Screens/ResetPassword/ResetPassword.jsx";
 import Modules from "./Screens/Modules/Modules.jsx";
+import VerifyEmail from "./Screens/VerifyEmail/VerifyEmail.jsx";
 
 // ^ ------------------ Router ------------>
 const router = createBrowserRouter([
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "reset-password/:token",
         element: <ResetPassword/>,
+      },
+      {
+        path: "/verify/:token",
+        element: <VerifyEmail/>,
       },
       {
         path: "*",

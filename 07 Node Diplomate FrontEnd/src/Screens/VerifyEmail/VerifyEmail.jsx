@@ -1,10 +1,7 @@
-import React, { useState, useRef } from "react";
-import handleSubmitForgotPassword from "./forgotPassword.js";
-import createHandleChange from "../../hooks/formHandlers.jsx";
-import { Button, FormControl, FormHelperText, TextField } from "@mui/material";
-import Header from "../../components/layouts/Header.jsx";
-import { PaperPlaneRight, Warning } from "@phosphor-icons/react";
-import { ThemeProvider } from "@mui/material/styles";
+import React, { useState, useRef, useEffect } from "react";
+import handleVerifyEmail from "./verifyEmail.js";
+import { CheckCircle, Warning } from "@phosphor-icons/react";
+import Header from "../../components/layouts/Header";
 import lightOne from "../../assets/images/lights/loginRegister/Vector.png";
 import lightTwo from "../../assets/images/lights/loginRegister/Vector-1.png";
 import lightThree from "../../assets/images/lights/loginRegister/Vector-2.png";
@@ -17,19 +14,19 @@ import panelsOne from "../../assets/images/lights/loginRegister/panels/panelsOne
 import panelsTwo from "../../assets/images/lights/loginRegister/panels/panelsTwo.png";
 import panelsThree from "../../assets/images/lights/loginRegister/panels/panelsThree.png";
 import "../../assets/styles/global.css";
-import "../../assets/styles/forgotPassword.css";
-import newTheme from "../../assets/styles/theme.jsx";
+import "../../assets/styles/verifyEmail.css";
+import { useParams, useNavigate } from "react-router-dom";
 
-// ? -------- Forgot password Logic -------->
-const ForgotPassword = () => {
+// ? -------- Verify Email component --------->
+const VerifyEmail = () => {
   // # -> States to manage form errors
-  const [errors, setErrors] = useState({});
+  const { token } = useParams();
 
-  // # -> States to manage form values
-  const [values, setValues] = useState({ email: "" });
+  // # -> Function to navigate to another page
+  const navigate = useNavigate();
 
-  // # -> Function to handle changes in the fields
-  const handleChange = createHandleChange(setValues);
+  // # -> Error state
+  const [error, setError] = useState(null);
 
   // # -> Ref for the user panel image
   const imageRef = useRef(null);
@@ -51,51 +48,42 @@ const ForgotPassword = () => {
     imageRef.current.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg)";
   };
 
-  // ? ------------------ Forgot password component ------->
+  //Verify email when the component is mounted
+  useEffect(() => {
+    handleVerifyEmail(token, setError, navigate);
+  }, []);
+
+  // ? ------------------ Verify Email component ------->
   return (
-    <div>
+    <main>
       <Header></Header>
-      <section className="heroForgotPassword">
-        {/* ------------------ Forgot password ----------- */}
+      <section className="heroVerify">
         <div className="leftContainer">
-          <h2 className="font-medium text-4xl">Forgot Password</h2>
-          <p className="text-quaternary mt-2">Enter your email to receive a password reset link</p>
-          <ThemeProvider theme={newTheme}>
-            <form className="w-full flex flex-col gap-6 mt-8" onSubmit={(e) => handleSubmitForgotPassword(e, values, setErrors)}>
-              <FormControl variant="standard">
-                <TextField
-                  label="Email"
-                  error={errors.email ? true : false}
-                  htmlFor="email"
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  placeholder="example@gmail.com"
-                  value={values.email}
-                  autoComplete="email"
-                  onChange={handleChange}
-                />
-                <FormHelperText>{errors.email && <label className="text-red-500">{errors.email}</label>}</FormHelperText>
-              </FormControl>
-              <Button sx={{ padding: 2 }} className="btn-filled-custom w-full" type="submit" variant="contained" startIcon={<PaperPlaneRight />}>
-                Send email
-              </Button>
-              {errors.general && (
-                <p className="errorBadge">
-                  <Warning />
-                  {errors.general}
-                </p>
-              )}
-            </form>
-          </ThemeProvider>
+          {/* ------------------ Success --------------- */}
+          {error && error.success != null ? (
+            <>
+              <CheckCircle size={90} weight="fill" className="text-primary" />
+              <p className="text-quaternary mb-7">Redirecting...</p>
+              <h2 className="text-3xl text-primary uppercase tracking-widest">{error.success}</h2>
+            </>
+          ) : null}
+
+          {/* ------------------ Error --------------- */}
+          {error && error.general != null ? (
+            <>
+              <Warning size={90} weight="fill" className="text-primary" />
+              <p className="text-quaternary">An error has occurred</p>
+              <p className="text-quaternary mb-7">Redirecting...</p>
+              <h2 className="text-3xl text-primary uppercase tracking-widest">{error.general}</h2>
+            </>
+          ) : null}
+
+          {/* ------------------ Verifying --------------- */}
+          {!error || (error.success == null && error.general == null) ? <h2 className="text-3xl text-primary uppercase tracking-widest">Verifying your email...</h2> : null}
         </div>
-        {/* ----------------- Illustration -----------------*/}
         <div className="illustration overflow-hidden p-11" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
           <img src={userPanel} alt="userPanel" className="tilt-image" ref={imageRef} />
         </div>
-
-        {/* /* ----------------- Lights -----------------*/}
         <div className="lights overflow-hidden">
           <img src={lightOne} alt="lightOne" className="lightOne" />
           <img src={lightTwo} alt="lightTwo" className="lightTwo" />
@@ -109,8 +97,8 @@ const ForgotPassword = () => {
           <img src={panelsThree} alt="panelsThree" className="panelsThree" />
         </div>
       </section>
-    </div>
+    </main>
   );
 };
 
-export default ForgotPassword;
+export default VerifyEmail;

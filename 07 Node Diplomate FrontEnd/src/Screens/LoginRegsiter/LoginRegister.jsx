@@ -1,15 +1,15 @@
 import React, { useState, useRef } from "react";
 import handleSubmitLogin from "./login.js";
 import handleSubmitRegister from "./register.js";
-import { Button, Checkbox, FormControl, FormHelperText, IconButton, Input, InputAdornment, InputLabel, Stack, TextField, Typography } from "@mui/material";
-import { Eye, EyeClosed, PaperPlaneRight, Info } from "@phosphor-icons/react";
+import { Button, Checkbox, FormControl, FormHelperText, IconButton, InputAdornment, Stack, TextField } from "@mui/material";
+import { Eye, EyeClosed, PaperPlaneRight, Warning } from "@phosphor-icons/react";
 import { usePasswordVisibility } from "../../hooks/passwordSwitch.jsx";
 import Header from "../../components/layouts/Header.jsx";
 import useUserStore from "../../stores/userStore.js";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import createHandleChange from "../../hooks/formHandlers.jsx";
 import SmoothAlert from "../../components/common/SmoothAlert.jsx";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import lightOne from "../../assets/images/lights/loginRegister/Vector.png";
 import lightTwo from "../../assets/images/lights/loginRegister/Vector-1.png";
 import lightThree from "../../assets/images/lights/loginRegister/Vector-2.png";
@@ -18,9 +18,9 @@ import lightFive from "../../assets/images/lights/loginRegister/Vector-4.png";
 import lightSix from "../../assets/images/lights/loginRegister/Vector-5.png";
 import lineDecor from "../../assets/images/lineDecor.svg";
 import userPanel from "../../assets/images/userPanel.png";
-import panelsOne from "../../assets/images/panelsOne.svg";
-import panelsTwo from "../../assets/images/panelsTwo.png";
-import panelsThree from "../../assets/images/panelsThree.png";
+import panelsOne from "../../assets/images/lights/loginRegister/panels/panelsOne.png";
+import panelsTwo from "../../assets/images/lights/loginRegister/panels/panelsTwo.png";
+import panelsThree from "../../assets/images/lights/loginRegister/panels/panelsThree.png";
 import "../../assets/styles/global.css";
 import "../../assets/styles/loginRegister.css";
 import newTheme from "../../assets/styles/theme.jsx";
@@ -64,8 +64,8 @@ const LoginRegister = () => {
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    const rotateX = ((y - centerY) / centerY) * 10;
-    const rotateY = ((x - centerX) / centerX) * -10;
+    const rotateX = ((y - centerY) / centerY) * 5;
+    const rotateY = ((x - centerX) / centerX) * -5;
 
     imageRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
   };
@@ -86,7 +86,7 @@ const LoginRegister = () => {
       <section className="heroLoginRegister">
         {/* ---------------------- Change login or register ---------------- */}
         <div className="leftContainer">
-          <Stack direction="row" spacing={5}>
+          <Stack direction="row" className="titlesSwitch" spacing={5}>
             <button style={{ color: loginOrRegister === "login" ? "white" : "#3F4767" }} onClick={() => setLoginOrRegister("login")}>
               <h2 className="font-medium text-6xl">Login</h2>
             </button>
@@ -102,9 +102,10 @@ const LoginRegister = () => {
               <ThemeProvider theme={newTheme}>
                 <form className="w-full flex flex-col gap-6" onSubmit={(e) => handleSubmitLogin(e, valuesLogin, setErrorsLogin, setUser, setUserTokenFunc, navigate)}>
                   {/* Email */}
-                  <div className="w-1/2">
+                  <div className="w-3/4">
                     <FormControl variant="standard" className="w-full">
                       <TextField
+                        slotProps={{ borderRadius: 2 }}
                         error={errorsLogin.email ? true : false}
                         autoFocus={true}
                         className="input-custom-outlined"
@@ -123,7 +124,7 @@ const LoginRegister = () => {
                   </div>
 
                   {/* Password */}
-                  <div className="w-1/2">
+                  <div className="w-3/4">
                     <FormControl variant="standard" className="w-full">
                       <TextField
                         error={errorsLogin.password ? true : false}
@@ -148,7 +149,7 @@ const LoginRegister = () => {
                                   onMouseUp={handleMouseUp}
                                   edge="end"
                                 >
-                                  {showPassword ? <Eye color="#3F4767"/> : <EyeClosed color="#3F4767"/>}
+                                  {showPassword ? <Eye color="#3F4767" /> : <EyeClosed color="#3F4767" />}
                                 </IconButton>
                               </InputAdornment>
                             ),
@@ -160,90 +161,127 @@ const LoginRegister = () => {
                   </div>
 
                   {/* Submit button */}
-                  <p onClick={() => setLoginOrRegister("register")} className="text-quaternary w-fit cursor-pointer" >Don't have an account? <span className="text-primary">Click here</span></p>
-                  <Link to="/forgot-password" className="text-quaternary w-fit">Forgot password? <span className="text-primary">Click here</span></Link>
+                  <p onClick={() => setLoginOrRegister("register")} className="text-quaternary w-fit cursor-pointer">
+                    Don't have an account? <span className="text-primary">Click here</span>
+                  </p>
+                  <Link to="/forgot-password" className="text-quaternary w-fit">
+                    Forgot password? <span className="text-primary">Click here</span>
+                  </Link>
                   <Button type="submit" sx={{ padding: 2 }} className="btn-filled-custom w-full" variant="contained" startIcon={<PaperPlaneRight />}>
                     Login
                   </Button>
-                  {errorsLogin.general && <p className="errorBadge">{errorsLogin.general}</p>}
+                  {errorsLogin.general && (
+                    <p className="errorBadge">
+                      <Warning />
+                      {errorsLogin.general}
+                    </p>
+                  )}
                 </form>
               </ThemeProvider>
             </div>
           ) : (
             // ------------------------------------ Register ----------------------------->
-            <div className="registerContainer">
-              <form onSubmit={(e) => handleSubmitRegister(e, valuesRegister, setErrorsRegister)}>
-                {/* Name */}
-                <div>
-                  <FormControl variant="standard">
-                    <InputLabel htmlFor="register-name">Name:</InputLabel>
-                    <Input id="register-name" name="name" type="text" placeholder="Name..." value={valuesRegister.name} onChange={handleChangeRegister} required autoComplete="name" />
-                    <FormHelperText>{errorsRegister.name && <label className="error">{errorsRegister.name}</label>}</FormHelperText>
-                  </FormControl>
-                </div>
-
-                {/* Email */}
-                <div>
-                  <FormControl variant="standard">
-                    <InputLabel htmlFor="register-email">Email:</InputLabel>
-                    <Input id="register-email" name="email" type="email" placeholder="example@gmail.com" value={valuesRegister.email} onChange={handleChangeRegister} required autoComplete="email" />
-                    <FormHelperText>{errorsRegister.email && <label className="error">{errorsRegister.email}</label>}</FormHelperText>
-                  </FormControl>
-                </div>
-
-                {/* Password */}
-                <div>
-                  <FormControl variant="standard">
-                    <InputLabel htmlFor="register-password">Password:</InputLabel>
-                    <Input
-                      id="register-password"
-                      name="password"
-                      autoComplete="register-password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Password..."
-                      value={valuesRegister.password}
-                      onChange={handleChangeRegister}
-                      required
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label={showPassword ? "hide the password" : "display the password"}
-                            onClick={togglePasswordVisibility}
-                            onMouseDown={handleMouseDown}
-                            onMouseUp={handleMouseUp}
-                            edge="end"
-                          >
-                            {showPassword ? <Eye /> : <EyeClosed />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                    />
-                    <FormHelperText>{errorsRegister.password && <label className="error">{errorsRegister.password}</label>}</FormHelperText>
-                  </FormControl>
-                </div>
-                <div>
-                  <Checkbox id="terms" name="terms" required />
-                  <label htmlFor="terms">Accept terms and conditions:</label>
-                </div>
-
-                {/* Submit button */}
-                <Button type="submit" variant="contained" endIcon={<PaperPlaneRight />}>
-                  {" "}
-                  Register{" "}
-                </Button>
+            <div className="registerContainer w-full">
+              <ThemeProvider theme={newTheme}>
+                <form className="w-full flex flex-col gap-6 " onSubmit={(e) => handleSubmitRegister(e, valuesRegister, setErrorsRegister)}>
+                  {/* Name */}
+                  <p className="text-quaternary mt-5">Passwords must be at least 8 characters, one letter, one number and one special character.</p>{" "}
+                  <div className="w-3/4">
+                    <FormControl variant="standard" className="w-full">
+                      <TextField
+                        autoFocus={true}
+                        error={errorsRegister.name ? true : false}
+                        label="Name"
+                        id="register-name"
+                        name="name"
+                        type="text"
+                        placeholder="Name..."
+                        value={valuesRegister.name}
+                        onChange={handleChangeRegister}
+                        required
+                        autoComplete="name"
+                      />
+                      <FormHelperText>{errorsRegister.name && <label className="text-red-500">{errorsRegister.name}</label>}</FormHelperText>
+                    </FormControl>
+                  </div>
+                  {/* Email */}
+                  <div className="w-3/4">
+                    <FormControl variant="standard" className="w-full">
+                      <TextField
+                        error={errorsRegister.email ? true : false}
+                        label="Email"
+                        id="register-email"
+                        name="email"
+                        type="email"
+                        placeholder="example@gmail.com"
+                        value={valuesRegister.email}
+                        onChange={handleChangeRegister}
+                        autoComplete="email"
+                      />
+                      <FormHelperText>{errorsRegister.email && <label className="text-red-500">{errorsRegister.email}</label>}</FormHelperText>
+                    </FormControl>
+                  </div>
+                  {/* Password */}
+                  <div className="w-3/4">
+                    <FormControl variant="standard" className="w-full">
+                      <TextField
+                        error={errorsRegister.password ? true : false}
+                        label="Password"
+                        id="register-password"
+                        name="password"
+                        autoComplete="register-password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Password..."
+                        value={valuesRegister.password}
+                        onChange={handleChangeRegister}
+                        required
+                        slotProps={{
+                          input: {
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  aria-label={showPassword ? "hide the password" : "display the password"}
+                                  onClick={togglePasswordVisibility}
+                                  onMouseDown={handleMouseDown}
+                                  onMouseUp={handleMouseUp}
+                                  edge="end"
+                                >
+                                  {showPassword ? <Eye color="#3F4767" /> : <EyeClosed color="#3F4767" />}
+                                </IconButton>
+                              </InputAdornment>
+                            ),
+                          },
+                        }}
+                      />
+                      <FormHelperText>{errorsRegister.password && <label className="text-red-500">{errorsRegister.password}</label>}</FormHelperText>
+                    </FormControl>
+                  </div>
+                  <div>
+                    <Checkbox id="terms" name="terms" required sx={{ color: "#FFFFFF" }} />
+                    <label htmlFor="terms" className="font-light">
+                      I agree the <span className="text-primary cursor-pointer">terms and conditions</span>
+                    </label>
+                  </div>
+                  <p onClick={() => setLoginOrRegister("login")} className="text-quaternary">
+                    Already have an account? <span className="cursor-pointer text-primary">Click here</span>
+                  </p>
+                  {/* Submit button */}
+                  <Button sx={{ padding: 2 }} className="btn-filled-custom w-full" type="submit" variant="contained" startIcon={<PaperPlaneRight />}>
+                    Register
+                  </Button>
                 {errorsRegister.general && (
-                  <p className="error general">
-                    <Info />
+                  <p className="errorBadge">
+                    <Warning />
                     {errorsRegister.general}
                   </p>
                 )}
-              </form>
-              <Link to="/login">Already have an account? Click here</Link>
+                </form>
+              </ThemeProvider>
             </div>
           )}
         </div>
         <div className="illustration overflow-hidden p-11" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-          <img src={userPanel} alt="userPanel" className="-z-20 tilt-image" ref={imageRef} />
+          <img src={userPanel} alt="userPanel" className="tilt-image" ref={imageRef} />
         </div>
         <div className="lights overflow-hidden">
           <img src={lightOne} alt="lightOne" className="lightOne" />

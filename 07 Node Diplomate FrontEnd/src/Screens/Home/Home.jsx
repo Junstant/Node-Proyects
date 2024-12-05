@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import Header from "../../components/layouts/Header";
-import { Button } from "@mui/material";
+import { Button, ThemeProvider } from "@mui/material";
 import "../../assets/styles/global.css";
 import "../../assets/styles/home.css";
 import lightOne from "../../assets/images/lights/home/Vector.png";
@@ -14,18 +14,10 @@ import lineDecor from "../../assets/images/lineDecor.svg";
 import panelsOne from "../../assets/images/panelsOne.svg";
 import panelsTwo from "../../assets/images/panelsTwo.png";
 import panelsThree from "../../assets/images/panelsThree.png";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import themeNew from "../../assets/styles/theme";
 
 // ? ---------- Home Screen ---------->
 const Home = () => {
-  // Theme for the close button
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: "#43AFFF",
-      },
-    },
-  });
 
   const imageRef = useRef(null);
 
@@ -56,7 +48,7 @@ const Home = () => {
           <h1 className="text-primary -mb-5">potential</h1>
           <h3 className="text-xl mt-10 mb-10 font-light">Simplify your academic life with smart tools</h3>
           <div className="flex flex-row gap-3">
-            <ThemeProvider theme={theme}>
+            <ThemeProvider theme={themeNew}>
               <Button className="btn-outlined-custom" sx={{ px: 4, py: 1, textTransform: "capitalize", fontWeight: 400 }} variant="outlined" color="primary">
                 About
               </Button>
