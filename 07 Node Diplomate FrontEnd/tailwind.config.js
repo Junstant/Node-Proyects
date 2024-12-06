@@ -14,6 +14,7 @@ export default {
         whiteT: "var(--color-white)",
         backgroundT: "var(--color-background)",
         strokeT: "var(--color-stroke)",
+        modalT: "var(--color-modal)",
       }
     },
   },

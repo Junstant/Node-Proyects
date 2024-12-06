@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { FormControl, Input, InputAdornment, InputLabel, FormHelperText, Button, IconButton } from "@mui/material";
+import { FormControl, Input, InputAdornment, InputLabel, FormHelperText, Button, IconButton, TextField } from "@mui/material";
 import { Eye, EyeClosed, Info } from "@phosphor-icons/react";
 import { usePasswordVisibility } from "../../hooks/passwordSwitch";
 import createHandleChange from "../../hooks/formHandlers";
 import handleSubmitUpdate from "../../Screens/UserPanel/updateUser";
 import useUserStore from "../../stores/userStore";
+import "../../assets/styles/global.css";
+import themeNew from "../../assets/styles/theme.jsx";
+import { ThemeProvider } from "@mui/material/styles";
 
 // ? ------------------ UpdateForm Logic ------->
 const UpdateForm = () => {
@@ -16,86 +19,107 @@ const UpdateForm = () => {
   // # -> States to manage form errors
   const [errorsUpdate, setErrorsUpdate] = useState({});
 
-  // Custom hooks para manejar cambios y visibilidad de contraseña
+  // # -> Custom hooks to manage password visibility
   const { showPassword, togglePasswordVisibility, handleMouseDown, handleMouseUp } = usePasswordVisibility();
   const handleChangeUpdate = createHandleChange(setValuesUpdate);
 
-
   // ? ------------------ UpdateForm Component ------->
   return (
-    <form onSubmit={(e) => handleSubmitUpdate(e, valuesUpdate, setErrorsUpdate, user)}>
-      {/* Nombre */}
-      <div>
-        <FormControl variant="standard">
-          <InputLabel htmlFor="update-name">Name:</InputLabel>
-          <Input id="update-name" name="name" type="text" placeholder="John" value={valuesUpdate.name} onChange={handleChangeUpdate} required autoComplete="name" />
-          <FormHelperText>{errorsUpdate.name && <label className="error">{errorsUpdate.name}</label>}</FormHelperText>
-        </FormControl>
-      </div>
+    <form className="w-full flex flex-col gap-6" onSubmit={(e) => handleSubmitUpdate(e, valuesUpdate, setErrorsUpdate, user)}>
+      <ThemeProvider theme={themeNew}>
+        {/* Name */}
+        <div className="w-full">
+          <FormControl variant="standard" className="w-full">
+            <TextField label="Name:" id="update-name" name="name" type="text" placeholder="John" value={valuesUpdate.name} onChange={handleChangeUpdate} required autoComplete="name" />
+            <FormHelperText>{errorsUpdate.name && <label className="text-red-500">{errorsUpdate.name}</label>}</FormHelperText>
+          </FormControl>
+        </div>
 
-      {/* Email */}
-      <div>
-        <FormControl variant="standard" disabled>
-          <InputLabel htmlFor="update-email">Email:</InputLabel>
-          <Input id="update-email" name="email" type="email" value={valuesUpdate.email} disabled autoComplete="email" />
-        </FormControl>
-      </div>
+        {/* Email */}
+        <div className="w-full">
+          <FormControl variant="standard" className="w-full" disabled>
+            <TextField label="Email:" id="update-email" name="email" type="email" value={valuesUpdate.email} disabled autoComplete="email" />
+          </FormControl>
+        </div>
 
-      {/* Contraseña actual */}
-      <div>
-        <FormControl variant="standard">
-          <InputLabel htmlFor="update-old-password">Old Password:</InputLabel>
-          <Input
-            id="update-old-password"
-            name="oldPassword"
-            type={showPassword ? "text" : "password"}
-            placeholder="Old password"
-            value={valuesUpdate.oldPassword}
-            onChange={handleChangeUpdate}
-            required
-            autoComplete="current-password"
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onClick={togglePasswordVisibility}>
-                  {showPassword ? <EyeClosed /> : <Eye />}
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-          <FormHelperText>{errorsUpdate.oldPassword && <label className="error">{errorsUpdate.oldPassword}</label>}</FormHelperText>
-        </FormControl>
-      </div>
+        {/* Actual password */}
+        <div className="w-full">
+          <FormControl variant="standard" className="w-full">
+            <TextField
+              error={errorsUpdate.oldPassword ? true : false}
+              label="Actual Password:"
+              id="update-old-password"
+              name="oldPassword"
+              autoComplete="current-password"
+              type={showPassword ? "text" : "password"}
+              placeholder="Old password"
+              value={valuesUpdate.oldPassword}
+              onChange={handleChangeUpdate}
+              required
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label={showPassword ? "hide the password" : "display the password"}
+                        onClick={togglePasswordVisibility}
+                        onMouseDown={handleMouseDown}
+                        onMouseUp={handleMouseUp}
+                        edge="end"
+                      >
+                        {showPassword ? <Eye color="#3F4767" /> : <EyeClosed color="#3F4767" />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+            />
+            <FormHelperText>{errorsUpdate.oldPassword && <label className="text-red-500">{errorsUpdate.oldPassword}</label>}</FormHelperText>
+          </FormControl>
+        </div>
 
-      {/* Nueva contraseña */}
-      <div>
-        <FormControl variant="standard">
-          <InputLabel htmlFor="update-new-password">New Password:</InputLabel>
-          <Input
-            id="update-new-password"
-            name="newPassword"
-            type={showPassword ? "text" : "password"}
-            placeholder="New password"
-            value={valuesUpdate.newPassword}
-            onChange={handleChangeUpdate}
-            required
-            autoComplete="new-password"
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onClick={togglePasswordVisibility}>
-                  {showPassword ? <EyeClosed /> : <Eye />}
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-          <FormHelperText>{errorsUpdate.newPassword && <label className="error">{errorsUpdate.newPassword}</label>}</FormHelperText>
-        </FormControl>
-      </div>
+        {/* New password */}
+        <div className="w-full">
+          <FormControl variant="standard" className="w-full">
+            <TextField
+              error={errorsUpdate.newPassword ? true : false}
+              label="New Password:"
+              id="update-new-password"
+              name="newPassword"
+              type={showPassword ? "text" : "password"}
+              placeholder="New password"
+              value={valuesUpdate.newPassword}
+              onChange={handleChangeUpdate}
+              required
+              autoComplete="new-password"
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label={showPassword ? "hide the password" : "display the password"}
+                        onClick={togglePasswordVisibility}
+                        onMouseDown={handleMouseDown}
+                        onMouseUp={handleMouseUp}
+                        edge="end"
+                      >
+                        {showPassword ? <Eye color="#3F4767" /> : <EyeClosed color="#3F4767" />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+            />
+            <FormHelperText>{errorsUpdate.newPassword && <label className="text-red-500">{errorsUpdate.newPassword}</label>}</FormHelperText>
+          </FormControl>
+        </div>
 
-      {/* Botón de actualizar */}
-      <Button type="submit" variant="contained" startIcon={<Info />}>
-        Update
-      </Button>
-      {errorsUpdate.general && <p className="error general">{errorsUpdate.general}</p>}
+        {/* Update button */}
+        <Button type="submit" sx={{ padding: 2, paddingX:8 }} className="btn-outlined-custom w-fit px-8" variant="contained" startIcon={<Info />}>
+          Update
+        </Button>
+        {errorsUpdate.general && <p className="errorBadge">{errorsUpdate.general}</p>}
+      </ThemeProvider>
     </form>
   );
 };

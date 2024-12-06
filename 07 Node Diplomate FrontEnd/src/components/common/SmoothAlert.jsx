@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Alert } from "@mui/material";
+import "../../assets/styles/smoothAlert.css";
+import "../../assets/styles/global.css";
+import { Warning } from "@phosphor-icons/react";
 
 // ? ------------------ SmoothAlert Component ------->
 const SmoothAlert = ({ message, severity = "error", onCloseComplete }) => {
@@ -20,12 +23,13 @@ const SmoothAlert = ({ message, severity = "error", onCloseComplete }) => {
   // ? ------------------ SmoothAlert Component ------->
   return (
     <div
+      className="w-full flex justify-center positionAlert"
       style={{
         opacity: fadeOut ? 0 : 1,
         transition: "opacity 0.3s ease-in-out",
       }}
     >
-      <Alert severity={severity} onClose={handleClose}>
+      <Alert className="alertMessage" severity={severity} onClose={handleClose} iconMapping={{ error: <Warning className="iconWarning" /> }}>
         {message}
       </Alert>
     </div>

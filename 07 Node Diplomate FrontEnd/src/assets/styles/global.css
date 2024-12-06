@@ -13,9 +13,12 @@
     --color-quaternary: #6d7aad;
     --color-white: #ffffff;
     --color-background: #0a0a15;
-    --color-stroke: #3f4767;
-    --shadowBlue: 0px 109.112px 30.1798px rgba(67, 164, 255, 0.01), 0px 69.6458px 27.8583px rgba(67, 164, 255, 0.04), 0px 39.4659px 23.2153px rgba(67, 164, 255, 0.15),
-      0px 17.7984px 17.7984px rgba(67, 164, 255, 0.26), 0px 4.64305px 9.2861px rgba(67, 164, 255, 0.29);
+    --color-stroke: #3f476780;
+    --color-modal: #292e44;
+    --shadowBlue: 0px 109px 30px rgba(67, 164, 255, 0.01), 0px 69px 27px rgba(67, 164, 255, 0.04), 0px 39px 23px rgba(67, 164, 255, 0.15), 0px 18px 18px rgba(67, 164, 255, 0.26),
+      0px 5px 9px rgba(67, 164, 255, 0.29);
+    --shadowPink: 0px 109px 30px rgba(255, 67, 192, 0.01), 0px 69px 27px rgba(255, 67, 192, 0.04), 0px 39px 23px rgba(255, 67, 192, 0.15), 0px 18px 18px rgba(255, 67, 192, 0.26),
+      0px 5px 9px rgba(255, 67, 192, 0.29);
   }
 
   * {
@@ -51,7 +54,7 @@
   }
 }
 
-/* %----------- Outlined & Filled Button */
+/* %----------- Outlined & Filled Button -----> */
 .btn-outlined-custom,
 .btn-filled-custom {
   color: white !important;
@@ -60,6 +63,10 @@
   transition: all 0.3s !important;
   background-color: rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(3px);
+}
+
+.btn-outlined-custom {
+  background: transparent !important;
 }
 
 .btn-outlined-custom:hover,
@@ -78,7 +85,7 @@
   box-shadow: var(--shadowBlue) !important;
 }
 
-/* %----------- errorBadge */
+/* %----------- errorBadge -----> */
 .errorBadge {
   color: #ff43c0;
   font-weight: 600;
@@ -93,3 +100,44 @@
   filter: drop-shadow(0px 00px 10px rgb(255, 67, 192));
 }
 
+/* %----------- ParentResponsive -----> */
+.ParentResponsive {
+  max-height: 100vh;
+}
+
+@media (max-width: 1279px) {
+  .ParentResponsive {
+    max-height: 100%;
+    @apply flex flex-col-reverse;
+  }
+}
+
+/* %----------- Modal -----> */
+.modalPaperStyleOne {
+  background-color: #292e44 !important;
+  color: #ffffff;
+  border-radius: 20px !important;
+  padding: 2rem 4rem;
+  width: 100%;
+  border: 1px solid var(--color-stroke);
+}
+@media (max-width: 1279px) {
+  .modalPaperStyleOne {
+    padding: 1rem 1rem;
+  }
+}
+
+/* %----------- Button custom accept & denied -----> */
+.btn-custom-accept:hover {
+  background: #43a4ff !important;
+  color: #181c2e !important;
+  transition: all 0.3s !important;
+  box-shadow: var(--shadowBlue) !important;
+}
+
+.btn-custom-denied:hover {
+  background: #ff43c0 !important;
+  color: #181c2e !important;
+  transition: all 0.3s !important;
+  box-shadow: var(--shadowPink) !important;
+}

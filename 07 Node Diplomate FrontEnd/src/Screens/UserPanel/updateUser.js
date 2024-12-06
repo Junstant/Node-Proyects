@@ -62,7 +62,7 @@ const handleSubmitUpdate = async (e, values, setErrors, user) => {
       //* ---> Update successful
       if (secondResult.success) {
         // Clear errors if login is successful
-        setErrors({});
+        setErrors({general: "User updated successfully"});
       }
 
       // ! ---> Update failed

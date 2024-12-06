@@ -1,0 +1,68 @@
+.heroModules {
+  /* ^----------------- Lights & Decor -----------------^ */
+  /* ---> Blue left top */
+  .lightOne {
+    @apply absolute;
+    right: 0%;
+    bottom: 0%;
+    animation: lightUp 1.5s ease-in-out 0.5s infinite;
+  }
+  /* ---> Big orange middle  */
+  .lightTwo {
+    @apply absolute;
+    right: 35%;
+    bottom: 0%;
+    animation: lightUp 1.7s ease-in-out 1s infinite;
+  }
+  /* ---> Purple right */
+  .lightThree {
+    @apply absolute;
+    left: 0%;
+    bottom: 0%;
+    animation: lightUp 1.9s ease-in-out 1.5s infinite;
+  }
+  /* ---> Purple right top */
+  .lightFour {
+    @apply absolute;
+    right: 0%;
+    bottom: 0%;
+    animation: lightUp 2.1s ease-in-out 2s infinite;
+  }
+
+  /* ---> Green left bottom */
+  .lightFive {
+    @apply absolute;
+    top: 0%;
+    left: 10%;
+    animation: lightUp 2.3s ease-in-out 2.5s infinite;
+  }
+
+  /* ---> Tiny blue center */
+  .lightSix {
+    @apply absolute;
+    left: 0%;
+    top: 0%;
+    animation: lightUp 2.5s ease-in-out 3s infinite;
+  }
+
+  /*  ---> Line */
+  .lightOne,
+  .lightTwo,
+  .lightThree,
+  .lightFour,
+  .lightFive,
+  .lightSix {
+    pointer-events: none;
+  }
+
+  /*  ------- Lights -------- */
+  .lights {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -30;
+    overflow-x: hidden;
+  }
+}

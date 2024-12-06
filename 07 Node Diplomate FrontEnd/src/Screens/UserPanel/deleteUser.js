@@ -27,7 +27,7 @@ const handleSubmitDelete = async (e, values, setErrors, user, navigate) => {
 
     // # ---> Send form data to backend for delete
     const response = await backFetch({
-      url: `${ENVIROMENT.BACK_DIR}/auth/delete-user`,
+      url: `${ENVIROMENT.BACK_DIR}/api/auth/delete-user`,
       method: 'PUT',
       headers: { "x-api-key": ENVIROMENT.API_INTERNAL, Authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       body: valuesBody,
@@ -46,14 +46,14 @@ const handleSubmitDelete = async (e, values, setErrors, user, navigate) => {
     // ! ---> Delete failed
     else {
       console.error("[Delete] - An error occurred:", result.error.payload.detail);
-      setErrors({ general: "Error: " + result.error.payload.detail || "Delete failed. Please check your credentials." });
+      setErrors({ password: "Error: " + result.error.payload.detail || "Delete failed. Please check your credentials." });
     }
   }
 
   // ! -----> Unexpected error
   catch (error) {
     console.error("[Delete] - An error occurred:", error);
-    setErrors({ general: "An unexpected error occurred. Please try again later." });
+    setErrors({ password: "An unexpected error occurred. Please try again later." });
   }
 };
 

@@ -1,0 +1,151 @@
+.heroUserPanel {
+  @apply flex flex-row items-center justify-center gap-4 w-full my-16;
+
+  /* ^----------------- Lights & Decor -----------------^ */
+  /* ---> Blue left top */
+  .lightOne {
+    @apply absolute;
+    right: 0%;
+    bottom: 0%;
+    animation: lightUp 1.5s ease-in-out 0.5s infinite;
+  }
+  /* ---> Big orange middle  */
+  .lightTwo {
+    @apply absolute;
+    right: 35%;
+    bottom: 0%;
+    animation: lightUp 1.7s ease-in-out 1s infinite;
+  }
+  /* ---> Purple right */
+  .lightThree {
+    @apply absolute;
+    left: 0%;
+    bottom: 0%;
+    animation: lightUp 1.9s ease-in-out 1.5s infinite;
+  }
+  /* ---> Purple right top */
+  .lightFour {
+    @apply absolute;
+    right: 0%;
+    bottom: 0%;
+    animation: lightUp 2.1s ease-in-out 2s infinite;
+  }
+
+  /* ---> Green left bottom */
+  .lightFive {
+    @apply absolute;
+    top: 0%;
+    left: 10%;
+    animation: lightUp 2.3s ease-in-out 2.5s infinite;
+  }
+
+  /* ---> Tiny blue center */
+  .lightSix {
+    @apply absolute;
+    left: 0%;
+    top: 0%;
+    animation: lightUp 2.5s ease-in-out 3s infinite;
+  }
+
+  /*  ---> Line */
+  .lightOne,
+  .lightTwo,
+  .lightThree,
+  .lightFour,
+  .lightFive,
+  .lightSix {
+    pointer-events: none;
+  }
+
+  /*  ------- Lights -------- */
+  .lights {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -30;
+    overflow-x: hidden;
+  }
+
+  /* ^----------------- Main section -----------------^ */
+  .leftPanel{
+    min-width: 30%;
+    height: 100%;
+    width: 700px;
+    @apply flex flex-col items-center gap-4;
+  }
+
+  /* # ------> Avatar and name */
+  .topPanel{
+    min-height: 120px;
+    background-position: center;
+    background-size: cover;
+    border-radius: 20px;
+    background-image: url("../images/userPanelBackground.png");
+    background-blend-mode: color-dodge;
+    mix-blend-mode: exclusion;
+    pointer-events: none;
+    @apply flex flex-row items-end justify-start gap-4 w-full border border-strokeT;
+  }
+
+  .avatarContainer{
+    background: rgba(35, 41, 63, 0.5);
+    border-radius: 15px;
+    margin: 10px;
+    width: fit-content;
+    @apply p-4 flex flex-row gap-4 items-center;
+  }
+  
+  .downPanel{
+    background: rgba(35, 41, 63, 0.5);
+    border-radius: 20px;
+    height: 100%;
+    @apply flex flex-col items-start justify-start gap-4 w-full p-10 border border-strokeT;
+  }
+
+  .rightPanel{
+    min-width: 20%;
+    width: 100px;
+    height: 100%;
+    background: rgba(35, 41, 63, 0.5);
+    border-radius: 20px;
+    @apply flex flex-col items-start justify-start gap-4 p-5 pt-7 border border-strokeT;
+  }
+
+
+
+}
+
+/* ^ ---------------- Media Queries ---------------- ^ */
+/* Tablet 1279px */
+@media (max-width: 1279px){
+  .heroUserPanel{
+    @apply flex flex-col;
+
+    .leftPanel{
+      min-width: auto;
+      width: 75%;
+    }
+
+    .rightPanel{
+      min-width: auto;
+      width: 75%;
+    }
+  }
+}
+
+/* Mobile 767px */
+@media (max-width: 767px){
+  .heroUserPanel{
+    .leftPanel{
+      min-width: auto;
+      width: 95%;
+    }
+
+    .rightPanel{
+      min-width: auto;
+      width: 95%;
+    }
+  }
+}

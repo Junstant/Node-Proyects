@@ -2,7 +2,9 @@
   min-height: calc(100vh - 2.5rem);
   max-width: 90px;
   min-width: 90px;
-  background: rgba(35, 41, 63, 0.4);
+  background: rgba(35, 41, 63, 0.2);
+  backdrop-filter: blur(1px);
+  z-index: 90;
   @apply flex flex-col items-center h-full justify-between py-8 px-4 my-5 ml-3 rounded-2xl border border-strokeT;
 
   /* ^ ---------------- Logo Container ---------------- ^ */
@@ -62,13 +64,13 @@
   }
 
   /* ^ ---------------- Bottom section ---------------- ^ */
-  .bottomSection{
+  .bottomSection {
     @apply flex flex-col items-center gap-2;
   }
-  .lineSeparator{
+  .lineSeparator {
     @apply border-t border-strokeT w-6 my-5;
   }
-  .userPanelIcon:hover{
+  .userPanelIcon:hover {
     color: var(--color-primary);
     transition: all 0.3s;
     cursor: pointer;
@@ -82,26 +84,63 @@
     padding-left: 5px;
     filter: drop-shadow(0px 0px 5px var(--color-primary)) drop-shadow(0px 0px 10px var(--color-primary)) drop-shadow(0px 0px 20px var(--color-primary));
   }
-
 }
 
 /* ^ ---------------- Media Queries ---------------- ^ */
 /* Tablet 1279px */
 @media (max-width: 1279px) {
   .heroAppHeader {
-    min-height: 50px;
-    max-height: 50px;
-    max-width: 100%;
+    min-height: 90px;
+    max-height: 90px;
+    background: rgba(35, 41, 63, 0.5);
+    backdrop-filter: blur(5px);
+    align-self: center;
+    max-width: calc(100% - 1rem);
     width: 100%;
-    @apply flex flex-row items-center justify-between;  
+    position: sticky;
+    bottom: 20px;
+    @apply flex flex-row items-center justify-between mx-2;
 
-    .topSection{
-        @apply flex flex-row items-center justify-between w-full;
+    .topSection {
+      @apply flex flex-row items-center w-full;
     }
-    .logoCon img {
-      width: 60%;
+
+    .iconsButton {
+      @apply gap-7 flex flex-row;
+    }
+
+    .logoCon a {
+      margin-right: 3rem;
+      margin-bottom: 0px;
+    }
+
+    .bottomSection {
+      @apply flex flex-row items-center gap-4;
     }
   }
 }
 
 /* Mobile 767px */
+@media (max-width: 767px) {
+  .heroAppHeader {
+    background: rgba(35, 41, 63, 0.7);
+    backdrop-filter: blur(10px);
+    min-height: 70px;
+    max-height: 70px;
+    .topSection {
+      @apply flex flex-row items-center w-full;
+    }
+
+    .iconsButton {
+      @apply gap-1 flex flex-row;
+    }
+
+    .logoCon a {
+      margin-right: 1rem;
+      margin-bottom: 0px;
+    }
+    .lineSeparator {
+      display: none;
+    }
+  }
+}

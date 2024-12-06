@@ -2,10 +2,9 @@ import backFetch from "../../utils/fetchHTTP.utils";
 import customResponse from "../../utils/responseBuilder.utils";
 import ENVIROMENT from "../../config/enviroment.config";
 import getCareers from "../../components/common/Careers/getCareers";
-import getSchedules from "../../components/common/Modules/Schedules/getSchedules";
 
 // ^ --------> Function to verify the user's session
-const verifySession = async (setCareers, setUser, setUserTokenFunc, token, user) => {
+const verifySession = async (setCareers, setUser, setUserTokenFunc, token) => {
   try {
     // ! -----> If there is no token, log out the user
     if (!token) {
