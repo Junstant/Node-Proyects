@@ -1,4 +1,5 @@
 .heroModules {
+    @apply flex flex-row items-center justify-center gap-8 w-full my-5 mx-4;
   /* ^----------------- Lights & Decor -----------------^ */
   /* ---> Blue left top */
   .lightOne {
@@ -65,4 +66,27 @@
     z-index: -30;
     overflow-x: hidden;
   }
+
+  /* ^----------------- Main container -----------------^ */
+  .leftContainer{
+    height: 100%;
+    @apply flex flex-col items-start gap-4 w-full;
+  }
+
+  .rightContainer{
+    height: 100%;
+    background-color: rgba(0, 0, 255, 0.171);
+    @apply flex flex-col items-start gap-4 w-full;
+  }
+
+  .topPanel{
+    @apply flex flex-row justify-between w-full gap-4;
+  }
+
+  .containerTop{
+    background-color: rgba(35, 41, 63, 0.5);
+    border-radius: 15px;
+    min-height: 80px;
+    @apply flex flex-row items-center justify-center gap-4 border border-strokeT;
+}
 }

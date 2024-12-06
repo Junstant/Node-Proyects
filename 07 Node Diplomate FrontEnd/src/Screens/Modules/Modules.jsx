@@ -26,17 +26,25 @@ const Modules = () => {
       <AppHeader />
       {/* Main container */}
       <section className="heroModules">
+
+        {/* Left panel */}
         <main className="leftContainer">
           {/* Top panel */}
-          <section>
-            <div>
-              <CirclesFour /> Modules
+          <section className="topPanel">
+
+            {/* Title and icon */}
+            <div className="containerTop w-1/4">
+              <CirclesFour size={42} className="text-primary p-2 border border-primary rounded-full drop-shadow-xl"/> Modules
             </div>
-            <div>
+
+            {/* Avatar and career switcher */}
+            <div className="containerTop w-1/2 p-4 flex items-center">
               <Avatar alt="Avatar" src="https://picsum.photos/202" />
               <CareerSwitcher />
             </div>
-            <div>
+
+            {/* Current time */}
+            <div className="containerTop w-1/3">
               <div>
                 <CurrentTime />
               </div>
@@ -55,7 +63,7 @@ const Modules = () => {
         </main>
 
         {/* Right panel */}
-        <section>
+        <section className="rightContainer">
           {!activeYear || !activeCareer ? (
             <div>Choose a career and year to see the module</div>
           ) : (

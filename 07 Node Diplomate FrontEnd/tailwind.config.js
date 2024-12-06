@@ -15,6 +15,7 @@ export default {
         backgroundT: "var(--color-background)",
         strokeT: "var(--color-stroke)",
         modalT: "var(--color-modal)",
+        shadowBlue: "var(--shadowBlue)",
       }
     },
   },
