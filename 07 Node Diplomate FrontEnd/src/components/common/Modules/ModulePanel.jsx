@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useUserStore from "../../../stores/userStore";
 import handleDeleteModule from "./deleteModule";
-import { Button, Card, CardContent, Typography, Box, IconButton, Stack, Chip } from "@mui/material";
+import { Button, Typography, Box, IconButton, Stack, Chip, Tooltip } from "@mui/material";
 import { Trash, Medal, NotePencil, X, MapPin, GraduationCap, ChartDonut, CalendarDots, Timer } from "@phosphor-icons/react";
 import ModalPopUp from "../ModalPopUp";
 import ModalName from "./Modals/ModalName";
@@ -13,11 +13,15 @@ import ModuleAbsents from "./Components/ModuleAbsents";
 import ModuleDetailsSelector from "./Components/ModulePeriod";
 import ScheduleManager from "./Modals/ModalSchedule";
 import ModuleTimeBlock from "./Components/ModuleTimeBlock";
+import "../../../assets/styles/modulePanel.css";
+import "../../../assets/styles/global.css";
+import themeNew from "../../../assets/styles/theme";
+import { ThemeProvider } from "@mui/material/styles";
 
 // ? ------------------ ModulePanel Logic ------->
 const ModulePanel = () => {
   // # -> Get the active module and year
-  const { modules, activeModule, activeYear, setModules, setActiveModule, setActiveYear } = useUserStore();
+  const { modules, activeModule, activeYear, activeCareer, setModules, setActiveModule, setActiveYear } = useUserStore();
 
   // ? ------------------------------------- States -------------------------------------
 
@@ -44,17 +48,6 @@ const ModulePanel = () => {
   const handleCloseNameModal = () => nameModalOpen(false);
   const handleOpenNameModal = () => nameModalOpen(true);
 
-  // # -> Schedule modal
-  const [scheduleId, setScheduleId] = useState(null);
-  const [triggerModal, setTriggerModal] = useState(false);
-
-  // # -> Handle the modal close and open
-  const handleOpenModal = (id) => {
-    console.log(id);
-    setScheduleId(id);
-    setTriggerModal(true);
-  };
-
   // # -> Location modal
   const [locationModal, setLocationModal] = useState(false);
 
@@ -68,6 +61,20 @@ const ModulePanel = () => {
   // # -> Handle the modal close and open
   const handleCloseProfessorModal = () => setProfessorModal(false);
   const handleOpenProfessorModal = () => setProfessorModal(true);
+
+  // ^ -----> Convert hex to rgba
+  function hexToRgba(hex, alpha) {
+    // Remove the '#' symbol if present
+    const cleanHex = hex.replace("#", "");
+
+    // Divide the color into RGB components
+    const r = parseInt(cleanHex.substring(0, 2), 16);
+    const g = parseInt(cleanHex.substring(2, 4), 16);
+    const b = parseInt(cleanHex.substring(4, 6), 16);
+
+    // Return the rgba format
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
 
   // ? ------------------------------------- Functions -------------------------------------
 
@@ -98,11 +105,14 @@ const ModulePanel = () => {
   // ^ -----> Open the delete confirmation modal
   const confirmDelete = () => {
     handleOpenWithContent(
-      `Are you sure you want to delete "${activeModule.name}"?`,
-      <>
-        <Typography>Are you sure you want to delete this module? </Typography>
-        <Typography>This action cannot be undone.</Typography>
-      </>,
+      <div className="text-center flex flex-row w-full justify-center">
+        <p>
+          Are you sure you want to delete <b className="text-primary">"{activeModule.name}" ?</b>
+        </p>
+      </div>,
+      <div className="w-full text-center">
+        <p className="text-quaternary">This action cannot be undone.</p>
+      </div>,
       { submitLabel: "Yes, Delete", cancelLabel: "No, Cancel" },
       <X />,
       <Trash />,
@@ -124,39 +134,38 @@ const ModulePanel = () => {
     }
   }, [activeModule, activeYear]);
 
-
   // ? ------------------ Module panel Component ------->
   return (
-    <Box>
+    <section className="heroModulePanel">
       {/* Display the errors with the modal if there is an error */}
       {errorsModule.edit && handleOpenWithContent("Error", <SmoothAlert severity="error" message={errorsModule.edit} />)}
 
       {/* --------------- Display Module ----------- */}
-      {activeModule && activeYear && (
-        <Card sx={{ border: 2, borderColor: activeModule.color, borderRadius: "8px", padding: 2 }}>
-          <CardContent sx={{ spacing: 5, minHeight: 600, justifyContent: "space-around", display: "flex", flexDirection: "column" }}>
+      {activeModule && activeYear && activeCareer && (
+        <div className="panelContainer" style={{ borderColor: activeModule.color }}>
+          <ThemeProvider theme={themeNew}>
             {/* Top part */}
             <div>
               <Stack direction="row" spacing={1} alignItems={"center"} justifyContent={"space-between"}>
                 {/* year and semester */}
                 <div>
                   <Stack direction="row" spacing={1} alignItems={"center"}>
-                    <Chip sx={{ background: activeModule.color }} label={activeModule.period.year} />
-                    <Chip sx={{ background: activeModule.color }} label={activeModule.period.semester} />
+                    <Chip style={{ boxShadow: `0px 0px 30px ${hexToRgba(activeModule.color, 0.7)}` }} sx={{ background: activeModule.color }} label={activeModule.period.year} />
+                    <Chip style={{ boxShadow: `0px 0px 30px ${hexToRgba(activeModule.color, 0.7)}` }} sx={{ background: activeModule.color }} label={activeModule.period.semester} />
                   </Stack>
                 </div>
 
                 {/* Average */}
                 <div>
                   <Stack direction="row" spacing={1} alignItems={"center"}>
-                    <Box>
-                      {activeModule.notes && calculateAverage(activeModule.notes)}
-                      <Medal />
-                    </Box>
+                    <div className="flex items-center gap-3" style={{ color: activeModule.color }}>
+                      <h6 className="text-2xl">{activeModule.notes && calculateAverage(activeModule.notes)}</h6>
+                      <Medal size={30} />
+                    </div>
                     {/* Delete module */}
                     <Box>
-                      <Button variant="outlined" sx={{ minWidth: "30px", height: "30px", padding: 0 }} onClick={confirmDelete}>
-                        <Trash />
+                      <Button className="clickMiniGray" variant="outlined" onClick={confirmDelete}>
+                        <Trash size={20} />
                       </Button>
                     </Box>
                   </Stack>
@@ -165,65 +174,69 @@ const ModulePanel = () => {
             </div>
 
             {/* Module name */}
-            <div>
+            <div className="mt-4">
               <Stack direction="row" alignItems={"center"} justifyContent={"space-between"}>
                 <Box>
-                  <Stack direction="row" spacing={1} alignItems={"center"}>
+                  <Stack direction="row" spacing={2} alignItems={"center"}>
                     <Typography sx={{ padding: 1, border: 2, borderColor: activeModule.color, borderRadius: 2, color: activeModule.color }} variant="h4">
                       {activeModule.index}
                     </Typography>
-                    <Typography color={activeModule.color} variant="h4" onClick={confirmEditName}>
+                    <Typography color={activeModule.color} variant="h4" className="cursor-pointer" onClick={confirmEditName}>
                       {activeModule.name}
                     </Typography>
                   </Stack>
                 </Box>
-                <IconButton sx={{ minWidth: "30px", height: "30px", padding: 0, margin: 0 }} onClick={confirmEditName}>
-                  <NotePencil />
-                </IconButton>
+                <Tooltip PopperProps={{ className: "tooltipGray" }} title="Edit module name">
+                  <IconButton className="iconBtnMini" onClick={confirmEditName}>
+                    <NotePencil />
+                  </IconButton>
+                </Tooltip>
               </Stack>
             </div>
 
             {/* Schedule */}
-            <div>
-              <Box>
-                <ScheduleManager />
-              </Box>
+            <div className="mt-4">
+              <ScheduleManager />
             </div>
 
             {/* Location */}
-            <div>
+            <div className="mt-4">
               <Stack direction="row" alignItems={"center"} justifyContent={"space-between"}>
                 <Box>
-                  <Stack direction="row" spacing={1} alignItems={"center"}>
-                    <MapPin size={30} />
-                    <Typography variant="h6">Location:</Typography>
-                    <Typography variant="body2" onClick={handleOpenLocationModal}>
+                  <Stack direction="row" spacing={1} alignItems={"center"} color={activeModule.color}>
+                    <MapPin size={25} />
+                    <h6 className="text-xl">Location:</h6>
+                    <p className="text-white cursor-pointer" onClick={handleOpenLocationModal}>
                       {activeModule.location}
-                    </Typography>
+                    </p>
                   </Stack>
                 </Box>
                 <Box>
-                  <IconButton sx={{ minWidth: "30px", height: "30px", padding: 0, margin: 0 }} onClick={handleOpenLocationModal}>
-                    <NotePencil />
-                  </IconButton>
+                  <Tooltip PopperProps={{ className: "tooltipGray" }} title="Edit module location">
+                    <IconButton className="iconBtnMini" onClick={handleOpenLocationModal}>
+                      <NotePencil />
+                    </IconButton>
+                  </Tooltip>
                 </Box>
               </Stack>
             </div>
 
             {/* professor */}
-            <div>
+            <div className="mt-2">
               <Stack direction="row" alignItems={"center"} justifyContent={"space-between"}>
-                <Stack direction="row" spacing={1} alignItems={"center"}>
-                  <GraduationCap size={30} />
-                  <Typography variant="h6">Professor:</Typography>
-                  <Typography variant="body2" onClick={handleOpenProfessorModal}>
+                <Stack direction="row" spacing={1} alignItems={"center"} color={activeModule.color}>
+                  <GraduationCap size={25} />
+                  <h6 className="text-xl">Professor:</h6>
+                  <p className="text-white cursor-pointer" onClick={handleOpenProfessorModal}>
                     {activeModule.professor}
-                  </Typography>
+                  </p>
                 </Stack>
                 <Box alignItems="center">
-                  <IconButton sx={{ minWidth: "30px", height: "30px", padding: 0, margin: 0 }} onClick={handleOpenProfessorModal}>
-                    <NotePencil/>
-                  </IconButton>
+                  <Tooltip PopperProps={{ className: "tooltipGray" }} title="Edit module professor">
+                    <IconButton className="iconBtnMini" onClick={handleOpenProfessorModal}>
+                      <NotePencil />
+                    </IconButton>
+                  </Tooltip>
                 </Box>
               </Stack>
             </div>
@@ -239,7 +252,7 @@ const ModulePanel = () => {
             <div>
               <Box>
                 <Stack direction="row" spacing={1} alignItems={"center"}>
-                  <ChartDonut size={30}/>
+                  <ChartDonut size={30} />
                   <Typography variant="h6">State:</Typography>
                   <ModuleState />
                 </Stack>
@@ -257,29 +270,25 @@ const ModulePanel = () => {
             <div>
               <Box>
                 <Stack direction="row" spacing={1} alignItems={"center"} marginTop={2}>
-                  <CalendarDots size={30}/>
-                  <Typography variant="h6">Period:</Typography> 
-                <ModuleDetailsSelector />
+                  <CalendarDots size={30} />
+                  <Typography variant="h6">Period:</Typography>
+                  <ModuleDetailsSelector />
                 </Stack>
               </Box>
             </div>
-
 
             {/* Time block */}
             <div>
               <Box>
                 <Stack direction="row" spacing={1} alignItems={"center"}>
-                  <Timer size={30}/>
+                  <Timer size={30} />
                   <Typography variant="h6">Time Block:</Typography>
                 </Stack>
-                <ModuleTimeBlock/>
+                <ModuleTimeBlock />
               </Box>
             </div>
-
-
-
-          </CardContent>
-        </Card>
+          </ThemeProvider>
+        </div>
       )}
 
       {/* Modal */}
@@ -304,7 +313,7 @@ const ModulePanel = () => {
 
       {/* Professor modal */}
       {activeModule && <ModalProfessor open={professorModal} handleClose={handleCloseProfessorModal} />}
-    </Box>
+    </section>
   );
 };
 

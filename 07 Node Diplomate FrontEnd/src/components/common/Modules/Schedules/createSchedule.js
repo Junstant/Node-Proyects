@@ -11,7 +11,7 @@ const handleCreateSchedule = async (setModules, setErrors, setActiveModule, oldM
 
         // ! -----> If module ID is missing
         if (moduleId) {
-            setErrors({ module: moduleId });
+            setErrors({ schedule: moduleId });
             return;
         }
 
@@ -56,13 +56,13 @@ const handleCreateSchedule = async (setModules, setErrors, setActiveModule, oldM
         // ! -----> Schedule creation failed
         else {
             console.error("[handleCreateSchedule] - An error occurred:", result.error.payload.detail);
-            setErrors({ module: result.error.payload.detail });
+            setErrors({ schedule: result.error.payload.detail });
         }
     }
     // ! -----> If there is an error, update the state
     catch (error) {
         console.error("[handleCreateSchedule] - An error occurred:", error);
-        setErrors({ module: "An error occurred while creating the schedule" });
+        setErrors({ schedule: "An error occurred while creating the schedule" });
     }
 }
 

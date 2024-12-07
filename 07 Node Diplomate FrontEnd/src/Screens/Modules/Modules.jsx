@@ -1,7 +1,7 @@
 import React from "react";
 import useUserStore from "../../stores/userStore";
 import AppHeader from "../../components/layouts/AppHeader";
-import { CirclesFour } from "@phosphor-icons/react";
+import { CirclesFour, Warning } from "@phosphor-icons/react";
 import { Avatar } from "@mui/material";
 import CareerSwitcher from "../../components/common/careerSwitcher";
 import CurrentTime from "../../components/common/ActualDate";
@@ -15,10 +15,11 @@ import lightThree from "../../assets/images/lights/userPanel/lightThree.png";
 import lightFour from "../../assets/images/lights/userPanel/lightFour.png";
 import lightFive from "../../assets/images/lights/userPanel/lightFive.png";
 import lightSix from "../../assets/images/lights/userPanel/lightSix.png";
+import SmoothAlert from "../../components/common/SmoothAlert.jsx";
 
 // ? ------------------ Modules Logic ------->
 const Modules = () => {
-  const { activeYear, activeCareer } = useUserStore();
+  const { activeYear, activeCareer, activeModule } = useUserStore();
 
   // ? ------------------ Modules Component ------->
   return (
@@ -26,15 +27,13 @@ const Modules = () => {
       <AppHeader />
       {/* Main container */}
       <section className="heroModules">
-
         {/* Left panel */}
         <main className="leftContainer">
           {/* Top panel */}
           <section className="topPanel">
-
             {/* Title and icon */}
             <div className="containerTop w-1/4">
-              <CirclesFour size={42} className="text-primary p-2 border border-primary rounded-full drop-shadow-xl"/> Modules
+              <CirclesFour size={42} className="text-primary p-2 border border-primary rounded-full drop-shadow-xl" /> Modules
             </div>
 
             {/* Avatar and career switcher */}
@@ -45,17 +44,18 @@ const Modules = () => {
 
             {/* Current time */}
             <div className="containerTop w-1/3">
-              <div>
-                <CurrentTime />
-              </div>
+              <CurrentTime />
             </div>
           </section>
           {/* Modules */}
-          <section>
+          <section className="modulesPanel h-full">
             {!activeYear || !activeCareer ? (
-              <div>Choose a career and year to see the modules</div>
+              <>
+                <p className="text-quaternary text-center">Choose a career and year to see the modules</p>
+                <SmoothAlert icon={<Warning size={32} className="text-warning" />} message="Choose a career and year to see the modules" />
+              </>
             ) : (
-              <div>
+              <div className="w-full containerModule">
                 <ModulesManager />
               </div>
             )}
@@ -64,12 +64,12 @@ const Modules = () => {
 
         {/* Right panel */}
         <section className="rightContainer">
-          {!activeYear || !activeCareer ? (
-            <div>Choose a career and year to see the module</div>
-          ) : (
-            <div>
-              <ModulePanel />
+          {!activeYear || !activeCareer || !activeModule ? (
+            <div className="h-full w-full rounded-2xl border border-strokeT flex items-center justify-center max-xl:min-h-56" style={{background: 'rgba(35, 41, 63, 0.2)'}}>
+              <p className="text-quaternary text-center">Click a module to see the details</p>
             </div>
+          ) : (
+              <ModulePanel/>
           )}
         </section>
 

@@ -5,7 +5,7 @@ import { isRequired } from "../../../utils/fieldsValidator.utils";
 import { deleteYearFromCareer } from "../../../utils/careerHelper.utils";
 
 //^ --------> Function to handle the deletion of a year
-const handleDeleteYear = async (setCareers, setErrors, careerId, yearId, oldCareers) => {
+const handleDeleteYear = async (setCareers, setErrors, careerId, yearId, oldCareers, setActiveCareer) => {
   try {
     // ? -----> Validate form fields
     const id = isRequired(careerId);
@@ -40,6 +40,9 @@ const handleDeleteYear = async (setCareers, setErrors, careerId, yearId, oldCare
       setErrors({});
       const careers = oldCareers.map((career) => (career.id === careerId ? deleteYearFromCareer(career, yearId) : career));
       setCareers(careers);
+
+      // Update the active career
+      setActiveCareer(careers.find((career) => career.id === careerId));
     }
 
     // ! -----> Year deletion failed

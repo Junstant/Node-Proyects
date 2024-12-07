@@ -14,7 +14,7 @@ const handleUpdateModule = async (setModules, setErrors, setActiveModule, oldMod
 
     // ! -----> If module ID is missing
     if (moduleId) {
-      setErrors({ module: moduleId });
+      setErrors({ edit: moduleId });
       return;
     }
 
@@ -86,12 +86,12 @@ const handleUpdateModule = async (setModules, setErrors, setActiveModule, oldMod
     // ! -----> Module update failed
     else {
       console.error("[handleUpdateModule] - An error occurred:", result.error.payload.detail);
-      setErrors({ module: result.error.payload.detail });
+      setErrors({ edit: result.error.payload.detail });
     }
   } catch (error) {
     // ! -----> If there is an error, update the state
     console.error("[handleUpdateModule] - An error occurred:", error);
-    setErrors({ module: "An error occurred while updating the module" });
+    setErrors({ edit: "An error occurred while updating the module" });
   }
 };
 

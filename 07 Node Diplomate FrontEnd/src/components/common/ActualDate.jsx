@@ -16,11 +16,9 @@ const CurrentTime = () => {
 
   // ? ------------------ CurrentTime Component ------->
   return (
-    <div>
-      <div>
-        <CalendarDots />
-      </div>
-      <p>{time}</p>
+    <div className="w-full flex flex-row items-center justify-center gap-2">
+      <CalendarDots className="text-primary" size={32} />
+      <p className="text-xs">{time}</p>
     </div>
   );
 };

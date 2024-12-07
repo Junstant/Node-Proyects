@@ -6,20 +6,18 @@ import { ThemeProvider } from "@mui/material/styles";
 import { X, Check } from "@phosphor-icons/react";
 
 // ? ------------------ ModalPopUp Component ------->
-const ModalPopUp = ({ open, handleClose, title, children, onSubmit, submitLabel = "Save", cancelLabel = "Cancel", cancelIcon, submitIcon }) => {
+const ModalPopUp = ({ open, handleClose, title, children, onSubmit, submitLabel = "Save", cancelLabel = "Cancel"}) => {
   return (
     <>
       <ThemeProvider theme={themeNew}>
-        <Dialog PaperProps={{ className: "modalPaperStyleOne" }} open={open} onClose={handleClose}>
+        <Dialog PaperProps={{ className: "modalPaperStyleOne" }} open={open} onClose={handleClose} className="backdrop-blur-sm">
           <DialogTitle className="text-white">{title}</DialogTitle>
           <DialogContent>{children}</DialogContent>
           <DialogActions>
-            <Button sx={{gap:1, color:"#ff43c0"}} className="btn-custom-denied" startIcon={cancelIcon} onClick={handleClose}>
-              <X />
+            <Button sx={{color:"#ff43c0"}} startIcon={<X/>} className="btn-custom-denied" onClick={handleClose}>
               {cancelLabel}
             </Button>
-            <Button sx={{gap:1}} className="btn-custom-accept" startIcon={submitIcon} onClick={onSubmit}>
-              <Check />
+            <Button className="btn-custom-accept" startIcon={<Check/>} onClick={onSubmit}>  
               {submitLabel}
             </Button>
           </DialogActions>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useUserStore from "../../stores/userStore";
-import { Menu, MenuItem, Button, Box, Typography, Tooltip } from "@mui/material";
+import { Menu, MenuItem, Button, Box, Tooltip } from "@mui/material";
 import { ArrowsLeftRight, CaretDown } from "@phosphor-icons/react";
 import themeNew from "../../assets/styles/theme";
 import { ThemeProvider } from "@mui/material/styles";
@@ -67,26 +67,24 @@ const CareerSwitcher = () => {
     <Box className="w-full">
       {/* Career and year switcher */}
       <section className="flex flex-row gap-2 justify-between items-center">
-        <h5 className="text-white font-semibold leading-none pointer-events-none">
-          {getActiveCareerName() || "Career and Year"}
-        </h5>
+        <h5 className="text-white font-semibold leading-none pointer-events-none">{getActiveCareerName() || "Career and Year"}</h5>
         <div className="flex flex-row gap-4">
           <ThemeProvider theme={themeNew}>
             {/* Career */}
             <div>
               <Tooltip title={getActiveCareerName() || "Select a career..."}>
-              <Button variant="outlined" className="clickMini" onClick={handleCareerMenuOpen}>
-                <ArrowsLeftRight />
-              </Button>
+                <Button variant="outlined" className="clickMini" onClick={handleCareerMenuOpen}>
+                  <ArrowsLeftRight />
+                </Button>
+              </Tooltip>
               <Menu anchorEl={careerAnchorEl} open={Boolean(careerAnchorEl)} onClose={handleCareerMenuClose}>
                 {/* --------------------- Select career ------------------- */}
                 {careers.map((career) => (
-                  <MenuItem key={career.id} onClick={() => handleSelectCareer(career)}>
+                  <MenuItem key={career.id} onClick={() => handleSelectCareer(career)} selected={activeCareer && activeCareer.id === career.id}>
                     {career.name}
                   </MenuItem>
                 ))}
               </Menu>
-              </Tooltip>
             </div>
 
             {/* Year */}
@@ -100,7 +98,7 @@ const CareerSwitcher = () => {
                 {/* --------------------- Select year ------------------- */}
                 {activeCareer &&
                   activeCareer.years.map((year) => (
-                    <MenuItem key={year.id} onClick={() => handleSelectYear(year)}>
+                    <MenuItem key={year.id} onClick={() => handleSelectYear(year)} selected={activeYear && activeYear.id === year.id}>
                       {year.name}
                     </MenuItem>
                   ))}

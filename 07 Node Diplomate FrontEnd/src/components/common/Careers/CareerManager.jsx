@@ -17,7 +17,7 @@ import { ThemeProvider } from "@mui/material/styles";
 // ? ------------------ CareerManager Logic ------->
 const CareerManager = () => {
   //# --> Get user
-  const { user, careers, setCareers, setActiveCareer } = useUserStore();
+  const { user, careers, setCareers, setActiveCareer, activeCareer } = useUserStore();
 
   //# --> Error states
   const [errorsCareer, setErrorsCareer] = useState({});
@@ -76,7 +76,7 @@ const CareerManager = () => {
                     </Tooltip>
                     {/* ---------------------- Delete career --------------- */}
                     <Tooltip title="Delete Career" placement="top">
-                      <IconButton onClick={() => handleDeleteCareer(setCareers, setErrorsCareer, career.id, user, careers)}>
+                      <IconButton onClick={() => handleDeleteCareer(setCareers, setErrorsCareer, career.id, user, careers, setActiveCareer)}>
                         <Trash />
                       </IconButton>
                     </Tooltip>
@@ -87,13 +87,13 @@ const CareerManager = () => {
                     <Box key={year.id} className="flex flex-row w-full justify-between items-center border-b border-strokeT">
                       <Typography>{year.name}</Typography>
                       <Tooltip title="Delete Year" placement="top">
-                        <IconButton onClick={() => handleDeleteYear(setCareers, setErrorsYear, career.id, year.number, careers)}>
+                        <IconButton onClick={() => handleDeleteYear(setCareers, setErrorsYear, career.id, year.number, careers, setActiveCareer)}>
                           <Trash />
                         </IconButton>
                       </Tooltip>
                     </Box>
                   ))}
-                  <Button size="small" className="addYear" startIcon={<Plus />} onClick={() => handleCreateYear(setCareers, setErrorsYear, career.id, career, careers)}>
+                  <Button size="small" className="addYear" startIcon={<Plus />} onClick={() => handleCreateYear(setCareers, setErrorsYear, career.id, career, careers, setActiveCareer)}>
                     Add Year
                   </Button>
                 </Box>

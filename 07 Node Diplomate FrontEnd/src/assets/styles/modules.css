@@ -1,5 +1,7 @@
 .heroModules {
-    @apply flex flex-row items-center justify-center gap-8 w-full my-5 mx-4;
+  width: calc(100% - 6.8rem);
+  overflow-x: hidden;
+  @apply flex flex-row items-center justify-start gap-4 my-5 px-4;
   /* ^----------------- Lights & Decor -----------------^ */
   /* ---> Blue left top */
   .lightOne {
@@ -68,25 +70,65 @@
   }
 
   /* ^----------------- Main container -----------------^ */
-  .leftContainer{
+  .leftContainer {
     height: 100%;
     @apply flex flex-col items-start gap-4 w-full;
   }
 
-  .rightContainer{
+  .rightContainer {
     height: 100%;
-    background-color: rgba(0, 0, 255, 0.171);
-    @apply flex flex-col items-start gap-4 w-full;
+    overflow: hidden;
+    @apply flex flex-col items-start gap-4 w-3/5;
   }
 
-  .topPanel{
+  .topPanel {
     @apply flex flex-row justify-between w-full gap-4;
   }
 
-  .containerTop{
+  .containerTop {
     background-color: rgba(35, 41, 63, 0.5);
     border-radius: 15px;
     min-height: 80px;
     @apply flex flex-row items-center justify-center gap-4 border border-strokeT;
+  }
+
+  /* -----------> Modules panel <---------- */
+  .modulesPanel {
+    overflow: hidden;
+    height: 100%;
+    border-radius: 15px;
+    background-color: rgba(35, 41, 63, 0.5);
+    @apply flex flex-col items-start gap-4 w-full border border-strokeT pt-4;
+  }
+
+  .containerModule{
+    overflow-y: hidden;
+    height: 100%;
+    max-height: 100%;
+  }
+}
+
+/* ^ ----------------- Media queries ----------------- ^ */
+/* Tablet 1279px */
+@media (max-width: 1279px) {
+  .heroModules {
+    @apply flex-col-reverse gap-4 w-full my-5 mx-0 p-2;
+  
+  .rightContainer {
+    @apply flex-col gap-4 w-full;
+  }
+}
+}
+
+/* Mobile 767px */
+@media (max-width: 767px) {
+  .heroModules {
+  
+  .topPanel {
+    @apply flex-col gap-4 w-full;
+  }
+  .containerTop {
+    @apply flex-row gap-4 w-full justify-center ;
+  }
 }
 }

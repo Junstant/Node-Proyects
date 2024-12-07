@@ -1,0 +1,51 @@
+.heroModulesManager {
+  .modulesBox {
+    @apply flex flex-row gap-4 w-full flex-wrap overflow-y-scroll h-full pt-2 justify-center;
+  }
+
+  .modulesBox::-webkit-scrollbar {
+    width: 0px;
+  }
+
+  .cardModule {
+    transition: all 0.3s;
+    pointer-events: hover;
+    @apply flex gap-2 p-4 rounded-lg w-full flex-1 min-w-[31%] max-w-[31%];
+  }
+
+  .cardModule:hover {
+    transform: scale(1.03);
+  }
+}
+
+/* ^ ----------------- Media queries ----------------- ^ */
+/* Tablet 1279px */
+@media (max-width: 1279px) {
+  .heroModulesManager {
+    .modulesBox {
+      padding: 1rem;
+    }
+
+    .cardModule {
+      @apply min-w-[48%] max-w-[48%];
+    }
+  }
+}
+
+/* Mobile 767px */
+@media (max-width: 767px) {
+  .heroModulesManager {
+
+    .modulesBox {
+      overflow-y: scroll;
+      max-height: 1200px;
+    }
+    .modulesBox::-webkit-scrollbar {
+      width: 1px;
+    }
+
+    .cardModule {
+      @apply min-w-full max-w-full;
+    }
+  }
+}

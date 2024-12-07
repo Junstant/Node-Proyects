@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { Button, FormHelperText, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
-import { NotePencil, X } from "@phosphor-icons/react";
+import { Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+import { Check, X } from "@phosphor-icons/react";
 import createHandleChange from "../../../../hooks/formHandlers";
 import useUserStore from "../../../../stores/userStore";
 import handleUpdateModule from "../updateModule";
+import "../../../../assets/styles/global.css";
+import themeNew from "../../../../assets/styles/theme";
+import { ThemeProvider } from "@mui/material/styles";
 
 // ? ------------------ Modal Professor Logic ------->
 const ModalProfessor = ({ open, handleClose }) => {
@@ -32,21 +35,32 @@ const ModalProfessor = ({ open, handleClose }) => {
 
   // ? ------------------ ModalProfessor Component ------->
   return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Edit module professor</DialogTitle>
-      <DialogContent>
-        <TextField name="professor" label="Professor" variant="outlined" fullWidth margin="normal" value={professor.professor} onChange={handleChange} />
-        {errorsModule.edit && <FormHelperText error>{errorsModule.edit}</FormHelperText>}
-      </DialogContent>
-      <DialogActions>
-        <Button startIcon={<X />} onClick={handleClose}>
-          Cancel
-        </Button>
-        <Button startIcon={<NotePencil />} onClick={handleEditModule}>
-          Save
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <ThemeProvider theme={themeNew}>
+      <Dialog PaperProps={{ className: "modalPaperStyleOne" }} open={open} onClose={handleClose} className="backdrop-blur-sm">
+        <DialogTitle className="text-white">Edit module professor</DialogTitle>
+        <DialogContent>
+          <TextField
+            name="professor"
+            label="Professor"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={professor.professor}
+            onChange={handleChange}
+            error={errorsModule.edit ? true : false}
+            helperText={errorsModule.edit}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button sx={{ color: "#ff43c0" }} className="btn-custom-denied" startIcon={<X />} onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button className="btn-custom-accept" startIcon={<Check />} onClick={handleEditModule}>
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </ThemeProvider>
   );
 };
 

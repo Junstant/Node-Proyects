@@ -1,0 +1,12 @@
+.heroModulePanel {
+  @apply flex flex-col items-center justify-center w-full h-full;
+
+  /* ^ ----------------------- Main container ----------------------- ^ */
+  .panelContainer {
+    background-color: rgba(35, 41, 63, 0.3);
+    backdrop-filter: blur(10px);
+    @apply flex flex-col border rounded-2xl p-6 w-full h-full;
+  }
+}
+
+/* ^ ----------------------- Media queries ----------------------- ^ */

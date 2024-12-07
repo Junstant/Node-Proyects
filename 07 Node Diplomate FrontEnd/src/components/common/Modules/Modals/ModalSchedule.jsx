@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { Stack, Box, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, TextField, FormHelperText } from "@mui/material";
+import React, { useState } from "react";
+import { Stack, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, TextField, FormHelperText, Tooltip } from "@mui/material";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import { Clock, Plus, Trash, NotePencil, X } from "@phosphor-icons/react";
+import { Clock, Plus, Trash, X, Check } from "@phosphor-icons/react";
 import useUserStore from "../../../../stores/userStore";
 import handleUpdateSchedule from "../Schedules/updateSchedule";
 import handleDeleteSchedule from "../Schedules/deleteSchedule";
 import handleCreateSchedule from "../Schedules/createSchedule";
+import "../../../../assets/styles/global.css";
+import themeNew from "../../../../assets/styles/theme";
+import { ThemeProvider } from "@emotion/react";
+import SmoothAlert from "../../SmoothAlert";
 
 const ScheduleManager = () => {
   const { activeModule, modules, setActiveModule, setModules } = useUserStore();
@@ -18,9 +22,10 @@ const ScheduleManager = () => {
   const [toHr, setToHr] = useState(dayjs());
   const [day, setDay] = useState("");
   const [error, setError] = useState({ schedule: "" });
-  const [openModals, setOpenModals] = useState({}); // Estado para manejar modales abiertos
+  const [openModals, setOpenModals] = useState({});
   const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
+  // ^ -----> Open modal
   const handleOpenModal = (id) => {
     setScheduleId(id);
     setOpenModals((prev) => ({ ...prev, [id]: true }));
@@ -36,9 +41,6 @@ const ScheduleManager = () => {
       setDay("");
     }
   };
-
-  // # ---> Errror state
-  const [errorsModule, setErrorsModule] = useState({schedule: ""});
 
   const handleCloseModal = (id) => {
     setOpenModals((prev) => ({ ...prev, [id]: false }));
@@ -66,86 +68,106 @@ const ScheduleManager = () => {
 
   // ^ -----> Delete schedule
   const deleteSchedule = async (id) => {
-    await handleDeleteSchedule(setModules, setErrorsModule, setActiveModule, modules, activeModule, id);
+    await handleDeleteSchedule(setModules, setError, setActiveModule, modules, activeModule, id);
   };
 
   // ^ -----> Create a new schedule
   const createSchedule = async () => {
     if (activeModule) {
-      await handleCreateSchedule(setModules, setErrorsModule, setActiveModule, modules, activeModule);
+      await handleCreateSchedule(setModules, setError, setActiveModule, modules, activeModule);
     } else {
-      setErrorsModule({ edit: "Please select a module to create a schedule." });
+      setErrorsModule({ schedule: "Please select a module to create a schedule." });
     }
   };
 
   return (
-    <Box>
-      <Box>
+    <section className="heroModalSchedule">
+      {error.schedule && <SmoothAlert message={error.schedule} severity="error" />}
+      <div>
         <Stack direction="row" spacing={1} alignItems={"center"} justifyContent={"space-between"}>
-          <Stack direction="row" spacing={1} alignItems={"center"}>
-            <Clock size={30} />
-            <Typography variant="h6">Schedule:</Typography>
+          <Stack direction="row" spacing={1} alignItems={"center"} color={activeModule.color}>
+            <Clock size={25} />
+            <h6 className="text-xl">Schedule:</h6>
           </Stack>
-          <Button variant="outlined" sx={{ minWidth: "30px", height: "30px", padding: 0 }} onClick={createSchedule}>
-            <Plus size={17} />
-          </Button>
+          <Tooltip PopperProps={{ className: "tooltipGray" }} title="Create a new schedule">
+            <Button
+              variant="outlined"
+              sx={{
+                minWidth: "30px",
+                height: "30px",
+                padding: 0,
+                color: activeModule.color,
+                borderColor: activeModule.color,
+                ":hover": { backgroundColor: activeModule.color, color: "var(--color-secondary)"},
+              }}
+              onClick={createSchedule}
+            >
+              <Plus size={17} />
+            </Button>
+          </Tooltip>
         </Stack>
-      </Box>
-      <Box sx={{ border: 1, borderColor: activeModule.color, padding: 2, marginTop: 1, borderRadius: 5 }}>
+      </div>
+      <div className="flex flex-col gap-3 border border-strokeT p-4 mt-5 text-quaternary rounded-xl">
         {activeModule.schedule.length > 0 ? (
           activeModule.schedule.map((sch) =>
             sch.days.map((day, j) => (
-              <Stack key={`${sch._id}-${j}`} direction="row" alignItems={"center"}>
+              <div key={`${sch._id}-${j}`} className="flex flex-row items-center justify-between">
+                {/* Start schedule to end schedule and day  */}
                 <Stack direction="row" alignItems="center" spacing={1}>
-                  <Button variant="outlined" sx={{borderColor: activeModule.color, color: activeModule.color}} onClick={() => handleOpenModal(sch._id)}>
+                  <Button variant="outlined" sx={{ borderColor: activeModule.color, color: activeModule.color }} onClick={() => handleOpenModal(sch._id)}>
                     {day.fromHr}
                   </Button>
-                  <Typography>TO</Typography>
-                  <Button variant="outlined" sx={{borderColor: activeModule.color, color: activeModule.color}} onClick={() => handleOpenModal(sch._id)}>
+                  <Typography className="text-white">TO</Typography>
+                  <Button variant="outlined" sx={{ borderColor: activeModule.color, color: activeModule.color }} onClick={() => handleOpenModal(sch._id)}>
                     {day.toHr}
                   </Button>
-                  <Button onClick={() => handleOpenModal(sch._id)} sx={{ color: activeModule.color}}>
+                  <Button className="btnNeutral" onClick={() => handleOpenModal(sch._id)} sx={{ color: activeModule.color }}>
                     {day.name.substring(0, 3)}
                   </Button>
                 </Stack>
-                <Button sx={{ minWidth: "30px", height: "30px", padding: 0 }} onClick={() => deleteSchedule(sch._id)}>
-                  <Trash />
-                </Button>
+
+                {/* delete button */}
+                <Tooltip PopperProps={{ className: "tooltipGray" }} title="Delete schedule">
+                  <Button className="btnNeutral" sx={{ padding: "5px", color: "var(--color-quaternary)" }} onClick={() => deleteSchedule(sch._id)}>
+                    <Trash size={20} />
+                  </Button>
+                </Tooltip>
 
                 {/* Individual Modal */}
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <Dialog open={!!openModals[sch._id]} onClose={() => handleCloseModal(sch._id)}>
-                    <DialogTitle>{scheduleId ? "Edit Schedule" : "New Schedule"}</DialogTitle>
-                    <DialogContent>
-                      <TimePicker label="From" value={fromHr} onChange={(newValue) => setFromHr(newValue)} slotProps={{ textField: { fullWidth: true, margin: "normal" } }} />
-                      <TimePicker label="To" value={toHr} onChange={(newValue) => setToHr(newValue)} slotProps={{ textField: { fullWidth: true, margin: "normal" } }} />
-                      <TextField select label="Day" value={day.name} onChange={(e) => setDay(e.target.value)} fullWidth margin="normal">
-                        {daysOfWeek.map((dayOption) => (
-                          <MenuItem key={dayOption} value={dayOption}>
-                            {dayOption}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    </DialogContent>
-                    <DialogActions>
-                      {error.schedule && <FormHelperText error>{error.schedule}</FormHelperText>}
-                      <Button startIcon={<X />} onClick={() => handleCloseModal(sch._id)}>
-                        Cancel
-                      </Button>
-                      <Button startIcon={<NotePencil />} onClick={handleSaveChanges}>
-                        Save
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
-                </LocalizationProvider>
-              </Stack>
+                <ThemeProvider theme={themeNew}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Dialog open={!!openModals[sch._id]} onClose={() => handleCloseModal(sch._id)} PaperProps={{ className: "modalPaperStyleOne" }} className="backdrop-blur-sm">
+                      <DialogTitle className="text-white">{scheduleId ? "Edit Schedule" : "New Schedule"}</DialogTitle>
+                      <DialogContent>
+                        <TimePicker label="From" value={fromHr} onChange={(newValue) => setFromHr(newValue)} slotProps={{ textField: { fullWidth: true, margin: "normal" } }} />
+                        <TimePicker label="To" value={toHr} onChange={(newValue) => setToHr(newValue)} slotProps={{ textField: { fullWidth: true, margin: "normal" } }} />
+                        <TextField select label="Day" value={day.name} onChange={(e) => setDay(e.target.value)} fullWidth margin="normal">
+                          {daysOfWeek.map((dayOption) => (
+                            <MenuItem key={dayOption} value={dayOption}>
+                              {dayOption}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button sx={{ color: "#ff43c0" }} className="btn-custom-denied" startIcon={<X />} onClick={() => handleCloseModal(sch._id)}>
+                          Cancel
+                        </Button>
+                        <Button startIcon={<Check />} className="btn-custom-accept" onClick={handleSaveChanges}>
+                          Save
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                  </LocalizationProvider>
+                </ThemeProvider>
+              </div>
             ))
           )
         ) : (
           <Typography variant="body2">No schedules</Typography>
         )}
-      </Box>
-    </Box>
+      </div>
+    </section>
   );
 };
 
