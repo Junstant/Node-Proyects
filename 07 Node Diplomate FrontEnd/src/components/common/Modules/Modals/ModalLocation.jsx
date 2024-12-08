@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Button, FormHelperText, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
-import { NotePencil, X } from "@phosphor-icons/react";
+import { Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+import { Check, X } from "@phosphor-icons/react";
 import createHandleChange from "../../../../hooks/formHandlers";
 import useUserStore from "../../../../stores/userStore";
 import handleUpdateModule from "../updateModule";
@@ -46,7 +46,7 @@ const ModalLocation = ({ open, handleClose }) => {
           <Button sx={{color:"#ff43c0"}} className="btn-custom-denied" startIcon={<X />} onClick={handleClose}>
             Cancel
           </Button>
-          <Button className="btn-custom-accept" startIcon={<NotePencil />} onClick={handleEditModule}>
+          <Button className="btn-custom-accept" startIcon={<Check />} onClick={handleEditModule}>
             Save
           </Button>
         </DialogActions>

@@ -6,6 +6,8 @@ import ModuleRepository from "../repositories/module.repository.js";
 const createModule = async (req, res) => {
   // Extraer datos del body
   const { yearId } = req.body;
+  console.log(yearId);
+  console.log(typeof yearId);
 
   try {
     //! ----> Si no se envía el id del año

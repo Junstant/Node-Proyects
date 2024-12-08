@@ -141,3 +141,23 @@
   transition: all 0.3s !important;
   box-shadow: var(--shadowPink) !important;
 }
+
+/* %----------- Twitter color picker -----> */
+.twitter-picker > *{
+  background-color: var(--color-secondary) !important;
+}
+.twitter-picker input{
+  background-color: var(--color-secondary) !important;
+  color: var(--color-quaternary) !important;
+  border: 1px solid var(--color-quaternary) !important;
+  box-shadow: none !important;
+}
+.twitter-picker div:nth-child(3) > div{
+  background-color: var(--color-quaternary) !important;
+  color: var(--color-secondary) !important;
+}
+
+/* %----------- No select -----> */
+.no-select {
+  user-select: none;
+}

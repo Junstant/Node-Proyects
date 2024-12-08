@@ -4,7 +4,7 @@ import ENVIROMENT from "../../../config/enviroment.config";
 import { isRequired } from "../../../utils/fieldsValidator.utils";
 
 //^ --------> Function to handle the deletion of a module
-const handleDeleteModule = async (setModules, setErrors, moduleId, year, oldModules, setActiveModule, setActiveYear, activeYear) => {
+const handleDeleteModule = async (setModules, setErrors, moduleId, year, oldModules, setActiveModule, setActiveYear, activeYear, setActiveCareer, oldCareer) => {
   try {
     // ? -----> Validate form fields
     const id = isRequired(moduleId);
@@ -36,15 +36,31 @@ const handleDeleteModule = async (setModules, setErrors, moduleId, year, oldModu
     if (result.success) {
       // Delete the module from the state
       setErrors({});
-      const modules = oldModules.filter((module) => module.id !== moduleId);
+      const modules = oldModules.filter((module) => module._id !== moduleId);
       setModules(modules);
+
+      // Update the active module
       setActiveModule(null);
-      // Update the active year
+
+      // Update the active year filtering the deleted module id
       const newYear = {
-        ...activeYear,
-        modules: activeYear.modules.filter((module) => module.id !== moduleId),
-      }
+        id: year.id,
+        name: year.name,
+        modules: year.modules.filter((module) => module !== moduleId),
+      };
+
       setActiveYear(newYear);
+
+      const yearsUpdated = oldCareer.years.map((year) => (year.id === activeYear.id ? newYear : year));
+
+      // Update the active career
+      const newCareer = {
+        id: oldCareer.id,
+        name: oldCareer.name,
+        years: yearsUpdated,
+      };
+
+      setActiveCareer(newCareer);
     }
 
     // ! -----> Module deletion failed

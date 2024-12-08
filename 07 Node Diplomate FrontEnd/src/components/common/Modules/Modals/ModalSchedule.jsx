@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Stack, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, TextField, FormHelperText, Tooltip } from "@mui/material";
+import { Stack, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, TextField, Tooltip } from "@mui/material";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -42,6 +42,7 @@ const ScheduleManager = () => {
     }
   };
 
+  // ^ -----> Close modal
   const handleCloseModal = (id) => {
     setOpenModals((prev) => ({ ...prev, [id]: false }));
     setFromHr(dayjs());
@@ -50,6 +51,7 @@ const ScheduleManager = () => {
     setError({ schedule: "" });
   };
 
+  // ^ -----> Save changes
   const handleSaveChanges = async () => {
     if (!fromHr || !toHr || !day) {
       setError((prevError) => ({ ...prevError, schedule: "Please provide all the schedule information." }));
@@ -76,7 +78,7 @@ const ScheduleManager = () => {
     if (activeModule) {
       await handleCreateSchedule(setModules, setError, setActiveModule, modules, activeModule);
     } else {
-      setErrorsModule({ schedule: "Please select a module to create a schedule." });
+      setError({ schedule: "Please select a module to create a schedule." });
     }
   };
 
@@ -98,7 +100,7 @@ const ScheduleManager = () => {
                 padding: 0,
                 color: activeModule.color,
                 borderColor: activeModule.color,
-                ":hover": { backgroundColor: activeModule.color, color: "var(--color-secondary)"},
+                ":hover": { backgroundColor: activeModule.color, color: "var(--color-secondary)" },
               }}
               onClick={createSchedule}
             >
@@ -107,22 +109,22 @@ const ScheduleManager = () => {
           </Tooltip>
         </Stack>
       </div>
-      <div className="flex flex-col gap-3 border border-strokeT p-4 mt-5 text-quaternary rounded-xl">
+      <div className="flex flex-col gap-3 border border-strokeT p-4 mt-2 text-quaternary rounded-xl">
         {activeModule.schedule.length > 0 ? (
           activeModule.schedule.map((sch) =>
-            sch.days.map((day, j) => (
+            sch.days.map((dayObj, j) => (
               <div key={`${sch._id}-${j}`} className="flex flex-row items-center justify-between">
                 {/* Start schedule to end schedule and day  */}
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <Button variant="outlined" sx={{ borderColor: activeModule.color, color: activeModule.color }} onClick={() => handleOpenModal(sch._id)}>
-                    {day.fromHr}
+                    {dayObj.fromHr}
                   </Button>
                   <Typography className="text-white">TO</Typography>
                   <Button variant="outlined" sx={{ borderColor: activeModule.color, color: activeModule.color }} onClick={() => handleOpenModal(sch._id)}>
-                    {day.toHr}
+                    {dayObj.toHr}
                   </Button>
                   <Button className="btnNeutral" onClick={() => handleOpenModal(sch._id)} sx={{ color: activeModule.color }}>
-                    {day.name.substring(0, 3)}
+                    {dayObj.name.substring(0, 3)}
                   </Button>
                 </Stack>
 
@@ -141,7 +143,7 @@ const ScheduleManager = () => {
                       <DialogContent>
                         <TimePicker label="From" value={fromHr} onChange={(newValue) => setFromHr(newValue)} slotProps={{ textField: { fullWidth: true, margin: "normal" } }} />
                         <TimePicker label="To" value={toHr} onChange={(newValue) => setToHr(newValue)} slotProps={{ textField: { fullWidth: true, margin: "normal" } }} />
-                        <TextField select label="Day" value={day.name} onChange={(e) => setDay(e.target.value)} fullWidth margin="normal">
+                        <TextField select label="Day" value={day} onChange={(e) => setDay(e.target.value)} fullWidth margin="normal">
                           {daysOfWeek.map((dayOption) => (
                             <MenuItem key={dayOption} value={dayOption}>
                               {dayOption}
@@ -164,7 +166,7 @@ const ScheduleManager = () => {
             ))
           )
         ) : (
-          <Typography variant="body2">No schedules</Typography>
+          <Typography variant="body2">How you have no schedules? Add them &gt;:|</Typography>
         )}
       </div>
     </section>

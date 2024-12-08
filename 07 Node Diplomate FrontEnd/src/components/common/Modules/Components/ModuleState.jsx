@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Chip, Menu, MenuItem, Box } from "@mui/material";
 import useUserStore from "../../../../stores/userStore";
 import handleUpdateModule from "../updateModule";
+import "../../../../assets/styles/global.css";
+import themeNew from "../../../../assets/styles/theme";
+import { ThemeProvider } from "@mui/material/styles";
+import SmoothAlert from "../../SmoothAlert";
 
 const ModuleState = () => {
   //# -> Get the active module from the global state
@@ -43,7 +47,7 @@ const ModuleState = () => {
   return (
     <Box>
       {/* Errors */}
-      {errorsState.state && <FormHelperText error>{errorsState.state}</FormHelperText>}
+      {errorsState.state && <SmoothAlert severity="error" message={errorsState.state} />}
 
       {/* Chip displaying the current state */}
       <Chip
@@ -54,13 +58,16 @@ const ModuleState = () => {
       />
 
       {/* Menu for selecting the state */}
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+      <Menu classes={{ paper: "menuNeutral" }} anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
         {availableStates.map((state) => (
           <MenuItem
+            sx={{ color: '#ADBEFF',
+              "&:hover": { backgroundColor: activeModule.color, color: "var(--color-secondary)", boxShadow: `0px 5px 25px ${activeModule.color}50`
+              }
+            }}
             key={state}
             onClick={() => handleStateChange(state)}
-            disabled={state === currentState} // Disable the current state to prevent redundant updates
-          >
+            disabled={state === currentState}>
             {state}
           </MenuItem>
         ))}

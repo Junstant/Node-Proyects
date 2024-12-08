@@ -55,8 +55,8 @@ const UserPanel = () => {
         </section>
         {/* Right panel */}
         <section className="rightPanel">
-          <div className="w-full h-full overflow-y-scroll">
-              <CareerManager />
+          <div className="careerContainer">
+              <CareerManager/>
           </div>
         </section>
 

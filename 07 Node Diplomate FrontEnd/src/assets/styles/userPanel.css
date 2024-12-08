@@ -113,7 +113,13 @@
     @apply flex flex-col items-start justify-start gap-4 p-5 pt-7 border border-strokeT;
   }
 
+  .careerContainer{
+    @apply w-full h-full overflow-y-scroll;
+  }
 
+  .careerContainer::-webkit-scrollbar{
+    width: 0px;
+  }
 
 }
 

@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import useUserStore from "../../stores/userStore";
 import { Navigate, Outlet } from "react-router-dom";
 import "../../assets/styles/global.css";
-// import Cursor from "../../components/layouts/Cursor";
 
 // ? ------------------ NoAuth layout logic ------->
 const NoAuthLayout = () => {
@@ -15,15 +14,9 @@ const NoAuthLayout = () => {
     }
   }, []);
   if (userToken) return <Navigate to="/app" />;
-  
 
   // ? ------------------ NoAuth layout component ------->
-  return (
-    <div>
-      {/* <Cursor /> */}
-      <Outlet />
-    </div>
-  );
+  return <Outlet />;
 };
 
 export default NoAuthLayout;

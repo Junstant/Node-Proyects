@@ -12,7 +12,7 @@ import { ThemeProvider } from "@mui/material/styles";
 
 const ModulesManager = () => {
   //# --> Get user
-  const { modules = [], setModules, activeYear, setActiveModule, setActiveYear } = useUserStore();
+  const { modules = [], setModules, activeYear, setActiveModule, setActiveYear, setActiveCareer, activeCareer} = useUserStore();
 
   //# --> Error states
   const [errorsModule, setErrorsModule] = useState({});
@@ -33,6 +33,8 @@ const ModulesManager = () => {
     };
     setActiveModule(updateModule);
   };
+
+  console.log(modules);
 
   // ^ -----> Convert hex to rgba
   function hexToRgba(hex, alpha) {
@@ -57,7 +59,7 @@ const ModulesManager = () => {
         <div className="w-full flex flex-row justify-between items-center px-6 max-xl:px-6">
           <h4>My modules</h4>
           <Tooltip title="Create a new module">
-            <Button className="clickMini" onClick={() => handleCreateModule(setModules, setErrorsModule, activeYear, modules, setActiveYear)}>
+            <Button className="clickMini" onClick={() => handleCreateModule(setModules, setErrorsModule, activeYear, modules, setActiveYear, setActiveCareer, activeCareer)}>
               <Plus />
             </Button>
           </Tooltip>
@@ -67,90 +69,97 @@ const ModulesManager = () => {
         <section className="modulesBox">
           {modules.map((module, index) => (
             <div onClick={() => handleModuleClick(module, index)} key={module._id} className="cardModule cursor-pointer" style={{ border: `1px solid ${module.color || "#43A4FF"}` }}>
-              <div className="w-full">
-                {/* Header */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    {/* Module number */}
-                    <div className="w-9 h-9 rounded-md flex items-center justify-center" style={{ backgroundColor: module.color, boxShadow: `0px 0px 30px ${hexToRgba(module.color, 0.7)}` }}>
-                      <Typography className="text-xl text-backgroundT">{(index + 1).toString().padStart(2, "0")}</Typography>
+              <div className="w-full flex flex-col justify-between">
+
+                {/* All except absences and period */}
+                <div className="w-full">
+                  {/* Header */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      {/* Module number */}
+                      <div className="w-9 h-9 rounded-md flex items-center justify-center" style={{ backgroundColor: module.color, boxShadow: `0px 0px 30px ${hexToRgba(module.color, 0.7)}` }}>
+                        <Typography className="text-xl text-backgroundT">{(index + 1).toString().padStart(2, "0")}</Typography>
+                      </div>
+
+                      {/* Module name */}
+                      <h6 style={{ color: module.color }} className="text-sm font-medium">
+                        {module.name}
+                      </h6>
                     </div>
-
-                    {/* Module name */}
-                    <h6 style={{ color: module.color }} className="text-sm font-medium">
-                      {module.name}
-                    </h6>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Typography variant="h6" color={module.color}>
+                        {calculateAverage(module.notes)}
+                      </Typography>
+                      <Medal size={24} color={module.color} />
+                    </Box>
                   </div>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <Typography variant="h6" color={module.color}>
-                      {calculateAverage(module.notes)}
-                    </Typography>
-                    <Medal size={24} color={module.color} />
-                  </Box>
-                </div>
 
-                {/* Schedule */}
-                <div className="flex items-center mt-4 gap-2">
-                  <Clock size={18} color="#fff" />
-                  {module.schedule.length > 0 ? (
-                    <Box>
-                      {module.schedule.map((sch, i) =>
-                        sch.days.map((day, j) => (
-                          <Typography key={`${i}-${j}`} variant="body2" color="#fff">
-                            {`${day.fromHr} - ${day.toHr} ${day.name.substring(0, 3)}`}
-                          </Typography>
-                        ))
-                      )}
-                    </Box>
-                  ) : (
+                  {/* Schedule */}
+                  <div className="flex items-start mt-4 gap-2">
+                    <Clock size={18} color="#fff" />
+                    {module.schedule.length > 0 ? (
+                      <Box>
+                        {module.schedule.slice(0, 3).map((sch, i) =>
+                          sch.days.map((day, j) => (
+                            <Typography key={`${i}-${j}`} variant="body2" color="#fff">
+                              {`${day.fromHr} - ${day.toHr} ${day.name.substring(0, 3)}`}
+                            </Typography>
+                          ))
+                        )}
+                      </Box>
+                    ) : (
+                      <Typography variant="body2" color="#fff">
+                        Your schedule
+                      </Typography>
+                    )}
+                  </div>
+
+                  {/* Location */}
+                  <div className="flex items-center mt-2 gap-2">
+                    <MapPin size={18} color="#fff" />
                     <Typography variant="body2" color="#fff">
-                      Your schedule
+                      {module.location}
                     </Typography>
-                  )}
-                </div>
+                  </div>
 
-                {/* Location */}
-                <div className="flex items-center mt-2 gap-2">
-                  <MapPin size={18} color="#fff" />
-                  <Typography variant="body2" color="#fff">
-                    {module.location}
-                  </Typography>
-                </div>
-
-                {/* Professor */}
-                <div className="flex items-center mt-2 gap-2">
-                  <GraduationCap size={18} color="#fff" />
-                  <Typography variant="body2" color="#fff">
-                    {module.professor}
-                  </Typography>
-                </div>
-
-                {/* Dependencies */}
-                <div className="flex items-center mt-2 gap-2">
-                  <FlowArrow size={18} color="#fff" />
-                  {module.dependencies.length > 0 ? (
-                    <Box sx={{ display: "flex", gap: 1 }}>
-                      {module.dependencies.map((dep, i) => (
-                        <Chip key={dep._id} label={dep.name} variant="outlined" size="small" sx={{ border: 2, borderColor: dep.color, color: dep.color }} />
-                      ))}
-                    </Box>
-                  ) : (
+                  {/* Professor */}
+                  <div className="flex items-center mt-2 gap-2">
+                    <GraduationCap size={18} color="#fff" />
                     <Typography variant="body2" color="#fff">
-                      There are no dependencies
+                      {module.professor}
                     </Typography>
-                  )}
-                </div>
+                  </div>
 
-                {/* State */}
-                <div className="flex items-center mt-2 gap-2">
-                  <ChartDonut size={18} color="#fff" />
-                  <Typography variant="body2" color="#fff">
-                    {module.state}
-                  </Typography>
+                  {/* State */}
+                  <div className="flex items-center mt-2 gap-2">
+                    <ChartDonut size={18} color="#fff" />
+                    <Typography variant="body2" color="#fff">
+                      {module.state}
+                    </Typography>
+                  </div>
+
+                  {/* Dependencies */}
+                  <div className="flex items-center mt-2 overflow-hidden">
+                    <div className="flex flex-row items-center max-h-8 gap-2 justify-start w-full max-w-full">
+                      <FlowArrow size={18} color="#ffffff" />
+                      {module.dependencies.length > 0 ? (
+                        <div className="flex w-full flex-wrap gap-2">
+                          {module.dependencies.slice(0, 3).map((dep, i) => (
+                            <Chip key={dep._id} label={dep.name} variant="outlined" size="small" sx={{ border: 1, borderColor: dep.color, color: dep.color, fontSize:"10px" }} />
+                          ))}
+                          ...
+                        </div>
+                      ) : (
+                        <Typography variant="body2" color="#fff">
+                          There are no dependencies
+                        </Typography>
+                      )}{" "}
+                    </div>
+                  </div>
                 </div>
 
                 {/* Absences and Period */}
-                <div className="flex items-center justify-between mt-8 gap-2">
+                <div className="flex items-center justify-between mt-6 gap-2">
                   <Tooltip title="Absences" placement="bottom">
                     <div className="flex flex-row items-center gap-2">
                       <CalendarX size={24} color={module.color} />

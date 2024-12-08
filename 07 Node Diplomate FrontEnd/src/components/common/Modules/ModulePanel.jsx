@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import useUserStore from "../../../stores/userStore";
 import handleDeleteModule from "./deleteModule";
+import handleUpdateModule from "./updateModule";
 import { Button, Typography, Box, IconButton, Stack, Chip, Tooltip } from "@mui/material";
-import { Trash, Medal, NotePencil, X, MapPin, GraduationCap, ChartDonut, CalendarDots, Timer } from "@phosphor-icons/react";
+import { Trash, Medal, NotePencil, X, MapPin, GraduationCap, ChartDonut, CalendarDots, Timer, Check } from "@phosphor-icons/react";
 import ModalPopUp from "../ModalPopUp";
 import ModalName from "./Modals/ModalName";
 import ModalLocation from "./Modals/ModalLocation";
@@ -17,11 +18,12 @@ import "../../../assets/styles/modulePanel.css";
 import "../../../assets/styles/global.css";
 import themeNew from "../../../assets/styles/theme";
 import { ThemeProvider } from "@mui/material/styles";
+import { TwitterPicker } from "react-color";
 
 // ? ------------------ ModulePanel Logic ------->
 const ModulePanel = () => {
   // # -> Get the active module and year
-  const { modules, activeModule, activeYear, activeCareer, setModules, setActiveModule, setActiveYear } = useUserStore();
+  const { modules, activeModule, activeYear, activeCareer, setModules, setActiveModule, setActiveYear, setActiveCareer } = useUserStore();
 
   // ? ------------------------------------- States -------------------------------------
 
@@ -62,6 +64,65 @@ const ModulePanel = () => {
   const handleCloseProfessorModal = () => setProfessorModal(false);
   const handleOpenProfessorModal = () => setProfessorModal(true);
 
+  // ^ -----> Color picker
+  const colors = [
+    "#FF5959", // Red
+    "#FF8C8C", // Light red
+    "#FF9F86", // Orange
+    "#FFB482", // Light orange
+    "#FFC87A", // Yellow
+    "#FFDD74", // Light yellow
+    "#D8FF74", // Light green
+    "#A8FF74", // Green
+    "#74FFA8", // Light teal
+    "#74E9FF", // Teal
+    "#74C6FF", // Light blue
+    "#749AFF", // Blue
+    "#9274FF", // Light purple
+    "#B974FF", // Purple
+    "#D874FF", // Light pink
+    "#FF74D8", // Pink
+    "#FF74B9", // Light pink
+    "#FF8EB3", // Pink
+    "#FF9EC9", // Light pink
+    "#FFB1E1", // Pink
+    "#FFC2F4", // Light pink
+  ];
+
+  // # -> Color picker states
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+  const [tempColor, setTempColor] = useState(activeModule.color);
+
+  // # -> Handle the color picker close and open
+  const toggleColorPicker = () => setIsColorPickerOpen(!isColorPickerOpen);
+
+  // # -> Handle the color change
+  const handleColorChange = async (newColor) => {
+    if (newColor === activeModule.color) {
+      setIsColorPickerOpen(false);
+      return;
+    } // No change
+    if (!newColor) return; // No color
+
+    // # -> Create the new module object
+    const newInfoModule = { color: newColor };
+
+    try {
+      // # -> Update the module using the existing handleUpdateModule function
+      await handleUpdateModule(setModules, setErrorsModule, setActiveModule, modules, activeModule, newInfoModule);
+
+      // # -> Close the color picker
+      setIsColorPickerOpen(false);
+    } catch (error) {
+      console.error("Error updating module color:", error);
+    }
+  };
+
+  // ? ------------------------------------- Functions -------------------------------------
+
+  // ^ -----> Helper: Calculate average notes
+  const calculateAverage = (notes) => (notes.length > 0 ? (notes.reduce((acc, note) => acc + note, 0) / notes.length).toFixed(1) : "0.0");
+
   // ^ -----> Convert hex to rgba
   function hexToRgba(hex, alpha) {
     // Remove the '#' symbol if present
@@ -75,11 +136,6 @@ const ModulePanel = () => {
     // Return the rgba format
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   }
-
-  // ? ------------------------------------- Functions -------------------------------------
-
-  // ^ -----> Helper: Calculate average notes
-  const calculateAverage = (notes) => (notes.length > 0 ? (notes.reduce((acc, note) => acc + note, 0) / notes.length).toFixed(1) : "0.0");
 
   // ^ -----> Open the modal with content
   const handleOpenWithContent = (title, content, labels, iconCancel, iconSubmit, onSubmit = {}) => {
@@ -95,7 +151,7 @@ const ModulePanel = () => {
   // ^ -----> Delete module
   const ModalDelete = async () => {
     if (activeModule) {
-      await handleDeleteModule(setModules, setErrorsModule, activeModule._id, activeYear, modules, setActiveModule, setActiveYear, activeYear);
+      await handleDeleteModule(setModules, setErrorsModule, activeModule._id, activeYear, modules, setActiveModule, setActiveYear, activeYear, setActiveCareer, activeCareer);
       setDeleteModalOpen(false);
     } else {
       setErrorsModule({ edit: "Please select a module to delete." });
@@ -178,9 +234,38 @@ const ModulePanel = () => {
               <Stack direction="row" alignItems={"center"} justifyContent={"space-between"}>
                 <Box>
                   <Stack direction="row" spacing={2} alignItems={"center"}>
-                    <Typography sx={{ padding: 1, border: 2, borderColor: activeModule.color, borderRadius: 2, color: activeModule.color }} variant="h4">
+                    {/* Number and change color menu */}
+                    <Typography
+                      className="cursor-pointer"
+                      sx={{ padding: 1, border: 2, borderColor: activeModule.color, borderRadius: 2, color: activeModule.color }}
+                      variant="h4"
+                      onClick={toggleColorPicker}
+                    >
                       {activeModule.index}
                     </Typography>
+
+                    {/* Color picker */}
+                    {isColorPickerOpen && (
+                      <div className="absolute bg-secondary" onClick={(e) => e.stopPropagation()}>
+                        <TwitterPicker colors={colors} className="bg-secondary" color={tempColor} onChange={(color) => setTempColor(color.hex)} />
+                        <Box sx={{ display: "flex", justifyContent: "space-between", marginTop: 1, padding: 1 }}>
+                          <Button sx={{ color: "#ff43c0" }} className="btn-custom-denied" startIcon={<X />} onClick={toggleColorPicker}>
+                            Cancel
+                          </Button>
+                          <Button
+                            className="btn-custom-accept"
+                            startIcon={<Check />}
+                            onClick={() => {
+                              handleColorChange(tempColor);
+                            }}
+                          >
+                            Save
+                          </Button>
+                        </Box>
+                      </div>
+                    )}
+
+                    {/* Mudule name */}
                     <Typography color={activeModule.color} variant="h4" className="cursor-pointer" onClick={confirmEditName}>
                       {activeModule.name}
                     </Typography>
@@ -201,23 +286,22 @@ const ModulePanel = () => {
 
             {/* Location */}
             <div className="mt-4">
+              {/* Location */}
               <Stack direction="row" alignItems={"center"} justifyContent={"space-between"}>
-                <Box>
-                  <Stack direction="row" spacing={1} alignItems={"center"} color={activeModule.color}>
-                    <MapPin size={25} />
-                    <h6 className="text-xl">Location:</h6>
-                    <p className="text-white cursor-pointer" onClick={handleOpenLocationModal}>
-                      {activeModule.location}
-                    </p>
-                  </Stack>
-                </Box>
-                <Box>
-                  <Tooltip PopperProps={{ className: "tooltipGray" }} title="Edit module location">
-                    <IconButton className="iconBtnMini" onClick={handleOpenLocationModal}>
-                      <NotePencil />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
+                <Stack direction="row" spacing={1} alignItems={"center"} color={activeModule.color}>
+                  <MapPin size={25} />
+                  <h6 className="text-xl">Location:</h6>
+                  <p className="text-white cursor-pointer" onClick={handleOpenLocationModal}>
+                    {activeModule.location}
+                  </p>
+                </Stack>
+
+                {/*  Edit location */}
+                <Tooltip PopperProps={{ className: "tooltipGray" }} title="Edit module location">
+                  <IconButton className="iconBtnMini" onClick={handleOpenLocationModal}>
+                    <NotePencil />
+                  </IconButton>
+                </Tooltip>
               </Stack>
             </div>
 
@@ -242,50 +326,40 @@ const ModulePanel = () => {
             </div>
 
             {/* Dependencies */}
-            <div>
-              <Box>
-                <Dependencies />
-              </Box>
+            <div className="mt-2">
+              <Dependencies />
             </div>
 
             {/* State */}
-            <div>
-              <Box>
-                <Stack direction="row" spacing={1} alignItems={"center"}>
-                  <ChartDonut size={30} />
-                  <Typography variant="h6">State:</Typography>
-                  <ModuleState />
-                </Stack>
-              </Box>
+            <div className="mt-4">
+              <Stack direction="row" spacing={1} alignItems={"center"} color={activeModule.color}>
+                <ChartDonut size={25} />
+                <h6 className="text-xl">State:</h6>
+                <ModuleState />
+              </Stack>
             </div>
 
             {/* Absences */}
-            <div>
-              <Box>
-                <ModuleAbsents />
-              </Box>
+            <div className="mt-2">
+              <ModuleAbsents />
             </div>
 
             {/* Period */}
             <div>
-              <Box>
-                <Stack direction="row" spacing={1} alignItems={"center"} marginTop={2}>
-                  <CalendarDots size={30} />
-                  <Typography variant="h6">Period:</Typography>
-                  <ModuleDetailsSelector />
-                </Stack>
-              </Box>
+              <Stack direction="row" spacing={1} color={activeModule.color} alignItems={"center"} marginTop={2}>
+                <CalendarDots size={25} />
+                <h6 className="text-xl">Period:</h6>
+                <ModuleDetailsSelector />
+              </Stack>
             </div>
 
             {/* Time block */}
-            <div>
-              <Box>
-                <Stack direction="row" spacing={1} alignItems={"center"}>
-                  <Timer size={30} />
-                  <Typography variant="h6">Time Block:</Typography>
-                </Stack>
-                <ModuleTimeBlock />
-              </Box>
+            <div className="mt-2">
+              <Stack direction="row" spacing={1} color={activeModule.color} alignItems={"center"}>
+                <Timer size={25} />
+                <Typography variant="h6">Time Block:</Typography>
+              </Stack>
+              <ModuleTimeBlock />
             </div>
           </ThemeProvider>
         </div>

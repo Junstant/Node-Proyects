@@ -17,7 +17,6 @@ const themeNew = createTheme({
               borderColor: "#3F4767", // Default border color
               borderRadius: "10px", // Rounded border
             },
-
             "&:hover fieldset": {
               borderColor: "#43A4FF", // Border color on hover
             },
@@ -60,6 +59,7 @@ const themeNew = createTheme({
           "& .MuiInputBase-input": {
             color: "white", // Input text color
           },
+          
           // ^ ---------> disabled input styles
           "&:disabled": {
             backgroundColor: "#3F4767", // Background color
@@ -189,6 +189,15 @@ const themeNew = createTheme({
           borderRadius: "10px", // Rounded border
           border: "1px solid #43A4FF", // Border color
           backdropFilter: "blur(10px)",
+
+          "&.menuNeutral": {
+            color: "#FFFFFF", // Color del texto
+            backgroundColor: "var(--color-secondary)", // Fondo
+            borderRadius: "10px", // Bordes redondeados
+            border: "1px solid var(--color-quaternary)", // Borde
+            backdropFilter: "blur(10px)",
+            maxHeight: "500px",
+          },
         },
       },
     },
@@ -283,6 +292,33 @@ const themeNew = createTheme({
         },
       },
     },
+
+    // ^ ----------- Mui Pickers day ------------>
+    MuiPickersDay: {
+      styleOverrides: {
+        root: {
+          color: "#FFFFFF", // Text color
+          transition: "0s", // Transition
+          "&:hover": {
+            backgroundColor: "#43A4FF", // Background color on hover
+            boxShadow: "var(--shadowBlue)", // Box shadow on hover
+          },
+          "&.Mui-selected": {
+            backgroundColor: "#43A4FF", // Background color on selected
+          },
+        },
+      },
+    },
+
+    // ^ ----------- Mui Pickers Calendar header ------------>
+    MuiDayCalendar: {
+      styleOverrides: {
+        weekDayLabel: {
+          color: "var(--color-primary)", // Text color
+        },
+      },
+    },
+
   },
 });
 

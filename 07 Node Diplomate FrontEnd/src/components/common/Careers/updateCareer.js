@@ -48,10 +48,8 @@ const handleUpdateCareer = async (setCareers, setErrors, careerId, newName, oldC
       setCareers(careers);
 
       // Update the career in the local storage
-      const activeCareer = JSON.parse(localStorage.getItem("ACTIVE_CAREER"));
-      if (activeCareer.id === careerId) {
-        setActiveCareer({ id: careerId, name: newName, years: [] });
-      }
+      const newCareer = careers.find((career) => career.id === careerId);
+      setActiveCareer(newCareer);
     }
 
     // ! -----> Career update failed

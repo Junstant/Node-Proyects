@@ -7,7 +7,7 @@ export const getOrdinalSuffix = (num) => {
 };
 
 //^ ---->  Adds a new year to a career
-export const addYearToCareer = (career) => {
+export const addYearToCareer = (career, yearData) => {
   const currentYears = career.years;
 
   //^ ----> If the career has more than 20 years, return the career without changes
@@ -27,8 +27,9 @@ export const addYearToCareer = (career) => {
 
   //^ ----> Create the new year
   const newYear = {
-    id: newYearNumber,
+    id: yearData._id,
     name: `${newYearNumber}${getOrdinalSuffix(newYearNumber)} year`,
+    modules: [],
     number: String(newYearNumber),
   };
 

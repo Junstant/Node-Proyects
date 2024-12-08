@@ -5,7 +5,11 @@
   .panelContainer {
     background-color: rgba(35, 41, 63, 0.3);
     backdrop-filter: blur(10px);
-    @apply flex flex-col border rounded-2xl p-6 w-full h-full;
+    @apply flex flex-col border rounded-2xl p-6 w-full h-full overflow-y-scroll;
+  }
+
+  .panelContainer::-webkit-scrollbar {
+    width: 0px;
   }
 }
 

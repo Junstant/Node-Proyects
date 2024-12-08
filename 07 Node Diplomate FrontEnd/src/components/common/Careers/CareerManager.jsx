@@ -17,7 +17,7 @@ import { ThemeProvider } from "@mui/material/styles";
 // ? ------------------ CareerManager Logic ------->
 const CareerManager = () => {
   //# --> Get user
-  const { user, careers, setCareers, setActiveCareer, activeCareer } = useUserStore();
+  const { user, careers, setCareers, setActiveCareer, activeCareer, setActiveYear, activeYear, setActiveModule } = useUserStore();
 
   //# --> Error states
   const [errorsCareer, setErrorsCareer] = useState({});
@@ -76,7 +76,7 @@ const CareerManager = () => {
                     </Tooltip>
                     {/* ---------------------- Delete career --------------- */}
                     <Tooltip title="Delete Career" placement="top">
-                      <IconButton onClick={() => handleDeleteCareer(setCareers, setErrorsCareer, career.id, user, careers, setActiveCareer)}>
+                      <IconButton onClick={() => handleDeleteCareer(setCareers, setErrorsCareer, career.id, user, careers, setActiveCareer, activeCareer, setActiveModule, setActiveYear)}>
                         <Trash />
                       </IconButton>
                     </Tooltip>
@@ -87,7 +87,7 @@ const CareerManager = () => {
                     <Box key={year.id} className="flex flex-row w-full justify-between items-center border-b border-strokeT">
                       <Typography>{year.name}</Typography>
                       <Tooltip title="Delete Year" placement="top">
-                        <IconButton onClick={() => handleDeleteYear(setCareers, setErrorsYear, career.id, year.number, careers, setActiveCareer)}>
+                        <IconButton onClick={() => handleDeleteYear(setCareers, setErrorsYear, career.id, year.number, careers, setActiveCareer, setActiveYear, activeYear, setActiveModule)}>
                           <Trash />
                         </IconButton>
                       </Tooltip>

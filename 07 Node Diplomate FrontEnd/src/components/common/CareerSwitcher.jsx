@@ -73,9 +73,11 @@ const CareerSwitcher = () => {
             {/* Career */}
             <div>
               <Tooltip title={getActiveCareerName() || "Select a career..."}>
-                <Button variant="outlined" className="clickMini" onClick={handleCareerMenuOpen}>
-                  <ArrowsLeftRight />
-                </Button>
+                <span>
+                  <Button variant="outlined" className="clickMini" disabled={careers.length === 0} onClick={handleCareerMenuOpen}>
+                    <ArrowsLeftRight />
+                  </Button>
+                </span>
               </Tooltip>
               <Menu anchorEl={careerAnchorEl} open={Boolean(careerAnchorEl)} onClose={handleCareerMenuClose}>
                 {/* --------------------- Select career ------------------- */}
@@ -90,9 +92,11 @@ const CareerSwitcher = () => {
             {/* Year */}
             <div>
               <Tooltip title={getActiveYearName() || "Select a year..."}>
-                <Button variant="outlined" className="clickMini" onClick={handleYearMenuOpen} disabled={!activeCareer || activeCareer.years.length === 0}>
-                  <CaretDown />
-                </Button>
+                <span>
+                  <Button variant="outlined" className="clickMini" onClick={handleYearMenuOpen} disabled={!activeCareer || activeCareer.years.length === 0}>
+                    <CaretDown />
+                  </Button>
+                </span>
               </Tooltip>
               <Menu anchorEl={yearAnchorEl} open={Boolean(yearAnchorEl)} onClose={handleYearMenuClose}>
                 {/* --------------------- Select year ------------------- */}

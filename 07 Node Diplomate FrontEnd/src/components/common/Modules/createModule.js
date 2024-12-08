@@ -4,7 +4,7 @@ import ENVIROMENT from "../../../config/enviroment.config";
 import { isRequired } from "../../../utils/fieldsValidator.utils";
 
 //^ --------> Function to handle the module creation
-const handleCreateModule = async (setModules, setErrors, ActiveYear, oldModules, setActiveYear) => {
+const handleCreateModule = async (setModules, setErrors, ActiveYear, oldModules, setActiveYear, setActiveCareer, oldCareer) => {
     try {
         // ? -----> Validate year ID
         const yearNum = isRequired(ActiveYear.id);
@@ -62,6 +62,19 @@ const handleCreateModule = async (setModules, setErrors, ActiveYear, oldModules,
             modules: [...ActiveYear.modules, newModule._id],
         }
         setActiveYear(newYear);
+
+        // Update the active career replacing the year for the newYear
+        const yearsUpdated = oldCareer.years.map((year) => year.id === ActiveYear.id ? newYear : year);
+
+        // Update the active career replacing the year for the newYear
+        const newActiveCareer = {
+            id: oldCareer.id,
+            name: oldCareer.name,
+            years: yearsUpdated,
+        }
+        console.log('------------');
+        console.log(newYear);
+        setActiveCareer(newActiveCareer);
 
         } 
         // ! -----> Module creation failed

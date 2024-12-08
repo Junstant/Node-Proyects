@@ -51,7 +51,7 @@ const Modules = () => {
           <section className="modulesPanel h-full">
             {!activeYear || !activeCareer ? (
               <>
-                <p className="text-quaternary text-center">Choose a career and year to see the modules</p>
+                <p className="text-quaternary text-center p-5">Choose a career and year to see the modules</p>
                 <SmoothAlert icon={<Warning size={32} className="text-warning" />} message="Choose a career and year to see the modules" />
               </>
             ) : (

@@ -1,11 +1,18 @@
-import React, { useState } from "react";
-import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Tooltip, Card, CardContent, Typography, IconButton, FormHelperText, Stack } from "@mui/material";
-import { Trash, CalendarDot, Plus, Pencil, CalendarX, Hash, X, Check } from "@phosphor-icons/react";
+import React, { useState, useRef } from "react";
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Tooltip, Typography, IconButton, Stack } from "@mui/material";
+import { Trash, Plus, Pencil, CalendarX, Hash, X, Check, CalendarDots } from "@phosphor-icons/react";
 import useUserStore from "../../../../stores/userStore";
 import handleCreateAbsent from "../Absents/createAbsent";
 import handleDeleteAbsent from "../Absents/deleteAbsent";
 import handleUpdateAbsent from "../Absents/updateAbsent";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import utc from "dayjs-plugin-utc";
+import "../../../../assets/styles/global.css";
+import themeNew from "../../../../assets/styles/theme";
+import { ThemeProvider } from "@mui/material/styles";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 
 // ? ------------------ ModuleAbsents Logic ------->
 const ModuleAbsents = () => {
@@ -18,12 +25,21 @@ const ModuleAbsents = () => {
     reason: "",
   });
 
+  // -> Dayjs configuration to local time
+  dayjs.extend(utc);
+
   // -> State for editing
   const [isEditing, setIsEditing] = useState(false);
   const [editAbsentId, setEditAbsentId] = useState(null);
 
   // -> Error state
-  const [errors, setErrors] = useState({ absent: "" });
+  const [errors, setErrors] = useState({ absent: "", reason: "" });
+
+  // -> Drag states
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const scrollContainerRef = useRef(null);
 
   // -> Handle modal open and close
   const handleModalOpen = () => {
@@ -45,8 +61,13 @@ const ModuleAbsents = () => {
 
   // ^ -----> Handle submit
   const handleSave = async () => {
-    if (!newAbsent.date || !newAbsent.reason) {
-      setErrors({ absent: "Please provide all the absent information." });
+    if (!newAbsent.date) {
+      setErrors({ absent: "Please provide a valid date." });
+      return;
+    }
+
+    if (!newAbsent.reason) {
+      setErrors({ reason: "Please provide a valid reason." });
       return;
     }
 
@@ -82,84 +103,163 @@ const ModuleAbsents = () => {
     setModalOpen(true);
   };
 
+  //^ ----> Scroll functionality
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.clientX - scrollContainerRef.current.offsetLeft);
+    setScrollLeft(scrollContainerRef.current.scrollLeft);
+    document.body.classList.add("no-select");
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    document.body.classList.remove("no-select");
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    const x = e.clientX - scrollContainerRef.current.offsetLeft;
+    const scroll = (x - startX) * 2; // Adjust the speed of scroll
+    scrollContainerRef.current.scrollLeft = scrollLeft - scroll;
+  };
+
   return (
-    <Box>
+    <section>
       {/* ------------ Absent title ------------ */}
       <Stack direction="row" justifyContent="space-between">
-        <Stack direction="row" gap={1} alignItems="center">
-          <CalendarX size={30} />
-          <Typography variant="h6">Absents</Typography>
+        {/*  Absent title */}
+        <Stack direction="row" gap={1} alignItems="center" color={activeModule.color}>
+          <CalendarX size={25} />
+          <h6 className="text-xl">Absents:</h6>
         </Stack>
-        <Button variant="outlined" sx={{ minWidth: "30px", height: "30px", padding: 0 }} onClick={handleModalOpen}>
-          <Plus size={17} />
-        </Button>
+
+        {/*  Add a new absent */}
+        <Tooltip PopperProps={{ className: "tooltipGray" }} title="Add a new dependency">
+          <Button
+            variant="outlined"
+            onClick={handleModalOpen}
+            sx={{
+              minWidth: "30px",
+              height: "30px",
+              padding: 0,
+              color: activeModule.color,
+              borderColor: activeModule.color,
+              ":hover": { backgroundColor: activeModule.color, color: "var(--color-secondary)" },
+            }}
+          >
+            <Plus size={17} />
+          </Button>
+        </Tooltip>
       </Stack>
 
       {/* ------------ Modal------------ */}
-      <Dialog open={modalOpen} onClose={handleModalClose}>
-        <DialogTitle>{isEditing ? "Edit Absent" : "Add Absent"}</DialogTitle>
-        <DialogContent>
-          <TextField required label="Date" type="date" fullWidth name="date" onChange={handleInputChange} margin="normal" value={dayjs(newAbsent.date).format("YYYY-MM-DD")} />
-          <TextField required label="Reason" fullWidth name="reason" value={newAbsent.reason} onChange={handleInputChange} margin="normal" />
-          {errors.absent && <FormHelperText error>{errors.absent}</FormHelperText>}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleModalClose} color="secondary" startIcon={<X />}>
-            Cancel
-          </Button>
-          <Button onClick={handleSave} color="primary" startIcon={<Check />}>
-            {isEditing ? "Update" : "Save"}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <ThemeProvider theme={themeNew}>
+        <Dialog PaperProps={{ className: "modalPaperStyleOne" }} open={modalOpen} onClose={handleModalClose}>
+          <DialogTitle className="text-white">{isEditing ? "Edit Absent" : "Add Absent"}</DialogTitle>
+          <DialogContent>
+            {/*  Absent date */}
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={["DatePicker"]}>
+                <DatePicker
+                  className="w-full"
+                  label="Date"
+                  value={dayjs(newAbsent.date)} // Ensure this is a dayjs object
+                  onChange={(newValue) => setNewAbsent((prev) => ({ ...prev, date: newValue }))} // newValue is already a dayjs object
+                  renderInput={(params) => <TextField {...params} />}
+                  inputFormat="DD/MM/YYYY"
+                  error={Boolean(errors.absent)}
+                  helperText={errors.absent}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+
+            {/* Absent reason */}
+            <TextField
+              error={errors.reason ? true : false}
+              required
+              label="Reason"
+              fullWidth
+              name="reason"
+              value={newAbsent.reason}
+              onChange={handleInputChange}
+              margin="normal"
+              helperText={errors.reason}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleModalClose} sx={{ color: "#ff43c0" }} className="btn-custom-denied" startIcon={<X />}>
+              Cancel
+            </Button>
+            <Button onClick={handleSave} className="btn-custom-accept" startIcon={<Check />}>
+              {isEditing ? "Update" : "Save"}
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </ThemeProvider>
 
       {/* ------------ Absents list ------------ */}
-      <Box display="flex" flexWrap="wrap" gap={2} marginTop={2} padding={2} sx={{ border: 1, borderColor: activeModule.color, borderRadius: 4 }}>
+      <section
+        ref={scrollContainerRef}
+        className="flex flex-row gap-3 border p-4 mt-2 text-quaternary rounded-xl overflow-x-scroll w-full items-center justify-start"
+        style={{ borderColor: activeModule.color, WebkitScrollbar: "none", scrollbarWidth: "none" }}
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeave}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        onWheel={(e) => {
+          scrollContainerRef.current.scrollLeft += e.deltaY * 0.2;
+        }}
+      >
         {activeModule?.absents.length > 0 ? (
           activeModule.absents.map((absent) => (
-            <Card key={absent._id} sx={{ padding: 1, width: 120, height: 120, border: 1, borderRadius:4, borderColor: activeModule.color, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+            <div key={absent._id} className="h-30 min-w-32 flex flex-col gap-1 border border-quaternary rounded-lg p-1 items-center justify-between cursor-move">
               {/* -------- Absent year and edit ----- */}
-              <CardContent sx={{ padding: 0 }}>
-                <Box display="flex" alignItems="center" justifyContent="space-between">
-                  <Stack direction="row" gap={0.5} alignItems="center">
-                    <CalendarDot fontSize="small" />
-                    <Typography fontSize={10}>{dayjs(absent.date).format("YYYY")}</Typography>
-                  </Stack>
-                  <IconButton size="small" color="primary" onClick={() => handleEdit(absent._id)}>
-                    <Pencil />
-                  </IconButton>
-                </Box>
-              </CardContent>
+              <div className="flex flex-row justify-between w-full">
+                {/* Absent year */}
+                <Stack direction="row" alignItems="center" className="pointer-events-none">
+                  <CalendarDots size={20} className="m-1" />
+                  <Typography fontSize={10}>{dayjs(absent.date).format("DD MMM")}</Typography>
+                </Stack>
+
+                {/* Edit absent */}
+                <IconButton className="iconBtnMini" size="small" onClick={() => handleEdit(absent._id)}>
+                  <Pencil />
+                </IconButton>
+              </div>
 
               {/* -------- Absent date and reason ----- */}
-              <Typography variant="h6" textAlign="center">
-                {dayjs(absent.date).format("DD MMM")}
-                <Tooltip title={absent.reason}>
-                  <Typography variant="body2" noWrap>
-                    {absent.reason.length > 15 ? `${absent.reason.substring(0, 15)}...` : absent.reason}
+              <div className="flex flex-col justify-center align-middle text-center my-2" variant="h6" textAlign="center">
+                <h6 className="text-xl text-white leading-none">{dayjs(absent.date).format("DD MMM")}</h6>
+                <Tooltip PopperProps={{ className: "tooltipGray" }} title={absent.reason}>
+                  <Typography variant="body2" className="cursor-pointer" noWrap color={activeModule.color}>
+                    {absent.reason.length > 15 ? `${absent.reason.substring(0, 10)}...` : absent.reason}
                   </Typography>
                 </Tooltip>
-              </Typography>
+              </div>
 
               {/* -------- Absent number and delete ----- */}
-              <Box display="flex" justifyContent="space-between" alignItems="center">
-                <Typography variant="caption" alignItems="center">
-                  <Hash />
+              <div className="flex flex-row justify-between w-full">
+                <span className="flex flex-row items-center text-sm" style={{ color: activeModule.color }}>
+                  <Hash className="ml-1" />
                   {absent.absenceNumber}
-                </Typography>
-                <IconButton size="small" color="error" onClick={() => handleDelete(absent._id)}>
+                </span>
+                <IconButton className="iconBtnMini" size="small" onClick={() => handleDelete(absent._id)}>
                   <Trash />
                 </IconButton>
-              </Box>
-            </Card>
+              </div>
+            </div>
           ))
         ) : (
-          <Typography variant="body2" color="textSecondary" textAlign="center" sx={{ width: "100%", padding: 2 }}>
-            No absents
+          <Typography variant="body2" className="text-quaternary pointer-events-none" textAlign="left" sx={{ width: "100%", padding: 1 }}>
+            <span>Perfect attendance ;)</span>
           </Typography>
         )}
-      </Box>
-    </Box>
+      </section>
+    </section>
   );
 };
 

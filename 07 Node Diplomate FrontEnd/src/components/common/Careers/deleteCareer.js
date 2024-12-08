@@ -4,7 +4,7 @@ import ENVIROMENT from "../../../config/enviroment.config";
 import { isRequired } from "../../../utils/fieldsValidator.utils";
 
 //^ --------> Function to handle the deletion of a career
-const handleDeleteCareer = async (setCareers, setErrors, careerId, user, oldCareers) => {
+const handleDeleteCareer = async (setCareers, setErrors, careerId, user, oldCareers, setActiveCareer, activeCareer, setActiveModule, setActiveYear) => {
   try {
     // ? -----> Validate form fields
     const id = isRequired(careerId);
@@ -45,6 +45,19 @@ const handleDeleteCareer = async (setCareers, setErrors, careerId, user, oldCare
       setErrors({});
       const careers = oldCareers.filter((career) => career.id !== careerId);
       setCareers(careers);
+
+      //Remove the active career if it is the same
+      if (activeCareer.id === careerId) {
+
+        // Update the active module
+        setActiveModule(null);
+
+        // Update the active year
+        setActiveYear(null);
+
+        // Update the active career
+        setActiveCareer(null);
+      }
     }
 
     // ! -----> Career deletion failed
