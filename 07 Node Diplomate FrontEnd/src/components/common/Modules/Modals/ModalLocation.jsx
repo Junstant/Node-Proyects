@@ -32,7 +32,7 @@ const ModalLocation = ({ open, handleClose }) => {
       if (location.location.trim().length > 40) {
         setErrorsModule({ edit: "Module location must be less than 40 characters." });
         return;
-      
+      }
 
       // # -> Update the module
       await handleUpdateModule(setModules, setErrorsModule, setActiveModule, modules, activeModule, newInfoModule);
