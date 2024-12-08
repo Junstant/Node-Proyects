@@ -137,11 +137,11 @@ const ModulesManager = () => {
                   </div>
 
                   {/* Dependencies */}
-                  <div className="flex items-center my-2 mb-6 overflow-hidden">
-                    <div className="flex flex-row items-center max-h-12 gap-x-2 justify-start w-full max-w-full">
+                  <div className="flex items-center my-2 overflow-hidden">
+                    <div className="flex flex-row items-center max-h-14 gap-x-2 justify-start w-full max-w-full">
                       <FlowArrow size={18} color="#ffffff" />
                       {module.dependencies.length > 0 ? (
-                        <div className="flex w-full h-fit flex-wrap gap-2">
+                        <div className="flex w-full h-fit flex-wrap gap-x-2">
                           {module.dependencies.slice(0, 3).map((dep, i) => (
                             <Chip key={dep._id} label={dep.name} variant="outlined" size="small" sx={{ border: 1, borderColor: dep.color, color: dep.color, fontSize:"10px" }} />
                           ))}
