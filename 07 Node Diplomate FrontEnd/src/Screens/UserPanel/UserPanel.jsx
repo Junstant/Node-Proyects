@@ -1,9 +1,9 @@
 import React from "react";
 import useUserStore from "../../stores/userStore";
 import { useLocation } from "react-router-dom";
-import AppHeader from "../../components/layouts/AppHeader";
+import AppHeader from "../../components/layouts/AppHeader.jsx";
 import { Avatar } from "@mui/material";
-import SmoothAlert from "../../components/common/SmoothAlert";
+import SmoothAlert from "../../components/common/SmoothAlert.jsx";
 import DeleteForm from "../../components/common/DeleteForm.jsx";
 import UpdateForm from "../../components/common/UpadateForm.jsx";
 import CareerManager from "../../components/common/Careers/CareerManager.jsx";

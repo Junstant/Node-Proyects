@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import useUserStore from "../../../stores/userStore";
-import handleCreateModule from "./createModule";
+import useUserStore from "../../../stores/userStore.js";
+import handleCreateModule from "./createModule.js";
 import { Button, Typography, Box, Chip, Tooltip } from "@mui/material";
 import { Plus, Clock, MapPin, GraduationCap, ChartDonut, CalendarX, Medal, FlowArrow } from "@phosphor-icons/react";
-import SmoothAlert from "../SmoothAlert";
-import getModules from "./getModules";
+import SmoothAlert from "../SmoothAlert.jsx";
+import getModules from "./getModules.js";
 import "../../../assets/styles/modulesCard.css";
 import "../../../assets/styles/global.css";
-import themeNew from "../../../assets/styles/theme";
+import themeNew from "../../../assets/styles/Theme.jsx";
 import { ThemeProvider } from "@mui/material/styles";
 
 const ModulesManager = () => {

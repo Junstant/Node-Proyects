@@ -10,7 +10,7 @@ import handleUpdateSchedule from "../Schedules/updateSchedule";
 import handleDeleteSchedule from "../Schedules/deleteSchedule";
 import handleCreateSchedule from "../Schedules/createSchedule";
 import "../../../../assets/styles/global.css";
-import themeNew from "../../../../assets/styles/theme";
+import themeNew from "../../../../assets/styles/Theme";
 import { ThemeProvider } from "@emotion/react";
 import SmoothAlert from "../../SmoothAlert";
 

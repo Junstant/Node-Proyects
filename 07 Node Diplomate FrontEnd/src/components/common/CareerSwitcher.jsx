@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import useUserStore from "../../stores/userStore";
+import useUserStore from "../../stores/userStore.js";
 import { Menu, MenuItem, Button, Tooltip } from "@mui/material";
 import { ArrowsLeftRight, CaretDown } from "@phosphor-icons/react";
-import themeNew from "../../assets/styles/theme";
+import themeNew from "../../assets/styles/Theme.jsx";
 import { ThemeProvider } from "@mui/material/styles";
 import "../../assets/styles/global.css";
-
 // ? ------------------ CareerSwitcher Component ------->
 const CareerSwitcher = () => {
   // # -> Get the active career and year from the store

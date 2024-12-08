@@ -3,7 +3,7 @@ import { Chip, Menu, MenuItem, Box, Stack } from "@mui/material";
 import useUserStore from "../../../../stores/userStore";
 import handleUpdateModule from "../updateModule";
 import SmoothAlert from "../../SmoothAlert";
-import themeNew from "../../../../assets/styles/theme";
+import themeNew from "../../../../assets/styles/Theme";
 import { ThemeProvider } from "@mui/material/styles";
 
 const ModuleDetailsSelector = () => {

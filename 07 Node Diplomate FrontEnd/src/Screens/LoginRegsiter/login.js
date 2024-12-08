@@ -8,7 +8,6 @@ const handleSubmitLogin = async (e, values, setErrors, setUser, setUserTokenFunc
   // Prevent the default behavior of the form
   e.preventDefault();
   try {
-
     // ? -----> Validate form fields
     const emailError = isRequired(values.email) || isEmail(values.email);
     const passwordError = isRequired(values.password)

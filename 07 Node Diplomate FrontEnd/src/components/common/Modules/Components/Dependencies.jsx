@@ -4,7 +4,7 @@ import { Button, Menu, MenuItem, Chip, Stack, Box, FormHelperText, Tooltip } fro
 import { FlowArrow, Plus, XCircle } from "@phosphor-icons/react";
 import handleUpdateModule from "../updateModule";
 import "../../../../assets/styles/global.css";
-import themeNew from "../../../../assets/styles/theme";
+import themeNew from "../../../../assets/styles/Theme";
 import { ThemeProvider } from "@mui/material/styles";
 import SmoothAlert from "../../SmoothAlert";
 

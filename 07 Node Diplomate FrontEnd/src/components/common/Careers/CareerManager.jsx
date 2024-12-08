@@ -11,7 +11,7 @@ import handleDeleteYear from "../Years/deleteYear";
 import SmoothAlert from "../SmoothAlert";
 import "../../../assets/styles/global.css";
 import "../../../assets/styles/careerManager.css";
-import themeNew from "../../../assets/styles/theme";
+import themeNew from "../../../assets/styles/Theme";
 import { ThemeProvider } from "@mui/material/styles";
 
 // ? ------------------ CareerManager Logic ------->

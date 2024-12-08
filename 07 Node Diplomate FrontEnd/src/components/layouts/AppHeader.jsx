@@ -5,7 +5,7 @@ import { Avatar, Menu, MenuItem, Tooltip, IconButton } from "@mui/material";
 import logo from "../../assets/images/logoApp.svg";
 import "../../assets/styles/global.css";
 import "../../assets/styles/appHeader.css";
-import themeNew from "../../assets/styles/theme.jsx";
+import themeNew from "../../assets/styles/Theme.jsx";
 import { ThemeProvider } from "@mui/material";
 
 // ? ------------------ AppHeader Logic ------->

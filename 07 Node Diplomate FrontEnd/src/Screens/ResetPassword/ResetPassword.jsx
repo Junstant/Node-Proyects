@@ -1,11 +1,11 @@
 import React, { useState, useRef } from "react";
 import handleSubmitResetPassword from "./resetPassword.js";
-import createHandleChange from "../../hooks/formHandlers.jsx";
+import createHandleChange from "../../hooks/FormHandlers.jsx";
 import { Button, FormControl, FormHelperText, InputAdornment, IconButton, TextField } from "@mui/material";
 import Header from "../../components/layouts/Header.jsx";
 import { useParams } from "react-router-dom";
 import { Eye, EyeClosed, PaperPlaneRight, Warning } from "@phosphor-icons/react";
-import usePasswordVisibility from "../../hooks/passwordSwitch.jsx";
+import usePasswordVisibility from "../../hooks/PasswordSwitch.jsx";
 import { ThemeProvider } from "@mui/material/styles";
 import lightOne from "../../assets/images/lights/loginRegister/Vector.webp";
 import lightTwo from "../../assets/images/lights/loginRegister/Vector-1.webp";
@@ -20,7 +20,7 @@ import panelsTwo from "../../assets/images/lights/loginRegister/panels/panelsTwo
 import panelsThree from "../../assets/images/lights/loginRegister/panels/panelsThree.png";
 import "../../assets/styles/global.css";
 import "../../assets/styles/forgotPassword.css";
-import newTheme from "../../assets/styles/theme.jsx";
+import newTheme from "../../assets/styles/Theme.jsx";
 
 // ? --------> Reset password component
 const ResetPassword = () => {

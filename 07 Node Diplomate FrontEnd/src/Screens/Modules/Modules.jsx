@@ -3,7 +3,7 @@ import useUserStore from "../../stores/userStore";
 import AppHeader from "../../components/layouts/AppHeader";
 import { CirclesFour, Warning } from "@phosphor-icons/react";
 import { Avatar } from "@mui/material";
-import CareerSwitcher from "../../components/common/careerSwitcher";
+import CareerSwitcher from "../../components/common/CareerSwitcher.jsx";
 import CurrentTime from "../../components/common/ActualDate";
 import ModulesManager from "../../components/common/Modules/ModulesManager.jsx";
 import ModulePanel from "../../components/common/Modules/ModulePanel.jsx";

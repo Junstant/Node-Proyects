@@ -16,7 +16,7 @@ import ScheduleManager from "./Modals/ModalSchedule";
 import ModuleTimeBlock from "./Components/ModuleTimeBlock";
 import "../../../assets/styles/modulePanel.css";
 import "../../../assets/styles/global.css";
-import themeNew from "../../../assets/styles/theme";
+import themeNew from "../../../assets/styles/Theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { TwitterPicker } from "react-color";
 

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { FormControl, InputAdornment, FormHelperText, Button, IconButton, Modal, TextField } from "@mui/material";
 import { Eye, EyeClosed, Trash, X } from "@phosphor-icons/react";
-import usePasswordVisibility from "../../hooks/passwordSwitch";
-import createHandleChange from "../../hooks/formHandlers";
-import handleSubmitDelete from "../../Screens/UserPanel/deleteUser";
+import usePasswordVisibility from "../../hooks/PasswordSwitch.jsx";
+import createHandleChange from "../../hooks/FormHandlers.jsx";
+import handleSubmitDelete from "../../Screens/UserPanel/deleteUser.js";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../stores/userStore";
 import "../../assets/styles/global.css";
-import themeNew from "../../assets/styles/theme";
+import themeNew from "../../assets/styles/Theme.jsx";
 import { ThemeProvider } from "@mui/material/styles";
 
 // ? ------------------ DeleteForm Logic ------->

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { FormControl, InputAdornment, FormHelperText, Button, IconButton, TextField } from "@mui/material";
 import { Eye, EyeClosed, Info } from "@phosphor-icons/react";
-import usePasswordVisibility from "../../hooks/passwordSwitch";
-import createHandleChange from "../../hooks/formHandlers";
-import handleSubmitUpdate from "../../Screens/UserPanel/updateUser";
+import usePasswordVisibility from "../../hooks/PasswordSwitch.jsx";
+import createHandleChange from "../../hooks/FormHandlers.jsx";
+import handleSubmitUpdate from "../../Screens/UserPanel/updateUser.js";
 import useUserStore from "../../stores/userStore";
 import "../../assets/styles/global.css";
-import themeNew from "../../assets/styles/theme.jsx";
+import themeNew from "../../assets/styles/Theme.jsx";
 import { ThemeProvider } from "@mui/material/styles";
 
 // ? ------------------ UpdateForm Logic ------->

@@ -9,7 +9,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import utc from "dayjs-plugin-utc";
 import "../../../../assets/styles/global.css";
-import themeNew from "../../../../assets/styles/theme";
+import themeNew from "../../../../assets/styles/Theme";
 import { ThemeProvider } from "@mui/material/styles";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";

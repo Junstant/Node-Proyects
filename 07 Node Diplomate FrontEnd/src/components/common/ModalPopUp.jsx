@@ -1,7 +1,7 @@
 import React from "react";
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from "@mui/material";
 import "../../assets/styles/global.css";
-import themeNew from "../../assets/styles/theme";
+import themeNew from "../../assets/styles/Theme.jsx";
 import { ThemeProvider } from "@mui/material/styles";
 import { X, Check } from "@phosphor-icons/react";
 

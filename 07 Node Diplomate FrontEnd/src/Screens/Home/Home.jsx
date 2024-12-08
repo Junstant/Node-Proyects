@@ -14,7 +14,7 @@ import lineDecor from "../../assets/images/lineDecor.svg";
 import panelsOne from "../../assets/images/panelsOne.svg";
 import panelsTwo from "../../assets/images/panelsTwo.webp";
 import panelsThree from "../../assets/images/panelsThree.webp";
-import themeNew from "../../assets/styles/theme";
+import themeNew from "../../assets/styles/Theme.jsx";
 
 // ? ---------- Home Screen ---------->
 const Home = () => {

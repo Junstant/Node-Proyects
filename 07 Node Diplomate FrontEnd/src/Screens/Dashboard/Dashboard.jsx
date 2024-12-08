@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import useUserStore from '../../stores/userStore';
-import AppHeader from '../../components/layouts/AppHeader';
+import AppHeader from '../../components/layouts/AppHeader.jsx';
 
 const Dashboard = () => {
   const { user } = useUserStore();

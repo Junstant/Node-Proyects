@@ -3,7 +3,7 @@ import { Chip, Menu, MenuItem, Box } from "@mui/material";
 import useUserStore from "../../../../stores/userStore";
 import handleUpdateModule from "../updateModule";
 import "../../../../assets/styles/global.css";
-import themeNew from "../../../../assets/styles/theme";
+import themeNew from "../../../../assets/styles/Theme";
 import { ThemeProvider } from "@mui/material/styles";
 import SmoothAlert from "../../SmoothAlert";
 

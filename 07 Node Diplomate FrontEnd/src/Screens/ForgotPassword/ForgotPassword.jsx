@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import handleSubmitForgotPassword from "./forgotPassword.js";
-import createHandleChange from "../../hooks/formHandlers.jsx";
+import createHandleChange from "../../hooks/FormHandlers.jsx";
 import { Button, FormControl, FormHelperText, TextField } from "@mui/material";
 import Header from "../../components/layouts/Header.jsx";
 import { PaperPlaneRight, Warning } from "@phosphor-icons/react";
@@ -18,7 +18,7 @@ import panelsTwo from "../../assets/images/lights/loginRegister/panels/panelsTwo
 import panelsThree from "../../assets/images/lights/loginRegister/panels/panelsThree.png";
 import "../../assets/styles/global.css";
 import "../../assets/styles/forgotPassword.css";
-import newTheme from "../../assets/styles/theme.jsx";
+import newTheme from "../../assets/styles/Theme.jsx";
 
 // ? -------- Forgot password Logic -------->
 const ForgotPassword = () => {

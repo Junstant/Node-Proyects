@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import { Check, X } from "@phosphor-icons/react";
-import createHandleChange from "../../../../hooks/formHandlers";
+import createHandleChange from "../../../../hooks/FormHandlers";
 import useUserStore from "../../../../stores/userStore";
 import handleUpdateModule from "../updateModule";
 import "../../../../assets/styles/global.css";
-import themeNew from "../../../../assets/styles/theme";
+import themeNew from "../../../../assets/styles/Theme";
 import { ThemeProvider } from "@mui/material/styles";
 
 // ? ------------------ Modal Professor Logic ------->
