@@ -11,6 +11,7 @@
   .cardModule {
     transition: all 0.3s;
     pointer-events: hover;
+    height: fit-content !important;
     @apply flex flex-col gap-2 p-4 rounded-lg w-full flex-1 min-w-[31%] max-w-[31%];
   }
 
