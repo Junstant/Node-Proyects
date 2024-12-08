@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import Header from "../../components/layouts/Header";
 import { Button, ThemeProvider } from "@mui/material";
+import themeNew from "../../assets/styles/Theme.jsx";
 import "../../assets/styles/global.css";
 import "../../assets/styles/home.css";
 import lightOne from "../../assets/images/lights/home/Vector.png";
@@ -14,7 +15,6 @@ import lineDecor from "../../assets/images/lineDecor.svg";
 import panelsOne from "../../assets/images/panelsOne.svg";
 import panelsTwo from "../../assets/images/panelsTwo.webp";
 import panelsThree from "../../assets/images/panelsThree.webp";
-import themeNew from "../../assets/styles/Theme.jsx";
 
 // ? ---------- Home Screen ---------->
 const Home = () => {
