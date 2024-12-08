@@ -23,9 +23,8 @@
 }
 .positionAlert{
   position: absolute;
-  top: 0;
-  right: 0;
-  transform: translateX(-50%);
-  transform: translateY(80%);
+  top: 15%;
+  right: 50%;
+  transform: translateX(50%);
   z-index: 1350;
 }

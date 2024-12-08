@@ -23,7 +23,7 @@ const SmoothAlert = ({ message, severity = "error", onCloseComplete }) => {
   // ? ------------------ SmoothAlert Component ------->
   return (
     <div
-      className="w-full flex justify-center positionAlert"
+      className="flex justify-center positionAlert"
       style={{
         opacity: fadeOut ? 0 : 1,
         transition: "opacity 0.3s ease-in-out",
