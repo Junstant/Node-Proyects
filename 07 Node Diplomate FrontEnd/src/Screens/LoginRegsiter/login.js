@@ -1,6 +1,7 @@
 import backFetch from "../../utils/fetchHTTP.utils.js";
 import customResponse from "../../utils/responseBuilder.utils.js";
-import ENVIROMENT from "../../config/enviroment.config.js";
+const API_INTERNAL = import.meta.env.VITE_API_INTERNAL;
+const BACK_DIR = import.meta.env.VITE_BACK_DIR;
 import { isRequired, isEmail } from "../../utils/fieldsValidator.utils.js";
 //^ --------> Function to handle the form submission
 const handleSubmitLogin = async (e, values, setErrors, setUser, setUserTokenFunc, navigate) => {
@@ -26,9 +27,9 @@ const handleSubmitLogin = async (e, values, setErrors, setUser, setUserTokenFunc
 
     // # ---> Send form data to the server for login
     const response = await backFetch({
-      url: `${ENVIROMENT.BACK_DIR}/api/auth/login`,
+      url: `${BACK_DIR}/api/auth/login`,
       method: "POST",
-      headers: { "x-api-key": ENVIROMENT.API_INTERNAL },
+      headers: { "x-api-key": API_INTERNAL },
       body: valuesBody,
     });
     // Create a custom response

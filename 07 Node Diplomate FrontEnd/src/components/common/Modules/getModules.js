@@ -1,6 +1,7 @@
 import backFetch from "../../../utils/fetchHTTP.utils";
 import customResponse from "../../../utils/responseBuilder.utils";
-import ENVIROMENT from "../../../config/enviroment.config";
+const API_INTERNAL = import.meta.env.VITE_API_INTERNAL;
+const BACK_DIR = import.meta.env.VITE_BACK_DIR;
 import { isRequired } from "../../../utils/fieldsValidator.utils";
 import getSchedules from "./Schedules/getSchedules";
 import getDependencies from "./getDependencies";
@@ -20,10 +21,10 @@ const getModules = async (setModules, year) => {
 
     // # ---> Send request to fetch modules
     const response = await backFetch({
-      url: `${ENVIROMENT.BACK_DIR}/api/modules?yearId=${year.id}`,
+      url: `${BACK_DIR}/api/modules?yearId=${year.id}`,
       method: "GET",
       headers: {
-        "x-api-key": ENVIROMENT.API_INTERNAL,
+        "x-api-key": API_INTERNAL,
         Authorization: `Bearer ${localStorage.getItem("TOKEN")}`,
       },
     });

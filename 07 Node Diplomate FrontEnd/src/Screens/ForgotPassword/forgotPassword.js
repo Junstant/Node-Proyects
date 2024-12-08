@@ -1,7 +1,8 @@
 import backFetch from "../../utils/fetchHTTP.utils.js";
 import customResponse from "../../utils/responseBuilder.utils.js";
 import { isRequired, isEmail } from "../../utils/fieldsValidator.utils.js";
-import ENVIROMENT from "../../config/enviroment.config.js";
+const API_INTERNAL = import.meta.env.VITE_API_INTERNAL;
+const BACK_DIR = import.meta.env.VITE_BACK_DIR;
 
 // ^ --------> Function to handle the form submission
 const handleSubmitForgotPassword = async (e, values, setErrors) => {
@@ -24,9 +25,9 @@ const handleSubmitForgotPassword = async (e, values, setErrors) => {
 
     // # ---> Send form data to the server for password recovery
     const response = await backFetch({
-      url: `${ENVIROMENT.BACK_DIR}/api/auth/forgot-password`,
+      url: `${BACK_DIR}/api/auth/forgot-password`,
       method: "POST",
-      headers: { "x-api-key": ENVIROMENT.API_INTERNAL },
+      headers: { "x-api-key": API_INTERNAL },
       body: valuesBody,
     });
 

@@ -1,6 +1,7 @@
 import backFetch from "../../../../utils/fetchHTTP.utils";
 import customResponse from "../../../../utils/responseBuilder.utils";
-import ENVIROMENT from "../../../../config/enviroment.config";
+const API_INTERNAL = import.meta.env.VITE_API_INTERNAL;
+const BACK_DIR = import.meta.env.VITE_BACK_DIR;
 import { isRequired } from "../../../../utils/fieldsValidator.utils";
 
 //^ --------> Function to handle the delete of an absent
@@ -23,9 +24,9 @@ const handleDeleteAbsent = async (setModules, setErrors, setActiveModule, oldMod
 
         // # ---> Send form data to the server
         const response = await backFetch({
-            url: `${ENVIROMENT.BACK_DIR}/api/absent/delete`,
+            url: `${BACK_DIR}/api/absent/delete`,
             method: "PUT",
-            headers: { "x-api-key": ENVIROMENT.API_INTERNAL, Authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+            headers: { "x-api-key": API_INTERNAL, Authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
             body,
         });
 

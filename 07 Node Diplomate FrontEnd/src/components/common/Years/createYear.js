@@ -1,6 +1,7 @@
 import backFetch from "../../../utils/fetchHTTP.utils";
 import customResponse from "../../../utils/responseBuilder.utils";
-import ENVIROMENT from "../../../config/enviroment.config";
+const API_INTERNAL = import.meta.env.VITE_API_INTERNAL;
+const BACK_DIR = import.meta.env.VITE_BACK_DIR;
 import { isRequired } from "../../../utils/fieldsValidator.utils";
 import { addYearToCareer, getNextYear } from "../../../utils/careerHelper.utils";
 
@@ -38,9 +39,9 @@ const handleCreateYear = async (setCareers, setErrors, careerId, career, oldCare
 
     // # ---> Send form data to the server for login
     const response = await backFetch({
-      url: `${ENVIROMENT.BACK_DIR}/api/year`,
+      url: `${BACK_DIR}/api/year`,
       method: "POST",
-      headers: { "x-api-key": ENVIROMENT.API_INTERNAL, Authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+      headers: { "x-api-key": API_INTERNAL, Authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
       body,
     });
 

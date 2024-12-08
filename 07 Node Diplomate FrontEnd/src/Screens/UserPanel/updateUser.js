@@ -1,6 +1,7 @@
 import backFetch from "../../utils/fetchHTTP.utils";
 import customResponse from "../../utils/responseBuilder.utils";
-import ENVIROMENT from "../../config/enviroment.config";
+const API_INTERNAL = import.meta.env.VITE_API_INTERNAL;
+const BACK_DIR = import.meta.env.VITE_BACK_DIR;
 import { isRequired, isStrongPassword } from "../../utils/fieldsValidator.utils";
 
 //^ --------> Function to handle the form submission
@@ -27,9 +28,9 @@ const handleSubmitUpdate = async (e, values, setErrors, user) => {
 
     // # ---> Send form data to the server for login
     const firstResponse = await backFetch({
-      url: `${ENVIROMENT.BACK_DIR}/api/auth/login`,
+      url: `${BACK_DIR}/api/auth/login`,
       method: "POST",
-      headers: { "x-api-key": ENVIROMENT.API_INTERNAL },
+      headers: { "x-api-key": API_INTERNAL },
       body: firstBody,
     });
 
@@ -50,9 +51,9 @@ const handleSubmitUpdate = async (e, values, setErrors, user) => {
 
       // # ---> Send form data to the server for login
       const secondResponse = await backFetch({
-        url: "http://localhost:3000/api/auth/update-user",
+        url: `${BACK_DIR}/api/auth/update-user`,
         method: "PUT",
-        headers: { "x-api-key": ENVIROMENT.API_INTERNAL, Authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
+        headers: { "x-api-key": API_INTERNAL, Authorization: `Bearer ${localStorage.getItem("TOKEN")}` },
         body: secondBody,
       });
 
