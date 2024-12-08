@@ -12,6 +12,7 @@ const App = () => {
     favicon.type = 'image/png';
     favicon.href = logo;
     document.head.appendChild(favicon);
+    document.title = "Studemio";
   }, []);
 
   return <RouterProvider router={router} />;
