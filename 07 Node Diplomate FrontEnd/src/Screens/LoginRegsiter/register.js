@@ -18,6 +18,12 @@ const handleSubmitRegister = async (e, values, setErrors) => {
       return;
     }
 
+    // ! -----> If name is too long
+    if(values.name.length > 35){
+      setErrors({ name: "Name is too long" });
+      return;
+    }
+
     // * -----> Create the body of the request
     const valuesBody = {
       name: values.name,
