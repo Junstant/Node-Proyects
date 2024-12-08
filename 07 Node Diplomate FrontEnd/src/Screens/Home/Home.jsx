@@ -9,11 +9,11 @@ import lightThree from "../../assets/images/lights/home/Vector-2.png";
 import lightFour from "../../assets/images/lights/home/Vector-3.png";
 import lightFive from "../../assets/images/lights/home/Vector-4.png";
 import lightSix from "../../assets/images/lights/home/Vector-5.png";
-import userPanel from "../../assets/images/userPanel.png";
+import userPanel from "../../assets/images/userPanel.webp";
 import lineDecor from "../../assets/images/lineDecor.svg";
 import panelsOne from "../../assets/images/panelsOne.svg";
-import panelsTwo from "../../assets/images/panelsTwo.png";
-import panelsThree from "../../assets/images/panelsThree.png";
+import panelsTwo from "../../assets/images/panelsTwo.webp";
+import panelsThree from "../../assets/images/panelsThree.webp";
 import themeNew from "../../assets/styles/theme";
 
 // ? ---------- Home Screen ---------->

@@ -82,7 +82,7 @@
     background-position: center;
     background-size: cover;
     border-radius: 20px;
-    background-image: url("../images/userPanelBackground.png");
+    background-image: url("../images/userPanelBackground.webp");
     background-blend-mode: color-dodge;
     mix-blend-mode: exclusion;
     pointer-events: none;

@@ -9,10 +9,10 @@ import UpdateForm from "../../components/common/UpadateForm.jsx";
 import CareerManager from "../../components/common/Careers/CareerManager.jsx";
 import "../../assets/styles/global.css";
 import "../../assets/styles/userPanel.css";
-import lightOne from "../../assets/images/lights/userPanel/lightOne.png";
-import lightTwo from "../../assets/images/lights/userPanel/lightTwo.png";
-import lightThree from "../../assets/images/lights/userPanel/lightThree.png";
-import lightFour from "../../assets/images/lights/userPanel/lightFour.png";
+import lightOne from "../../assets/images/lights/userPanel/lightOne.webp";
+import lightTwo from "../../assets/images/lights/userPanel/lightTwo.webp";
+import lightThree from "../../assets/images/lights/userPanel/lightThree.webp";
+import lightFour from "../../assets/images/lights/userPanel/lightFour.webp";
 import lightFive from "../../assets/images/lights/userPanel/lightFive.png";
 import lightSix from "../../assets/images/lights/userPanel/lightSix.png";
 // ? ------------------ UserPanel Logic ------->

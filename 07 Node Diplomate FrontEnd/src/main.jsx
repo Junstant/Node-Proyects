@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { RouterProvider } from "react-router-dom";
 import router from "./Router.jsx";
 import "./assets/styles/global.css";
-import logo from "./assets/images/favicon.png";
+import logo from "./assets/images/favicon.webp";
 
 const App = () => {
   useEffect(() => {

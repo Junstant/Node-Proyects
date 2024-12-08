@@ -4,7 +4,7 @@ import { List, X } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
 import "../../assets/styles/global.css";
 import "../../assets/styles/header.css";
-import logo from "../../assets/images/logo.svg";
+import logo from "../../assets/images/favicon.webp";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const Header = () => {
@@ -27,7 +27,7 @@ const Header = () => {
         <div className="header">
           <div className="logoCon">
             <Link to="/">
-              <img src={logo} alt="Logo" />
+              <img src={logo} className="max-w-16" alt="Logo" />
             </Link>
             Studemio
           </div>
@@ -59,7 +59,7 @@ const Header = () => {
         <div className="header">
           <div className="flex flex-row items-center gap-3 cursor-pointer logoCon">
             <Link to="/">
-              <img src={logo} alt="Logo" />
+              <img src={logo} className="max-w-16" alt="Logo" />
             </Link>
             Studemio
           </div>

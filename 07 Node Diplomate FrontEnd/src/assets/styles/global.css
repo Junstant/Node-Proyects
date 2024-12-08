@@ -31,7 +31,8 @@
   body {
     font-family: "Inter", sans-serif;
     background-color: var(--color-background);
-    background-image: url("../images/bgk-pattern.svg");
+    background-image: url("../images/bgk-pattern.webp");
+    background-repeat: repeat;
     color: var(--color-white);
   }
 
