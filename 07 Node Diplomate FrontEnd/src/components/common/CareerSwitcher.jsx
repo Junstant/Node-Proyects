@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useUserStore from "../../stores/userStore";
-import { Menu, MenuItem, Button, Box, Tooltip } from "@mui/material";
+import { Menu, MenuItem, Button, Tooltip } from "@mui/material";
 import { ArrowsLeftRight, CaretDown } from "@phosphor-icons/react";
 import themeNew from "../../assets/styles/theme";
 import { ThemeProvider } from "@mui/material/styles";
