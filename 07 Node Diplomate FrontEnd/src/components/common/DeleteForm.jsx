@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { FormControl, Input, InputAdornment, InputLabel, FormHelperText, Button, IconButton, Modal, TextField } from "@mui/material";
+import { FormControl, InputAdornment, FormHelperText, Button, IconButton, Modal, TextField } from "@mui/material";
 import { Eye, EyeClosed, Trash, X } from "@phosphor-icons/react";
-import { usePasswordVisibility } from "../../hooks/passwordSwitch";
+import usePasswordVisibility from "../../hooks/passwordSwitch";
 import createHandleChange from "../../hooks/formHandlers";
 import handleSubmitDelete from "../../Screens/UserPanel/deleteUser";
 import { useNavigate } from "react-router-dom";

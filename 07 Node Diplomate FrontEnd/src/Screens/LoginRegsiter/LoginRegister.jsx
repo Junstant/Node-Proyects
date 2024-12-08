@@ -3,7 +3,7 @@ import handleSubmitLogin from "./login.js";
 import handleSubmitRegister from "./register.js";
 import { Button, Checkbox, FormControl, FormHelperText, IconButton, InputAdornment, Stack, TextField } from "@mui/material";
 import { Eye, EyeClosed, PaperPlaneRight, Warning } from "@phosphor-icons/react";
-import { usePasswordVisibility } from "../../hooks/passwordSwitch.jsx";
+import usePasswordVisibility from "../../hooks/passwordSwitch.jsx";
 import Header from "../../components/layouts/Header.jsx";
 import useUserStore from "../../stores/userStore.js";
 import { useNavigate, useLocation, Link } from "react-router-dom";

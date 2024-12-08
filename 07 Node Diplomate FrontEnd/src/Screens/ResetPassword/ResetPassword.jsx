@@ -5,7 +5,7 @@ import { Button, FormControl, FormHelperText, InputAdornment, IconButton, TextFi
 import Header from "../../components/layouts/Header.jsx";
 import { useParams } from "react-router-dom";
 import { Eye, EyeClosed, PaperPlaneRight, Warning } from "@phosphor-icons/react";
-import { usePasswordVisibility } from "../../hooks/passwordSwitch.jsx";
+import usePasswordVisibility from "../../hooks/passwordSwitch.jsx";
 import { ThemeProvider } from "@mui/material/styles";
 import lightOne from "../../assets/images/lights/loginRegister/Vector.webp";
 import lightTwo from "../../assets/images/lights/loginRegister/Vector-1.webp";

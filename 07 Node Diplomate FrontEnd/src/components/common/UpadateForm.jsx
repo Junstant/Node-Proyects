@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { FormControl, Input, InputAdornment, InputLabel, FormHelperText, Button, IconButton, TextField } from "@mui/material";
+import { FormControl, InputAdornment, FormHelperText, Button, IconButton, TextField } from "@mui/material";
 import { Eye, EyeClosed, Info } from "@phosphor-icons/react";
-import { usePasswordVisibility } from "../../hooks/passwordSwitch";
+import usePasswordVisibility from "../../hooks/passwordSwitch";
 import createHandleChange from "../../hooks/formHandlers";
 import handleSubmitUpdate from "../../Screens/UserPanel/updateUser";
 import useUserStore from "../../stores/userStore";
