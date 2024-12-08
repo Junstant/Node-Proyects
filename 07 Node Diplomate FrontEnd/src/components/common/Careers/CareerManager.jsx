@@ -38,6 +38,13 @@ const CareerManager = () => {
   // ^ -----> Edit career
   const handleEditCareer = async () => {
     if (newCareerName.trim()) {
+
+      //if amount of characters greater than 40 then show error
+      if (newCareerName.trim().length > 40) {
+        setErrorsCareer({ edit: "Career name must be less than 40 characters." });
+        return;
+      }
+
       await handleUpdateCareer(setCareers, setErrorsCareer, currentCareer.id, newCareerName.trim(), careers, setActiveCareer);
       setModalOpen(false);
     } else {
@@ -65,8 +72,8 @@ const CareerManager = () => {
           {careers.map((career) => (
             <section key={career.id} sx={{ marginBottom: 2 }}>
               <div className="cardCareers">
-                <Box className="w-full flex flex-row items-center justify-between">
-                  <Typography className="text-sm">{career.name}</Typography>
+                <Box className="w-full flex flex-wrap flex-row items-center justify-between">
+                  <Typography className="text-sm break-all">{career.name}</Typography>
                   <Box className="w-fit flex flex-row justify-end">
                     {/* ---------------------- Edit career --------------- */}
                     <Tooltip title="Edit Career" placement="top">

@@ -64,10 +64,10 @@ const CareerSwitcher = () => {
 
   // ? ------------------ CareerSwitcher Component ------->
   return (
-    <Box className="w-full">
+    <div>
       {/* Career and year switcher */}
-      <section className="flex flex-row gap-2 justify-between items-center">
-        <h5 className="text-white font-semibold leading-none pointer-events-none">{getActiveCareerName() || "Career and Year"}</h5>
+      <section className="flex flex-row gap-2 max-w-md justify-between items-center">
+        <h5 className="text-white font-semibold leading-none pointer-events-none break-all">{getActiveCareerName() || "Career and Year"}</h5>
         <div className="flex flex-row gap-4">
           <ThemeProvider theme={themeNew}>
             {/* Career */}
@@ -111,7 +111,7 @@ const CareerSwitcher = () => {
           </ThemeProvider>
         </div>
       </section>
-    </Box>
+    </div>
   );
 };
 

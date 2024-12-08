@@ -39,7 +39,7 @@ const Modules = () => {
             {/* Avatar and career switcher */}
             <div className="containerTop w-1/2 p-4 flex items-center">
               <Avatar alt="Avatar" src="https://picsum.photos/202" />
-              <CareerSwitcher />
+              <CareerSwitcher/>
             </div>
 
             {/* Current time */}

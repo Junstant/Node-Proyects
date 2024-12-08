@@ -26,6 +26,12 @@ const ModalProfessor = ({ open, handleClose }) => {
   const handleEditModule = async () => {
     if (professor.professor.trim()) {
       const newInfoModule = { professor: professor.professor.trim() };
+
+      if (professor.professor.trim().length > 40) {
+        setErrorsModule({ edit: "Professor name must be less than 40 characters." });
+        return;
+      }
+
       await handleUpdateModule(setModules, setErrorsModule, setActiveModule, modules, activeModule, newInfoModule);
       handleClose();
     } else {

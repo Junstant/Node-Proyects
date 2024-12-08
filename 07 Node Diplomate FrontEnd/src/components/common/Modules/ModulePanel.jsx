@@ -266,7 +266,7 @@ const ModulePanel = () => {
                     )}
 
                     {/* Mudule name */}
-                    <Typography color={activeModule.color} variant="h4" className="cursor-pointer" onClick={confirmEditName}>
+                    <Typography color={activeModule.color} variant="h4" className="cursor-pointer break-all" onClick={confirmEditName}>
                       {activeModule.name}
                     </Typography>
                   </Stack>

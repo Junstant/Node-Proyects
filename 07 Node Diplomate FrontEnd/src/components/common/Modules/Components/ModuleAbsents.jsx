@@ -71,6 +71,11 @@ const ModuleAbsents = () => {
       return;
     }
 
+    if (newAbsent.reason.length > 120) {
+      setErrors({ reason: "Reason must be less than 120 characters." });
+      return;
+    }
+
     //% -----> If we are editing an absent
     if (isEditing) {
       const newAbsentInfo = { ...newAbsent, absenceNumber: newAbsent.absenceNumber };

@@ -70,19 +70,17 @@ const ModulesManager = () => {
           {modules.map((module, index) => (
             <div onClick={() => handleModuleClick(module, index)} key={module._id} className="cardModule cursor-pointer" style={{ border: `1px solid ${module.color || "#43A4FF"}` }}>
               <div className="w-full flex flex-col justify-between">
-
-                {/* All except absences and period */}
-                <div className="w-full">
+          
                   {/* Header */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       {/* Module number */}
-                      <div className="w-9 h-9 rounded-md flex items-center justify-center" style={{ backgroundColor: module.color, boxShadow: `0px 0px 30px ${hexToRgba(module.color, 0.7)}` }}>
+                      <div className="w-9 h-9 min-h9 min-w-9 rounded-md flex items-center justify-center" style={{ backgroundColor: module.color, boxShadow: `0px 0px 30px ${hexToRgba(module.color, 0.7)}` }}>
                         <Typography className="text-xl text-backgroundT">{(index + 1).toString().padStart(2, "0")}</Typography>
                       </div>
 
                       {/* Module name */}
-                      <h6 style={{ color: module.color }} className="text-sm font-medium">
+                      <h6 style={{ color: module.color }} className="text-sm font-medium break-all">
                         {module.name}
                       </h6>
                     </div>
@@ -139,7 +137,7 @@ const ModulesManager = () => {
                   </div>
 
                   {/* Dependencies */}
-                  <div className="flex items-center mt-2 overflow-hidden">
+                  <div className="flex items-center my-2 mb-6 overflow-hidden">
                     <div className="flex flex-row items-center max-h-8 gap-2 justify-start w-full max-w-full">
                       <FlowArrow size={18} color="#ffffff" />
                       {module.dependencies.length > 0 ? (
@@ -159,7 +157,7 @@ const ModulesManager = () => {
                 </div>
 
                 {/* Absences and Period */}
-                <div className="flex items-center justify-between mt-6 gap-2">
+                <div className="flex items-center justify-between mt-auto gap-2">
                   <Tooltip title="Absences" placement="bottom">
                     <div className="flex flex-row items-center gap-2">
                       <CalendarX size={24} color={module.color} />
@@ -173,7 +171,7 @@ const ModulesManager = () => {
                     <Chip style={{ boxShadow: `0px 0px 30px ${hexToRgba(module.color, 0.7)}` }} label={module.period.semester} sx={{ background: module.color, color: "#23293f" }} size="small" />
                   </Box>
                 </div>
-              </div>
+       
             </div>
           ))}
         </section>

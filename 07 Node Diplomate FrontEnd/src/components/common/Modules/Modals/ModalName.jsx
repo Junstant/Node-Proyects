@@ -27,6 +27,13 @@ const ModalName = ({ open, handleClose }) => {
     if (name.name.trim()) {
       // # -> Create the new module object
       const newInfoModule = { name: name.name.trim() };
+
+      // # -> if the name is greater than 40 characters then show error
+      if (name.name.trim().length > 40) {
+        setErrorsModule({ edit: "Module name must be less than 40 characters." });
+        return;
+      }
+
       // # -> Update the module
       await handleUpdateModule(setModules, setErrorsModule, setActiveModule, modules, activeModule, newInfoModule);
       handleClose();
