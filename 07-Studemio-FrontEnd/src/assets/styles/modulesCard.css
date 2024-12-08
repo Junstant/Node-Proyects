@@ -1,7 +1,7 @@
 .heroModulesManager {
 
   .modulesBox {
-    @apply flex flex-row gap-4 w-full items-start flex-wrap overflow-y-scroll py-2 justify-center h-full;
+    @apply flex flex-row gap-4 w-full content-start flex-wrap overflow-y-scroll py-2 justify-center h-full;
   }
 
   .modulesBox::-webkit-scrollbar {
@@ -11,6 +11,7 @@
   .cardModule {
     transition: all 0.3s;
     pointer-events: hover;
+    height: 300px;
     @apply flex flex-col gap-2 p-4 rounded-lg w-full flex-1 min-w-[31%] max-w-[31%];
   }
 
