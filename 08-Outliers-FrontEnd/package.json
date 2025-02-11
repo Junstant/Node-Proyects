@@ -1,5 +1,5 @@
 {
-  "name": "outliers",
+  "name": "08-outliers-frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mui/material": "^6.4.4",
+    "@phosphor-icons/react": "^2.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
